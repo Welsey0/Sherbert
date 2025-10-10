@@ -53,7 +53,7 @@ jobs:
             ${{ steps.get_version.outputs.value }}
           files: |-
             src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
-          primary-file: Sherbert-${{ steps.get_version.outputs.value }}
+          primary-file: Sherbert-${{ steps.get_version.outputs.value }}.mrpack
 
       - name: Upload .mrpack to GitHub Release
         uses: softprops/action-gh-release@v1
