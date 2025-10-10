@@ -1,0 +1,71 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Packwiz
+        uses: actionhippie/install-packwiz@v1
+
+      - name: Run packwiz mr export
+        run: |
+          cd src
+          packwiz mr export
+
+      - name: Get Game Versions
+        id: game_versions
+        run: |
+          game_versions=$(grep '^game-versions' src/pack.toml | cut -d' ' -f2-)
+          echo "game_versions=${game_versions}" >> $GITHUB_ENV
+
+      - name: Get Version
+        id: pack_version
+        run: |
+          pack_version=$(grep '^version' src/pack.toml | cut -d' ' -f2-)
+          echo "pack_version=${pack_version}" >> $GITHUB_ENV
+
+      - name: Get Changelog
+        id: changelog
+        run: |
+          {
+            echo 'changelog<<EOF'
+            cat changelog.md
+            echo 'EOF'
+          } >> $GITHUB_ENV
+
+      - name: Construct Release Name
+        run: |
+          release_name="Sherbert-${{ env.pack_version }}"
+          echo "release_name=${release_name}" >> $GITHUB_ENV
+
+      - name: Upload to Modrinth
+        uses: cloudnode-pro/modrinth-publish@v2
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          project: sherbert
+          name: ${{ env.release_name }}
+          version: ${{ env.pack_version }}
+          changelog: ${{ env.changelog }}
+          loaders: |-
+            game-versions: |-
+              ${{ env.game_versions }}
+          files: |
+            src/Sherbert-${{ env.pack_version }}.mrpack
+
+      - name: Upload .mrpack to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          name: ${{ env.release_name }}
+          body: ${{ env.changelog }}
+          files: src/*.mrpack
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
