@@ -27,6 +27,13 @@ jobs:
           file: 'src/pack.toml'
           field: 'version'
 
+      - name: Get Minectaft Version
+        id: get_minecraft_version
+        uses: sravinet/toml-select@v1.0.1
+        with:
+          file: 'src/pack.toml'
+          field: 'minecraft'
+      
       - name: Get Changelog
         id: get_changelog
         run: |
@@ -50,7 +57,7 @@ jobs:
           loaders: |- 
             fabric
           game-versions: |-
-            ${{ steps.get_version.outputs.value }}
+            ${{ steps.get_minecraft_version.outputs.value }}
           files: |-
             src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
           primary-file: Sherbert-${{ steps.get_version.outputs.value }}.mrpack
