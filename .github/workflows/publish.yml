@@ -15,12 +15,6 @@ jobs:
       - name: Install Packwiz
         uses: actionhippie/install-packwiz@v1
 
-      - name: Install tomlq
-        uses: baptiste0928/cargo-install@v3
-        with:
-          crate: tomlq
-
-
       - name: Run packwiz mr export
         run: |
           cd src
@@ -28,9 +22,10 @@ jobs:
 
       - name: Get Version
         id: get_version
-        run: |
-          version=$(tomlq -r '.version' src/pack.toml)
-          echo "version=${version}" >> $GITHUB_OUTPUT
+        uses: sravinet/toml-select@v1
+        with:
+          file: 'src/pack.toml'
+          field: 'version'
 
       - name: Get Changelog
         id: get_changelog
@@ -41,7 +36,7 @@ jobs:
       - name: Construct Release Name
         id: construct_name
         run: |
-          release_name="Sherbert ${{ steps.get_version.outputs.version }}"
+          release_name="Sherbert ${{ steps.get_version.outputs.value }}"
           echo "release_name=${release_name}" >> $GITHUB_OUTPUT
 
       - name: Upload to Modrinth
@@ -50,12 +45,12 @@ jobs:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: sherbert
           name: ${{ steps.construct_name.outputs.release_name }}
-          version: ${{ steps.get_version.outputs.version }}S
+          version: ${{ steps.get_version.outputs.value }}S
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           loaders: |- 
             fabric
           game-versions: |-
-            ${{ steps.get_version.outputs.version }}
+            ${{ steps.get_version.outputs.value }}
           files: |-
             src/${{ steps.construct_name.outputs.release_name }}.mrpack
           primary-file: ${{ steps.construct_name.outputs.release_name }}
