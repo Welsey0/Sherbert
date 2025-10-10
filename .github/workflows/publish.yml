@@ -49,8 +49,7 @@ jobs:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: sherbert
           name: ${{ steps.construct_name.outputs.release_name }}
-          version: ${{ steps.get_version.outputs.version }}
-          channel: ${{ github.event.release.tag_name }}
+          version: ${{ steps.get_version.outputs.version }}S
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           loaders: |- 
             fabric
