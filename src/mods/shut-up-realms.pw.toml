@@ -1,0 +1,13 @@
+name = "shut up realms"
+filename = "shut-up-realms-1.0.2+mc1.21.1.jar"
+side = "client"
+
+[download]
+url = "https://cdn.modrinth.com/data/esvER4Ln/versions/aEdBBOzB/shut-up-realms-1.0.2%2Bmc1.21.1.jar"
+hash-format = "sha512"
+hash = "3b481542e2e966ee3e148f0a1ee9a04dcbd59913273e0e6775d22c84d40c8ff58aa847133a38e4e42da2b024536d7726b00840db9e61e0c15cb7f3cfac89dae8"
+
+[update]
+[update.modrinth]
+mod-id = "esvER4Ln"
+version = "aEdBBOzB"

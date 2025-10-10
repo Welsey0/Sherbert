@@ -1,0 +1,42 @@
+{
+	// Update Notifier
+	menuAlert: true,
+	chatAlert: false,
+	chatMessage: "There is an update available for your modpack!",
+	platform: "MODRINTH",
+	modpackName: "Sherbert",
+	modpackId: "sherbert",
+	modpackHome: "https://github.com/me/My-Modpack",
+	localVersion: "3.0.0-beta2",
+	checkMcVersion: false,
+	loader: "fabric",
+	versionAPI: "https://raw.githubusercontent.com/me/My-Modpack/main/Packwiz/pack.toml",
+	changelogLink: "https://raw.githubusercontent.com/me/My-Modpack/main/CHANGELOG.md",
+	versionType: [
+		"release",
+		"beta"
+	],
+	nameFilters: [],
+	versionFilters: [],
+	// Chat Welcome
+	chatWelcome: false,
+	chatWelcomeMessage: "Welcome to <modpack-name> <version>!",
+	// Window Utils
+	customIcon: true,
+	customTitle: true,
+	title: "<modpack-name> | Minecraft <mc>",
+	// MMC
+	mainMenuCreditsIntegeration: "OFF",
+	customMmc: [
+		"<version>",
+		"#FF00FF",
+		"<version-link>",
+		"<modpack-name>",
+		"#55FF55",
+		"<modpack-home>"
+	],
+	// Ram Alert
+	ramMenuAlert: true,
+	ramChatAlert: false,
+	minRam: 4000
+}

@@ -1,0 +1,308 @@
+{
+  "fabric-loader-0.17.2.jar (modloader)": {
+    "jarName": "fabric-loader-0.17.2.jar (modloader)",
+    "modId": "fabric",
+    "version": "fabric-loader-0.17.2.jar"
+  },
+  "alternate-current-mc1.21.9-1.9.0.jar": {
+    "jarName": "alternate-current-mc1.21.9-1.9.0.jar",
+    "modId": "alternate-current",
+    "version": "1.9.0"
+  },
+  "architectury-18.0.3-fabric.jar": {
+    "jarName": "architectury-18.0.3-fabric.jar",
+    "modId": "architectury",
+    "version": "18.0.3"
+  },
+  "BadOptimizations-2.3.2-1.21.9.jar": {
+    "jarName": "BadOptimizations-2.3.2-1.21.9.jar",
+    "modId": "badoptimizations",
+    "version": "2.3.2"
+  },
+  "BetterAddServer-1.21.6-fabric-1.3.0.jar": {
+    "jarName": "BetterAddServer-1.21.6-fabric-1.3.0.jar",
+    "modId": "betteraddserver",
+    "version": "1.3.0"
+  },
+  "BetterGrassify-1.8.0+fabric.1.21.8.jar": {
+    "jarName": "BetterGrassify-1.8.0+fabric.1.21.8.jar",
+    "modId": "bettergrass",
+    "version": "1.8.0+fabric.1.21.8"
+  },
+  "bettermounthud-1.2.6.jar": {
+    "jarName": "bettermounthud-1.2.6.jar",
+    "modId": "bettermounthud",
+    "version": "1.2.6"
+  },
+  "capes-1.5.9+1.21.9-fabric.jar": {
+    "jarName": "capes-1.5.9+1.21.9-fabric.jar",
+    "modId": "capes",
+    "version": "1.5.9+1.21.9"
+  },
+  "chat_heads-1.1.1-fabric-1.21.9.jar": {
+    "jarName": "chat_heads-1.1.1-fabric-1.21.9.jar",
+    "modId": "chat_heads",
+    "version": "1.1.1"
+  },
+  "ChatImpressiveAnimation-fabric-1.4.0+mc1.21.9.jar": {
+    "jarName": "ChatImpressiveAnimation-fabric-1.4.0+mc1.21.9.jar",
+    "modId": "chatimpressiveanimation",
+    "version": "1.4.0+mc1.21.9"
+  },
+  "cloth-config-20.0.148-fabric.jar": {
+    "jarName": "cloth-config-20.0.148-fabric.jar",
+    "modId": "cloth-config",
+    "version": "20.0.148"
+  },
+  "Clumps-fabric-1.21.9-27.0.0.2.jar": {
+    "jarName": "Clumps-fabric-1.21.9-27.0.0.2.jar",
+    "modId": "clumps",
+    "version": "27.0.0.2"
+  },
+  "Controlling-fabric-1.21.9-27.0.2.jar": {
+    "jarName": "Controlling-fabric-1.21.9-27.0.2.jar",
+    "modId": "controlling",
+    "version": "27.0.2"
+  },
+  "CrashAssistant-fabric-1.21.5-1.21.10-1.10.8.jar": {
+    "jarName": "CrashAssistant-fabric-1.21.5-1.21.10-1.10.8.jar",
+    "modId": "crash_assistant",
+    "version": "1.10.8"
+  },
+  "cwb-fabric-3.0.0+mc1.21.5.jar": {
+    "jarName": "cwb-fabric-3.0.0+mc1.21.5.jar",
+    "modId": "cubes-without-borders",
+    "version": "3.0.0+mc1.21.5"
+  },
+  "dark-loading-screen-1.6.17.jar": {
+    "jarName": "dark-loading-screen-1.6.17.jar",
+    "modId": "dark-loading-screen",
+    "version": "1.6.17"
+  },
+  "dynamic-fps-3.9.6+minecraft-1.21.9-fabric.jar": {
+    "jarName": "dynamic-fps-3.9.6+minecraft-1.21.9-fabric.jar",
+    "modId": "dynamic_fps",
+    "version": "3.9.6"
+  },
+  "entity_model_features_1.21.9-fabric-3.0.3.jar": {
+    "jarName": "entity_model_features_1.21.9-fabric-3.0.3.jar",
+    "modId": "entity_model_features",
+    "version": "3.0.3"
+  },
+  "entity_texture_features-7.0.4-1.21.9-fabric.jar": {
+    "jarName": "entity_texture_features-7.0.4-1.21.9-fabric.jar",
+    "modId": "entity_texture_features",
+    "version": "7.0.4"
+  },
+  "entityculling-fabric-1.9.0-mc1.21.10-rc1.jar": {
+    "jarName": "entityculling-fabric-1.9.0-mc1.21.10-rc1.jar",
+    "modId": "entityculling",
+    "version": "1.9.0"
+  },
+  "EuphoriaPatcher-1.7.0-r5.6-fabric.jar": {
+    "jarName": "EuphoriaPatcher-1.7.0-r5.6-fabric.jar",
+    "modId": "euphoria_patcher",
+    "version": "1.7.0-r5.6-fabric"
+  },
+  "fabric-api-0.135.0+1.21.10.jar": {
+    "jarName": "fabric-api-0.135.0+1.21.10.jar",
+    "modId": "fabric-api",
+    "version": "0.135.0+1.21.10"
+  },
+  "fabric-language-kotlin-1.13.6+kotlin.2.2.20.jar": {
+    "jarName": "fabric-language-kotlin-1.13.6+kotlin.2.2.20.jar",
+    "modId": "fabric-language-kotlin",
+    "version": "1.13.6+kotlin.2.2.20"
+  },
+  "fast-ip-ping-v1.0.7-mc1.21.6-fabric.jar": {
+    "jarName": "fast-ip-ping-v1.0.7-mc1.21.6-fabric.jar",
+    "modId": "fastipping",
+    "version": "1.0.7"
+  },
+  "ferritecore-8.0.0-fabric.jar": {
+    "jarName": "ferritecore-8.0.0-fabric.jar",
+    "modId": "ferritecore",
+    "version": "8.0.0"
+  },
+  "ForgeConfigAPIPort-v21.10.0+mc1.21.10-Fabric.jar": {
+    "jarName": "ForgeConfigAPIPort-v21.10.0+mc1.21.10-Fabric.jar",
+    "modId": "forgeconfigapiport",
+    "version": "21.10.0"
+  },
+  "ImmediatelyFast-Fabric-1.13.1+1.21.10.jar": {
+    "jarName": "ImmediatelyFast-Fabric-1.13.1+1.21.10.jar",
+    "modId": "immediatelyfast",
+    "version": "1.13.1+1.21.10"
+  },
+  "iris-fabric-1.9.4+mc1.21.10.jar": {
+    "jarName": "iris-fabric-1.9.4+mc1.21.10.jar",
+    "modId": "iris",
+    "version": "1.9.4+mc1.21.10"
+  },
+  "krypton-0.2.10.jar": {
+    "jarName": "krypton-0.2.10.jar",
+    "modId": "krypton",
+    "version": "0.2.10"
+  },
+  "lambdynamiclights-4.8.2+1.21.10.jar": {
+    "jarName": "lambdynamiclights-4.8.2+1.21.10.jar",
+    "modId": "lambdynlights",
+    "version": "4.8.2+1.21.10"
+  },
+  "lithium-fabric-0.20.0+mc1.21.10.jar": {
+    "jarName": "lithium-fabric-0.20.0+mc1.21.10.jar",
+    "modId": "lithium",
+    "version": "0.20.0+mc1.21.10"
+  },
+  "main-menu-credits-1.2.0.jar": {
+    "jarName": "main-menu-credits-1.2.0.jar",
+    "modId": "isxander-main-menu-credits",
+    "version": "1.2.0"
+  },
+  "mixintrace-1.1.1+1.17.jar": {
+    "jarName": "mixintrace-1.1.1+1.17.jar",
+    "modId": "mixintrace",
+    "version": "1.1.1+1.17"
+  },
+  "modelfix-1.21.5-1.12-fabric.jar": {
+    "jarName": "modelfix-1.21.5-1.12-fabric.jar",
+    "modId": "modelfix",
+    "version": "1.21.5-1.12"
+  },
+  "modmenu-16.0.0-rc.1.jar": {
+    "jarName": "modmenu-16.0.0-rc.1.jar",
+    "modId": "modmenu",
+    "version": "16.0.0-rc.1"
+  },
+  "morechathistory-1.3.1.jar": {
+    "jarName": "morechathistory-1.3.1.jar",
+    "modId": "morechathistory",
+    "version": "1.3.1"
+  },
+  "moreculling-fabric-1.21.9-1.5.0-beta.2.jar": {
+    "jarName": "moreculling-fabric-1.21.9-1.5.0-beta.2.jar",
+    "modId": "moreculling",
+    "version": "1.5.0-beta.2"
+  },
+  "optigui-2.3.0-beta.8+1.21.9.jar": {
+    "jarName": "optigui-2.3.0-beta.8+1.21.9.jar",
+    "modId": "optigui",
+    "version": "2.3.0-beta.8+1.21.9"
+  },
+  "placeholder-api-2.8.0+1.21.9.jar": {
+    "jarName": "placeholder-api-2.8.0+1.21.9.jar",
+    "modId": "placeholder-api",
+    "version": "2.8.0+1.21.9"
+  },
+  "puzzle-fabric-2.1.2+1.21.9.jar": {
+    "jarName": "puzzle-fabric-2.1.2+1.21.9.jar",
+    "modId": "puzzle",
+    "version": "2.1.2"
+  },
+  "reeses-sodium-options-fabric-1.8.5+mc1.21.9.jar": {
+    "jarName": "reeses-sodium-options-fabric-1.8.5+mc1.21.9.jar",
+    "modId": "reeses-sodium-options",
+    "version": "1.8.5+mc1.21.9"
+  },
+  "Resourcify (1.21.9-fabric)-1.7.4.jar": {
+    "jarName": "Resourcify (1.21.9-fabric)-1.7.4.jar",
+    "modId": "resourcify",
+    "version": "1.7.4"
+  },
+  "rrls-5.1.11+mc1.21.9-fabric.jar": {
+    "jarName": "rrls-5.1.11+mc1.21.9-fabric.jar",
+    "modId": "rrls",
+    "version": "5.1.11+mc1.21.9-fabric"
+  },
+  "ScalableLux-0.1.6+fabric.c25518a-all.jar": {
+    "jarName": "ScalableLux-0.1.6+fabric.c25518a-all.jar",
+    "modId": "scalablelux",
+    "version": "0.1.6+fabric.c25518a"
+  },
+  "Scribble-1.6.6+mc1.21.9-fabric.jar": {
+    "jarName": "Scribble-1.6.6+mc1.21.9-fabric.jar",
+    "modId": "scribble",
+    "version": "1.6.6"
+  },
+  "Searchables-fabric-1.21.9-1.0.2.jar": {
+    "jarName": "Searchables-fabric-1.21.9-1.0.2.jar",
+    "modId": "searchables",
+    "version": "1.0.2"
+  },
+  "serverpingerfixer-1.0.5.jar": {
+    "jarName": "serverpingerfixer-1.0.5.jar",
+    "modId": "serverpingerfixer",
+    "version": "1.0.5"
+  },
+  "shulkerboxtooltip-fabric-5.2.11+1.21.9.jar": {
+    "jarName": "shulkerboxtooltip-fabric-5.2.11+1.21.9.jar",
+    "modId": "shulkerboxtooltip",
+    "version": "5.2.11+1.21.9"
+  },
+  "shut-up-realms-1.0.2+mc1.21.1.jar": {
+    "jarName": "shut-up-realms-1.0.2+mc1.21.1.jar",
+    "modId": "shut_up_realms",
+    "version": "1.0.2+mc1.21.1"
+  },
+  "simple-hud-enhanced+1.21.9-4.7.5.jar": {
+    "jarName": "simple-hud-enhanced+1.21.9-4.7.5.jar",
+    "modId": "simplehudenhanced",
+    "version": "4.7.5"
+  },
+  "smoothscroll-2.3.0.2+1.21.9.jar": {
+    "jarName": "smoothscroll-2.3.0.2+1.21.9.jar",
+    "modId": "smoothscroll",
+    "version": "2.3.0.2"
+  },
+  "sodium-extra-fabric-0.7.0+mc1.21.9.jar": {
+    "jarName": "sodium-extra-fabric-0.7.0+mc1.21.9.jar",
+    "modId": "sodium-extra",
+    "version": "0.7.0+mc1.21.9"
+  },
+  "sodium-fabric-0.7.0+mc1.21.9.jar": {
+    "jarName": "sodium-fabric-0.7.0+mc1.21.9.jar",
+    "modId": "sodium",
+    "version": "0.7.0+mc1.21.9"
+  },
+  "spark-1.10.145-fabric.jar": {
+    "jarName": "spark-1.10.145-fabric.jar",
+    "modId": "spark",
+    "version": "1.10.145"
+  },
+  "StackDeobfuscatorFabric-1.4.3+08e71cc.jar": {
+    "jarName": "StackDeobfuscatorFabric-1.4.3+08e71cc.jar",
+    "modId": "stackdeobfuscator",
+    "version": "1.4.3+08e71cc"
+  },
+  "threadtweak-fabric-0.1.7+mc1.21.9-rc1.jar": {
+    "jarName": "threadtweak-fabric-0.1.7+mc1.21.9-rc1.jar",
+    "modId": "threadtweak",
+    "version": "0.1.7+mc1.21.9-rc1"
+  },
+  "ViaFabricPlus-4.3.1.jar": {
+    "jarName": "ViaFabricPlus-4.3.1.jar",
+    "modId": "viafabricplus",
+    "version": "4.3.1"
+  },
+  "yet_another_config_lib_v3-3.8.0+1.21.9-fabric.jar": {
+    "jarName": "yet_another_config_lib_v3-3.8.0+1.21.9-fabric.jar",
+    "modId": "yet_another_config_lib_v3",
+    "version": "3.8.0+1.21.9-fabric"
+  },
+  "yosbr-0.1.2.jar": {
+    "jarName": "yosbr-0.1.2.jar",
+    "modId": "yosbr",
+    "version": "0.1.2"
+  },
+  "Zoomify-2.14.6+1.21.9.jar": {
+    "jarName": "Zoomify-2.14.6+1.21.9.jar",
+    "modId": "zoomify",
+    "version": "2.14.6+1.21.9"
+  },
+  "Aseprite Fonts.zip (resourcepack)": {
+    "jarName": "Aseprite Fonts.zip (resourcepack)"
+  },
+  "Rethoughted GUI.zip (resourcepack)": {
+    "jarName": "Rethoughted GUI.zip (resourcepack)"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "overrides": {
+    "clumps": {
+      "depends": {
+        "minecraft": "1.21.10"
+      }
+    },
+    "controlling": {
+      "depends": {
+        "minecraft": "1.21.10"
+      }
+    },
+    "searchables": {
+      "depends": {
+        "minecraft": "1.21.10"
+      }
+    },
+    "simplehudenhanced": {
+      "depends": {
+        "minecraft": "1.21.10"
+      }
+    }
+  }
+}
