@@ -16,8 +16,9 @@ jobs:
         uses: actionhippie/install-packwiz@v1
 
       - name: Install tomlq
-        run: |
-          sudo apt-get install -y tomlq
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: tomlq
 
 
       - name: Run packwiz mr export
