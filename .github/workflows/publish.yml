@@ -15,6 +15,11 @@ jobs:
       - name: Install Packwiz
         uses: actionhippie/install-packwiz@v1
 
+      - name: Install tomlq
+        run: |
+          sudo apt-get install -y tomlq
+
+
       - name: Run packwiz mr export
         run: |
           cd src
@@ -23,20 +28,20 @@ jobs:
       - name: Get Version
         id: get_version
         run: |
-          version=$(grep '^version' src/pack.toml | cut -d' ' -f2-)
-          echo "::set-output name=version::${version}"
+          version=$(tomlq -r '.version' src/pack.toml)
+          echo "version=${version}" >> $GITHUB_OUTPUT
 
       - name: Get Changelog
         id: get_changelog
         run: |
           changelog_content=$(cat changelog.md)
-          echo "::set-output name=changelog_content::$changelog_content"
+          echo "changelog_content=${changelog_content}" >> $GITHUB_OUTPUT
 
       - name: Construct Release Name
         id: construct_name
         run: |
-          release_name="Sherbert-${{ steps.get_version.outputs.version }}"
-          echo "::set-output name=release_name::${release_name}"
+          release_name="Sherbert ${{ steps.get_version.outputs.version }}"
+          echo "release_name=${release_name}" >> $GITHUB_OUTPUT
 
       - name: Upload to Modrinth
         uses: cloudnode-pro/modrinth-publish@v2
@@ -47,10 +52,11 @@ jobs:
           version: ${{ steps.get_version.outputs.version }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           loaders: |- 
-            game-versions: |-
-              # Specify your game versions here
-          files: |
-            src/Sherbert-${{ steps.get_version.outputs.version }}.mrpack
+            fabric
+          game-versions: |-
+            ${{ steps.get_version.outputs.version }}
+          files: |-
+            src/${{ steps.construct_name.outputs.release_name }}.mrpack
 
       - name: Upload .mrpack to GitHub Release
         uses: softprops/action-gh-release@v1
