@@ -52,8 +52,8 @@ jobs:
           game-versions: |-
             ${{ steps.get_version.outputs.value }}
           files: |-
-            src/${{ steps.construct_name.outputs.release_name }}.mrpack
-          primary-file: ${{ steps.construct_name.outputs.release_name }}
+            src/$Sherbert-${{ steps.get_version.outputs.value }}.mrpack
+          primary-file: Sherbert-${{ steps.get_version.outputs.value }}
 
       - name: Upload .mrpack to GitHub Release
         uses: softprops/action-gh-release@v1
