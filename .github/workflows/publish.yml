@@ -45,14 +45,14 @@ jobs:
           token: ${{ secrets.MODRINTH_TOKEN }}
           project: sherbert
           name: ${{ steps.construct_name.outputs.release_name }}
-          version: ${{ steps.get_version.outputs.value }}S
+          version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           loaders: |- 
             fabric
           game-versions: |-
             ${{ steps.get_version.outputs.value }}
           files: |-
-            src/$Sherbert-${{ steps.get_version.outputs.value }}.mrpack
+            src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
           primary-file: Sherbert-${{ steps.get_version.outputs.value }}
 
       - name: Upload .mrpack to GitHub Release
