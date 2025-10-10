@@ -43,7 +43,7 @@ jobs:
         uses: cloudnode-pro/modrinth-publish@v2
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
-          project: sherbert
+          project: ${{ secrets.MODRINTH_PID }}
           name: ${{ steps.construct_name.outputs.release_name }}
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
