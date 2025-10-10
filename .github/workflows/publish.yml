@@ -32,7 +32,7 @@ jobs:
         uses: sravinet/toml-select@v1.0.1
         with:
           file: 'src/pack.toml'
-          field: 'minecraft'
+          field: 'versions.minecraft'
       
       - name: Get Changelog
         id: get_changelog
