@@ -54,20 +54,20 @@ jobs:
           name: ${{ steps.construct_name.outputs.release_name }}
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
-          loaders: |- 
+          loaders: |
             fabric
-          game-versions: |-
+          game-versions: |
             ${{ steps.get_minecraft_version.outputs.value }}
-          files: |-
+          files: |
             src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
           primary-file: Sherbert-${{ steps.get_version.outputs.value }}.mrpack
 
-      - name: Upload .mrpack to GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.event.release.tag_name }}
-          name: ${{ steps.construct_name.outputs.release_name }}
-          body: ${{ steps.get_changelog.outputs.changelog_content }}
-          files: src/*.mrpack
+      - name: Update GitHub Release
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          BODY=${{ steps.get_changelog.outputs.changelog_content }}
+          gh release edit "$TAG" --body "$BODY"
+          gh release upload "$TAG" src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack --clobber
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
