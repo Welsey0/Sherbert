@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Packwiz
-        uses: sravinet/toml-select@v1.0.1
+        uses: actionhippie/install-packwiz@v1
 
       - name: Run packwiz mr export
         run: |
@@ -22,7 +22,7 @@ jobs:
 
       - name: Get Version
         id: get_version
-        uses: sravinet/toml-select@v1
+        uses: sravinet/toml-select@v1.0.1
         with:
           file: 'src/pack.toml'
           field: 'version'
