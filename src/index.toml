@@ -2,7 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = "config/crash_assistant/config.toml"
-hash = "714f8d14e970b9747a8715331ad29f4ca62ae2a05e27080a986a05d19ac79557"
+hash = "402eff9a43e48027a7d44bbb5f10a6e5e1ba33360435395ef3416561f89d3a85"
 
 [[files]]
 file = "config/crash_assistant/modlist.json"
@@ -54,7 +54,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "393617b6cc5c46866c63b27b2a19f9c215e9090c506cd742673a47dbb35c99e7"
+hash = "1cdc924f68f005fdeee09138a38406a726896f5eeec872d6a439778e0aac1e10"
 
 [[files]]
 file = "config/rrls.toml"
@@ -62,7 +62,7 @@ hash = "8077e4e6a405c8ebef32782a22bd18138c1322ab7c973c31932a623d958ddff3"
 
 [[files]]
 file = "config/yosbr/config/crash_assistant/config.toml"
-hash = "3f83a6ce6c37cdb993ffd73f2ac04b01f3d7979ff6bdc5e5f3ea619d1549277c"
+hash = "402eff9a43e48027a7d44bbb5f10a6e5e1ba33360435395ef3416561f89d3a85"
 
 [[files]]
 file = "config/yosbr/config/dark-loading-screen.json"
@@ -114,7 +114,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "393617b6cc5c46866c63b27b2a19f9c215e9090c506cd742673a47dbb35c99e7"
+hash = "1cdc924f68f005fdeee09138a38406a726896f5eeec872d6a439778e0aac1e10"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
@@ -200,12 +200,12 @@ metafile = true
 
 [[files]]
 file = "mods/clumps.pw.toml"
-hash = "bfc821011dfc8b9bdf7f8ae55377fbc57d5867ddf164f268f40ad02b4d201565"
+hash = "b98e0aca52ce8d08ee8df7177886589511b8bca779af078a6ff4837e814bccf4"
 metafile = true
 
 [[files]]
 file = "mods/controlling.pw.toml"
-hash = "58da82c69d00e495f30708f548a5b5be0cf6db8900d86f2ae08cf41d7ba526b1"
+hash = "da925d1159906a6c993fa4be167a48ae350d77daa1950a68135bf56c4e0dbb62"
 metafile = true
 
 [[files]]
@@ -245,7 +245,7 @@ metafile = true
 
 [[files]]
 file = "mods/euphoria-patches.pw.toml"
-hash = "8550689b36919928831fbed82e744b5d71465115132e4e11a8852a9637d3398a"
+hash = "30897864e2380066d897fe2387db57ce3cfe1753ddb9cff4437d0888ad448fae"
 metafile = true
 
 [[files]]
@@ -262,6 +262,10 @@ metafile = true
 file = "mods/fast-ip-ping.pw.toml"
 hash = "c9babfbb0db58f9edfc38666af8ef4ce24fe0cd0594d3c421bb51410fb6c3fa2"
 metafile = true
+
+[[files]]
+file = "mods/fastquit-3.1.1+mc1.21.9.jar"
+hash = "05bdcb5193740c943489c53b0eedfd340ce1c84a9ea344df025176f8670680a6"
 
 [[files]]
 file = "mods/ferrite-core.pw.toml"
@@ -329,6 +333,11 @@ hash = "204a4b3b041fad4bb4dc543c74d540fcf239710494d2130cebe700bf1d8a7805"
 metafile = true
 
 [[files]]
+file = "mods/no-chat-reports.pw.toml"
+hash = "70d7b2bca719eca2b3a1447228b868abdc633c38121652d49f4e34380c44339d"
+metafile = true
+
+[[files]]
 file = "mods/optigui.pw.toml"
 hash = "4bf3b4e6ce176f34d70fa961fee580956567b0a79e25e3be58e020b7e9f42e32"
 metafile = true
@@ -370,7 +379,7 @@ metafile = true
 
 [[files]]
 file = "mods/searchables.pw.toml"
-hash = "762bee726b2673bff0311e3e45ec73478ee5a89b5d976fea849e1edcf801caa0"
+hash = "65622f61eede9486cbe0018629ff863a8853178e68f2b562f5d9a05efa35f22d"
 metafile = true
 
 [[files]]
@@ -410,7 +419,7 @@ metafile = true
 
 [[files]]
 file = "mods/spark.pw.toml"
-hash = "d71e189f87b991121bb9fc47a880b6ddd4be27058d8b18da334e09e3117319d9"
+hash = "2520b331c2b0eb582b448c4ebf1a73d66d42184acc2d74912baef4140e05ee9b"
 metafile = true
 
 [[files]]
@@ -421,6 +430,11 @@ metafile = true
 [[files]]
 file = "mods/threadtweak-fabric-0.1.7+mc1.21.9-rc1.jar"
 hash = "ecc36ab95c45e43531fd8611d70e2943a2c144cd044c71e2b3061e0e6fbca043"
+
+[[files]]
+file = "mods/tooltip-scroll.pw.toml"
+hash = "d45fda81ba6cf8367049b6990140ed81c75193ebc9866595ee050ff464a701eb"
+metafile = true
 
 [[files]]
 file = "mods/viafabricplus.pw.toml"
@@ -443,10 +457,6 @@ hash = "22052f42b1b73226d9508ef42af962471c79c7daa281aac66a82a90c7d7bb9e5"
 metafile = true
 
 [[files]]
-file = "pack.toml.bak"
-hash = "37a60dfac3d11dac683b33bb2bdfc8db3d20489bb7bf4a490474b83f6122af18"
-
-[[files]]
 file = "resourcepacks/aseprite-fonts.pw.toml"
 hash = "3c1718a9dab1ad7176fb3746c8638c15dc6b61eb08fb857cc621516970264518"
 metafile = true
@@ -460,7 +470,3 @@ metafile = true
 file = "shaderpacks/complementary-reimagined.pw.toml"
 hash = "531a8d239c952428d9a633ff99cb03461656ada28decbe2e1ef19f60f7fd5726"
 metafile = true
-
-[[files]]
-file = "updver.sh"
-hash = "5f8d8d99613d0e6990e9188a13f218397b05cfe7449a14ae2b898e6742550ef7"
