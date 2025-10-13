@@ -1,8 +1,7 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch
 
 jobs:
   publish:
@@ -50,9 +49,9 @@ jobs:
         id: determine_channel
         run: |
           if [[ "${{ steps.construct_name.outputs.release_name }}" == *"beta"* ]]; then
-            echo "output=beta" >> $GITHUB_ENV
+            echo "channel=beta" >> $GITHUB_ENV
           else
-            echo "output=release" >> $GITHUB_ENV
+            echo "channel=release" >> $GITHUB_ENV
           fi
 
       - name: Upload to Modrinth
@@ -69,12 +68,14 @@ jobs:
           featured: true
           project_id: ${{ secrets.MODRINTH_PID }}
 
-      - name: Update GitHub Release
-        run: |
-          TAG=${{ github.event.release.tag_name }}
-          BODY=${{ steps.get_changelog.outputs.changelog_content }}
-          gh release edit "$TAG" --body "$BODY"
-          gh release upload "$TAG" src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack --clobber
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.value }}
+          name: ${{ steps.construct_name.outputs.release_name }}
+          body: ${{ steps.get_changelog.outputs.changelog_content }}
+          files: src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
