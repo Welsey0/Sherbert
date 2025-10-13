@@ -37,7 +37,9 @@ jobs:
         id: get_changelog
         run: |
           changelog_content=$(cat changelog.md)
-          echo "changelog_content=${changelog_content}" >> $GITHUB_OUTPUT
+          echo "changelog_content<<EOF" >> $GITHUB_OUTPUT
+          echo "$changelog_content" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Construct Release Name
         id: construct_name
