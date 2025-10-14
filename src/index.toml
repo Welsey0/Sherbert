@@ -155,7 +155,7 @@ metafile = true
 
 [[files]]
 file = "mods/architectury-api.pw.toml"
-hash = "2387b742878d652c205125f9c6385c9fae7d6a000f5603130721f4257c617875"
+hash = "c8e44696c6267daf8114c58772af4c78083f3c658db2019b49c9ebe8df54bf5f"
 metafile = true
 
 [[files]]
@@ -294,7 +294,7 @@ metafile = true
 
 [[files]]
 file = "mods/lambdynamiclights.pw.toml"
-hash = "03aeb028187b13a940b7140789a7701febaacfb8fbad9fcbd6344c197df31f7e"
+hash = "ddf47648531efd5b951da39a7767077909cd45d5a62fb20575ccffec12821bc9"
 metafile = true
 
 [[files]]
@@ -314,7 +314,7 @@ metafile = true
 
 [[files]]
 file = "mods/modelfix.pw.toml"
-hash = "14800fc12fd4b92497c0f26455523783bdf59194233bdaa71d4864b3d436929a"
+hash = "b261880bd245c83c51b729199452da12b0766a4aa0210fc79d0c48161cbfcc49"
 metafile = true
 
 [[files]]
@@ -379,7 +379,7 @@ metafile = true
 
 [[files]]
 file = "mods/searchables.pw.toml"
-hash = "65622f61eede9486cbe0018629ff863a8853178e68f2b562f5d9a05efa35f22d"
+hash = "5ae220cfbb26641c68740ad0166c78f353680886fc28087e63bf07280a47ddbb"
 metafile = true
 
 [[files]]

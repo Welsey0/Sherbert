@@ -65,7 +65,7 @@ jobs:
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           game_versions: ${{ steps.get_minecraft_version.outputs.value }}
-          release_type: ${{ steps.determine_channel.outputs.output }}
+          release_type: ${{ steps.determine_channel.outputs.channel }}
           loaders: fabric
           featured: true
           project_id: ${{ secrets.MODRINTH_PID }}
