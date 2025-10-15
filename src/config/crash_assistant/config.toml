@@ -74,7 +74,7 @@
 #Also you can see diff by running '/crash_assistant modlist diff' command.
 [modpack_modlist]
 	#Enable feature.
-	enabled = true
+	enabled = false
 	#nicknames of players, who considered as modpack creator.
 	#Only this players can overwrite modlist.json
 	#If this feature is enabled and this array is empty, will be appended with nickname of current player.
