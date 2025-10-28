@@ -52,7 +52,7 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:["vanilla","fabric","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip"]
+resourcePacks:["vanilla","fabric","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert Colors.zip"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us

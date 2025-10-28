@@ -2,11 +2,7 @@ hash-format = "sha256"
 
 [[files]]
 file = "config/crash_assistant/config.toml"
-hash = "402eff9a43e48027a7d44bbb5f10a6e5e1ba33360435395ef3416561f89d3a85"
-
-[[files]]
-file = "config/crash_assistant/modlist.json"
-hash = "6f279379fff642377e96cfd631ab143ad6c73f8694698b55a4d32ca74def4ad0"
+hash = "0f6f4e0da0355c82b64bec3b78ed74440010c21b4bd07ba1f0ea0046becec718"
 
 [[files]]
 file = "config/dark-loading-screen.json"
@@ -54,7 +50,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "1cdc924f68f005fdeee09138a38406a726896f5eeec872d6a439778e0aac1e10"
+hash = "27a6acb941fa7cbd47d93483918a83f0ade2bfbab619a81311b5f9fe99fd19c5"
 
 [[files]]
 file = "config/rrls.toml"
@@ -114,7 +110,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "1cdc924f68f005fdeee09138a38406a726896f5eeec872d6a439778e0aac1e10"
+hash = "27a6acb941fa7cbd47d93483918a83f0ade2bfbab619a81311b5f9fe99fd19c5"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
@@ -142,7 +138,7 @@ hash = "477f1237b20985aa54cd5157adc7b342381f507fc069399880ff5e997bcb40b3"
 
 [[files]]
 file = "config/yosbr/options.txt"
-hash = "31e5c8d9e602c50ec77969c7657e31180873f621c6ef2f08363e015c89139eb4"
+hash = "395e0c6c6df47dfb944701b93c38ad672b7b402c9d054f23fe1665c02d1b939b"
 
 [[files]]
 file = "mods/ModpackUtils-1.2.0+fabric.1.21.9.jar"
@@ -195,7 +191,7 @@ metafile = true
 
 [[files]]
 file = "mods/cloth-config.pw.toml"
-hash = "ab92afc9c86b581a10eb4e8dc52a3640deeb6d03fb662f6f53b2a21e87d74405"
+hash = "717d8ac591dba59be4767a179e1359747561e54ccfcac42161fd6bf54339a78b"
 metafile = true
 
 [[files]]
@@ -210,17 +206,12 @@ metafile = true
 
 [[files]]
 file = "mods/crash-assistant.pw.toml"
-hash = "7cbf9e3a501025f5cd708b216933d2c56dbea665bb24b487e22f7d4c4754a4a5"
+hash = "5dd6a9d59ae5e8edf811401541f8fb95151d6b6b408547e66235007a8eb5fd81"
 metafile = true
 
 [[files]]
 file = "mods/cubes-without-borders.pw.toml"
 hash = "a90139b002d632ba9256cb3e7e877945bf8e3afa5b191d1adc83c5e3eb72da4c"
-metafile = true
-
-[[files]]
-file = "mods/dark-loading-screen.pw.toml"
-hash = "716b671d0b15ea17c788c571620eac83207bb2b6e8dbe0d33319838478f21efc"
 metafile = true
 
 [[files]]
@@ -455,6 +446,10 @@ metafile = true
 file = "mods/zoomify.pw.toml"
 hash = "22052f42b1b73226d9508ef42af962471c79c7daa281aac66a82a90c7d7bb9e5"
 metafile = true
+
+[[files]]
+file = "resourcepacks/Sherbert Colors.zip"
+hash = "1ec5f292c352a30c93984db0674f555d8f2a2b988a83eb9937d164fb6454c4c8"
 
 [[files]]
 file = "resourcepacks/aseprite-fonts.pw.toml"
