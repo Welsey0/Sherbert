@@ -53,7 +53,7 @@ highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
 resourcePacks:["vanilla","fabric","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert Colors.zip"]
-incompatibleResourcePacks:[]
+incompatibleResourcePacks:["file/Aseprite Fonts.zip","file/Sherbert Colors.zip"]
 lastServer:
 lang:en_us
 chatVisibility:0
