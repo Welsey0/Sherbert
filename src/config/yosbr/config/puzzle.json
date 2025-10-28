@@ -1,7 +1,7 @@
 {
   "disabledIntegrations": [],
   "enablePuzzleButton": false,
-  "resourcepackSplashScreen": false,
+  "resourcepackSplashScreen": true,
   "unlimitedRotations": true,
   "biggerModels": true,
   "debugMessages": false,
