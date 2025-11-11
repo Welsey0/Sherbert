@@ -5,10 +5,6 @@ file = "config/crash_assistant/config.toml"
 hash = "0f6f4e0da0355c82b64bec3b78ed74440010c21b4bd07ba1f0ea0046becec718"
 
 [[files]]
-file = "config/dark-loading-screen.json"
-hash = "5492c59c5ba8c74336658f03521eb713d5b1afa36ef2bf8fe8dc8ea97536513a"
-
-[[files]]
 file = "config/fabric_loader_dependencies.json"
 hash = "62ee2c39e787ac50e3068e2fa647b5bd3b7cc49a7a24fa5ae5d3ff0720271d87"
 
@@ -50,7 +46,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "27a6acb941fa7cbd47d93483918a83f0ade2bfbab619a81311b5f9fe99fd19c5"
+hash = "ba39e6e552b898e2d5fff6fc7a80a9c37d22abea57826d6e252746ef45336f4e"
 
 [[files]]
 file = "config/rrls.toml"
@@ -59,10 +55,6 @@ hash = "8077e4e6a405c8ebef32782a22bd18138c1322ab7c973c31932a623d958ddff3"
 [[files]]
 file = "config/yosbr/config/crash_assistant/config.toml"
 hash = "402eff9a43e48027a7d44bbb5f10a6e5e1ba33360435395ef3416561f89d3a85"
-
-[[files]]
-file = "config/yosbr/config/dark-loading-screen.json"
-hash = "5492c59c5ba8c74336658f03521eb713d5b1afa36ef2bf8fe8dc8ea97536513a"
 
 [[files]]
 file = "config/yosbr/config/fabric_loader_dependencies.json"
@@ -110,11 +102,11 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "27a6acb941fa7cbd47d93483918a83f0ade2bfbab619a81311b5f9fe99fd19c5"
+hash = "ba39e6e552b898e2d5fff6fc7a80a9c37d22abea57826d6e252746ef45336f4e"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
-hash = "8fb97650029518d042dec113e2bd7e2c6058503044b393a615043b1cefa1e8f2"
+hash = "669716266465dfd0aa156d82d9f418acd0253563c1bb7747230ba9963a56ee8a"
 
 [[files]]
 file = "config/yosbr/config/rrls.toml"
@@ -138,7 +130,7 @@ hash = "477f1237b20985aa54cd5157adc7b342381f507fc069399880ff5e997bcb40b3"
 
 [[files]]
 file = "config/yosbr/options.txt"
-hash = "395e0c6c6df47dfb944701b93c38ad672b7b402c9d054f23fe1665c02d1b939b"
+hash = "3be041270d8292266e8e274877adc7ce287d56ca3a717408e0c9e932fba830f0"
 
 [[files]]
 file = "mods/ModpackUtils-1.2.0+fabric.1.21.9.jar"
@@ -156,7 +148,7 @@ metafile = true
 
 [[files]]
 file = "mods/badoptimizations.pw.toml"
-hash = "ff991657ef2511d8f02a9999d55ec367a37b20a3987eb1d75ff82ba720a96aa5"
+hash = "a2aa577e93491f2231af331570b5c96a384d260d8770bbd8271742567baaf2f7"
 metafile = true
 
 [[files]]
@@ -181,7 +173,7 @@ metafile = true
 
 [[files]]
 file = "mods/chat-heads.pw.toml"
-hash = "4a9910d74bb7a85600abaf36ae568bcfb10e76062b9d5d718656f5d172e79419"
+hash = "36cd95d46f6cf8fe027293599609ed9dc847ca245d59e085a5bd0fd87c0efe7d"
 metafile = true
 
 [[files]]
@@ -206,7 +198,7 @@ metafile = true
 
 [[files]]
 file = "mods/crash-assistant.pw.toml"
-hash = "5dd6a9d59ae5e8edf811401541f8fb95151d6b6b408547e66235007a8eb5fd81"
+hash = "a43936e5b4a25e67a89b8889f9a50e7f2d61c6b85be37c56a556971f31d30340"
 metafile = true
 
 [[files]]
@@ -221,12 +213,12 @@ metafile = true
 
 [[files]]
 file = "mods/entity-model-features.pw.toml"
-hash = "6eeb22ad3c8852e57d02d38d4f798b66de134d1a7b3d9961a31e79c00c37b3be"
+hash = "2c31d52ada2aec45150617516523aaae57f30df0f8bb1ef1115e1825e5a89759"
 metafile = true
 
 [[files]]
 file = "mods/entityculling.pw.toml"
-hash = "83d5f505a07d12d58259db0e9b3d02dfa2bbcc93e63f34401d3409b07bf6898b"
+hash = "5443c56a46d7fca84a1f96dc58315951a24cf8954f059aa35f213f28214d468d"
 metafile = true
 
 [[files]]
@@ -236,12 +228,12 @@ metafile = true
 
 [[files]]
 file = "mods/euphoria-patches.pw.toml"
-hash = "68d83de0de41e1f28165a6dbd932319e8c8b46461b6a0fecf2dd3360091d34b9"
+hash = "fd5754e1e611b6f39fa9d2eff44992e1cf1c791d00ba913cfea734f48505b45b"
 metafile = true
 
 [[files]]
 file = "mods/fabric-api.pw.toml"
-hash = "b908cccddb4f18a5f570a0201b7a6f7f6775f9fcb0dcd0a1a0d7600ff1d7c7f3"
+hash = "cbda4f1881cfb9f054395a3db225df4202d1f2e7bd0ed27d803b837fcf728621"
 metafile = true
 
 [[files]]
@@ -260,7 +252,7 @@ hash = "05bdcb5193740c943489c53b0eedfd340ce1c84a9ea344df025176f8670680a6"
 
 [[files]]
 file = "mods/ferrite-core.pw.toml"
-hash = "fbf9806c22ee5bccbe08f7dec15b742f5ae3a70caf186d6dce0d42f28790f559"
+hash = "186a261ded1911abf559dce21b22eadc1e96de7767982e58f458b82a89a924ba"
 metafile = true
 
 [[files]]
@@ -285,7 +277,7 @@ metafile = true
 
 [[files]]
 file = "mods/lambdynamiclights.pw.toml"
-hash = "471c02eac5adf025ed2246c2d3efd8267c67574f1bc7329b49caa1ada17fbc9e"
+hash = "55c7b1073141a49fbd6d3ba480bd95049f7978513e8261ec2bedab8e82409836"
 metafile = true
 
 [[files]]
@@ -350,7 +342,7 @@ metafile = true
 
 [[files]]
 file = "mods/resourcify.pw.toml"
-hash = "67d725bda8bdf2de7b3e60a42b281b31d3b3f6104cfd5d8b9a61309483343264"
+hash = "72be271710b8a54e18cb7c0dfc2b8534ce3b5f3a6735928ca34979fc94ea992b"
 metafile = true
 
 [[files]]
@@ -380,7 +372,7 @@ metafile = true
 
 [[files]]
 file = "mods/shulkerboxtooltip.pw.toml"
-hash = "bd7760e94351d6e7c19eb1f155c7a5a7fd281340b7bd556da2765e931f6c9ab5"
+hash = "c9fd548aa345384fe05cc143a191e6e507a07c20a08f31562966f5423a4e39d9"
 metafile = true
 
 [[files]]
@@ -395,7 +387,7 @@ metafile = true
 
 [[files]]
 file = "mods/smooth-scroll.pw.toml"
-hash = "337f32c0d29c302db27f1fe8a636a2c756e1fdc7b4df265c181c0a691f7800f7"
+hash = "4b0cb4b61e8bdb342fac44e7d09c07a33b4cb7e4627b29de739a7f095754641d"
 metafile = true
 
 [[files]]
@@ -405,7 +397,7 @@ metafile = true
 
 [[files]]
 file = "mods/sodium.pw.toml"
-hash = "e8c961dbadf2dde334c857d0b42a6c6452aa77a146cf80d4febf7f46e4ac2ef6"
+hash = "279ea1bb4b776be9176fe34416e2132e37abfce4483def54177091cc0f2faade"
 metafile = true
 
 [[files]]
@@ -458,7 +450,7 @@ metafile = true
 
 [[files]]
 file = "resourcepacks/rethoughted-gui.pw.toml"
-hash = "9045453fb91538a11d3bf63ad9c63de2300266356f8c8d1249642b49e148d426"
+hash = "0e0069fc9a4c5f0b09e538fb0cdf0aaa81a915b2f586d04d9c2631f98bd6ec5b"
 metafile = true
 
 [[files]]
