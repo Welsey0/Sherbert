@@ -192,6 +192,11 @@ hash = "b98e0aca52ce8d08ee8df7177886589511b8bca779af078a6ff4837e814bccf4"
 metafile = true
 
 [[files]]
+file = "mods/continuity.pw.toml"
+hash = "b152c75412428e5f53667cb0836fa1323ca93cbd925e456239710a2e261d9963"
+metafile = true
+
+[[files]]
 file = "mods/controlling.pw.toml"
 hash = "da925d1159906a6c993fa4be167a48ae350d77daa1950a68135bf56c4e0dbb62"
 metafile = true
@@ -205,6 +210,10 @@ metafile = true
 file = "mods/cubes-without-borders.pw.toml"
 hash = "a90139b002d632ba9256cb3e7e877945bf8e3afa5b191d1adc83c5e3eb72da4c"
 metafile = true
+
+[[files]]
+file = "mods/debugify-1.21.10+1.0.jar"
+hash = "ee957e568cf5697ad5931d2607fcb0c86d7c94878d9415b792c69d3bb347877d"
 
 [[files]]
 file = "mods/dynamic-fps.pw.toml"
@@ -421,7 +430,7 @@ metafile = true
 
 [[files]]
 file = "mods/viafabricplus.pw.toml"
-hash = "8861c0827d996f379eb2ed607d39f8e1357c06737f52523ce4510e3126baedcc"
+hash = "4e5fd83f1bcce729c0788ef5557a27200f418c36294e34685729cfc2417382ac"
 metafile = true
 
 [[files]]
