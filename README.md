@@ -8,40 +8,31 @@ An almost-minimal opinionated OptiFine alternative built to perform with a coupl
 
 Check out the sister modpack [Sorbet](https://modrinth.com/modpack/Sorbet)!
 
-## Features
+## Why Sherbert?
 - **Quick Setup**
-  - Included configurations make Sherbert easy to use and are designed to run well on every system. Just install and launch!
-- **Nice-to-Haves**
-  - Sherbert includes many features such as Iris and Resourcify that make it fun and simple to use.
-- **Vanilla Compatible**
-  - Sherbert is completely vanilla compatible and can therefore join any unmodded Minecraft server!
-- **Built for Anything**
-  - With a minimal set of mods, Sherbert is built to be your daily driver and work with any server's rules. (Read the Disclaimers!)
+  - Included configurations make Sherbert easy to get started with and are designed to run well on every system.
+- **Extra Features**
+  - Sherbert includes many mods to improve your playing experience.
+- **Universally Compatible**
+  - Sherbert, with the power of ViaFabricPlus, can join almost any Vanilla server.
 - **OptiFine Parity**
   - Sherbert aims to be compatible with OptiFine features like texture packs, shaders, and more.
 - **Performance**
-  - Sherbert has a heavy focus on performing well in any environment without compromising on graphics or gameplay.
-- **And More!**
+  - Sherbert has a heavy focus on performing well in almost any environment without compromising on graphics or gameplay.
+- **Open Source & Extensible**
+  - All of Sherbert's code and configs are open-source and available for others to modify for their own use cases.
 
-## Understanding Versions
-Sherbert version numbers are based on [Semantic Versioning](https://www.geeksforgeeks.org/introduction-semantic-versioning/). The first digit entails the version of Minecraft. For example, versions made for 1.21.5 are 1.x.x while versions made for 1.21.6 will be 2.x.x. The second digit indicates changes to the modset. The third digit indicates changes to the configurations.
-
-**Release** versions include all the mods on our list.\
+**Release** versions are feature-complete and polished.\
 **Beta** versions may be missing minor mods or functionality.\
-**Alpha** versions were previously Release or Beta but were downgraded due to an issue in the version. We will note the cause in the changelogs. Avoid these!
+**Alpha** are missing major mods or functionality and may have major issues.
 
 ## Disclaimers
 By using Sherbert, you agree to the following:
 
-Sherbert is designed with server mod rules in mind, but may not follow all of them. It is your responsibility to verify whether you are allowed to use it or not.
+Sherbert is designed with server mod rules in mind, but may not follow all of them. It is your responsibility to verify whether Sherbert is compliant with any specific server's rules.
 
 By installing this modpack you agree that the modpack author, the mod developers and Mojang provide no warranties for using this modpack, every action you do with it is your own.
 
-This modpack may disable Mojang's [third-party server disclaimer](https://minecraft.wiki/w/File:Multiplayer_disclaimer.png) so if you are using the multiplayer function, you also agree to the following:
->Caution: Online play is offered by third-party servers that are not owned, operated, or supervised by Mojang Studios or Microsoft. During online play, you may be exposed to unmoderated chat messages or other types of user-generated content that may not be suitable for everyone.
+Sherbert and its developers cannot be held accountable for any action executed by included mods that may be harmful or undesireable to the users.
 
-Sherbert and its developers cannot be held accountable for any action executed by included mods that may be harmful or undesireable to the users. 
-
-Sherbert is NOT AN OFFICIAL MINECRAFT PRODUCT and is NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
-
-These disclaimers were based on the [Fabulously Optimized Disclaimers](https://wiki.download.fo/disclaimers). Thank you, FO team!
+Sherbert is inspired by [Fabulously Optimized](https://download.fo), and often takes pointers from their great work. Thank you, FO team!

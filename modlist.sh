@@ -14,8 +14,7 @@ modlist=(
     controlling
     crash-assistant
     cubes-without-borders
-    dark-loading-screen
-    #debugify # Actions build
+    debugify
     dynamic-fps
     entity-model-features
     entitytexturefeatures
@@ -27,9 +26,10 @@ modlist=(
     #fastquit # Actions build
     ferrite-core
     forge-config-api-port
+    graceful-packets
     immediatelyfast
     iris
-    #krypton # Temporarily removed for a crash in the newest version 10/27/2025
+    krypton
     lambdynamiclights
     #language-reload # Currently incompatible
     lithium
@@ -42,7 +42,9 @@ modlist=(
     moreculling
     no-chat-reports
     optigui
+    packet-fixer
     placeholder-api
+    puzzle
     reeses-sodium-options
     rrls
     resourcify

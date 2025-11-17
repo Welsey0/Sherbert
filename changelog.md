@@ -1,3 +1,7 @@
-- ViaFabricPlus updated
-- Continuity readded
-- Debugify readded (Actions build)
+- Debugify is no longer an Actions build
+- FastQuit & ThreadTweak Actions builds updated
+- 7 other updates
+- Updated MUtils RAM warnings
+- Added Packet Fixer & Graceful Packets
+- Removed redundant fabric overrides
+- Iris is now disabled by default instead of just having no shader selected. Hopefully this helps with Iris' resource-hungriness even when there is no active shader

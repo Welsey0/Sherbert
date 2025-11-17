@@ -46,7 +46,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "ba39e6e552b898e2d5fff6fc7a80a9c37d22abea57826d6e252746ef45336f4e"
+hash = "85bf298c8cbda866b61e3e1028c0ca71c175dca9cfc3dd16ac3133feeac8d9d7"
 
 [[files]]
 file = "config/rrls.toml"
@@ -57,8 +57,8 @@ file = "config/yosbr/config/crash_assistant/config.toml"
 hash = "402eff9a43e48027a7d44bbb5f10a6e5e1ba33360435395ef3416561f89d3a85"
 
 [[files]]
-file = "config/yosbr/config/fabric_loader_dependencies.json"
-hash = "62ee2c39e787ac50e3068e2fa647b5bd3b7cc49a7a24fa5ae5d3ff0720271d87"
+file = "config/yosbr/config/iris.properties"
+hash = "b3107df758fb439e2e9012c5dbd5983f666e79f1b2d69417fd11b13e2d5da2e7"
 
 [[files]]
 file = "config/yosbr/config/isxander-main-menu-credits.json"
@@ -102,7 +102,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "ba39e6e552b898e2d5fff6fc7a80a9c37d22abea57826d6e252746ef45336f4e"
+hash = "85bf298c8cbda866b61e3e1028c0ca71c175dca9cfc3dd16ac3133feeac8d9d7"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
@@ -178,7 +178,7 @@ metafile = true
 
 [[files]]
 file = "mods/chat-impressive-animation.pw.toml"
-hash = "e38a11b1be69e9da3461582e5bc87f517ea5a0117932a5ec918612c5c4730686"
+hash = "0cb5b4c0a8be543ab4a605fd62f0c89b0db5089d095a2f930794a33cc9ea8953"
 metafile = true
 
 [[files]]
@@ -203,7 +203,7 @@ metafile = true
 
 [[files]]
 file = "mods/crash-assistant.pw.toml"
-hash = "a43936e5b4a25e67a89b8889f9a50e7f2d61c6b85be37c56a556971f31d30340"
+hash = "62a6c4667f4ccf7dba7eedd114456148347d19b384e9eea94a4b846360418aa7"
 metafile = true
 
 [[files]]
@@ -212,8 +212,9 @@ hash = "a90139b002d632ba9256cb3e7e877945bf8e3afa5b191d1adc83c5e3eb72da4c"
 metafile = true
 
 [[files]]
-file = "mods/debugify-1.21.10+1.0.jar"
-hash = "ee957e568cf5697ad5931d2607fcb0c86d7c94878d9415b792c69d3bb347877d"
+file = "mods/debugify.pw.toml"
+hash = "f1f40ce8f46ea0b772aee0dffb1626e20cb48194ee0fad8a5ab6afbaa6e57658"
+metafile = true
 
 [[files]]
 file = "mods/dynamic-fps.pw.toml"
@@ -237,7 +238,7 @@ metafile = true
 
 [[files]]
 file = "mods/euphoria-patches.pw.toml"
-hash = "fd5754e1e611b6f39fa9d2eff44992e1cf1c791d00ba913cfea734f48505b45b"
+hash = "3e3121bb346acbcda458a6bcd2e2d3564d54ef84a4fdbc802ed82447a80f2536"
 metafile = true
 
 [[files]]
@@ -256,8 +257,8 @@ hash = "c9babfbb0db58f9edfc38666af8ef4ce24fe0cd0594d3c421bb51410fb6c3fa2"
 metafile = true
 
 [[files]]
-file = "mods/fastquit-3.1.1+mc1.21.9.jar"
-hash = "05bdcb5193740c943489c53b0eedfd340ce1c84a9ea344df025176f8670680a6"
+file = "mods/fastquit-3.1.1+mc1.21.10.jar"
+hash = "2c706ddf92f55d4d2cb99a45984c8a027a32e3542565213d43285bbeadb9d460"
 
 [[files]]
 file = "mods/ferrite-core.pw.toml"
@@ -266,7 +267,12 @@ metafile = true
 
 [[files]]
 file = "mods/forge-config-api-port.pw.toml"
-hash = "9a8c273d0efcf679d04d77ab37521c05978caff642a6c2b867d2fa2cdc8b168e"
+hash = "d74f72f3bf13c4ef7d60b6e2defecd3c7af77ed9be7764cf1ed10ea1fd707a1f"
+metafile = true
+
+[[files]]
+file = "mods/graceful-packets.pw.toml"
+hash = "d1df19d44fae05e9a926a0b5bfa06b180a7322ba33288c0e2e2d710462de7043"
 metafile = true
 
 [[files]]
@@ -291,7 +297,7 @@ metafile = true
 
 [[files]]
 file = "mods/lithium.pw.toml"
-hash = "ed9d0d5d4078c137900006321d35515cee46058b92df1128ea37cda3e5e1bb2b"
+hash = "84957275e9dc6f07f4244ce3303536e3d73b0e72eb1696ccd024168a52c29c98"
 metafile = true
 
 [[files]]
@@ -331,7 +337,12 @@ metafile = true
 
 [[files]]
 file = "mods/optigui.pw.toml"
-hash = "4bf3b4e6ce176f34d70fa961fee580956567b0a79e25e3be58e020b7e9f42e32"
+hash = "08b89b53c392b5fa29198418df8598404d93c58eae40d432caed797c828adbd5"
+metafile = true
+
+[[files]]
+file = "mods/packet-fixer.pw.toml"
+hash = "84cb0dcad9ac46d22adba4fb7924951affa6ac5e46027a3b25fa9a0db8d91b2b"
 metafile = true
 
 [[files]]
@@ -420,17 +431,17 @@ hash = "b97b297fab12e137c58874ae776402cfa29374c8ff50c9f18ef27442b65336e6"
 metafile = true
 
 [[files]]
-file = "mods/threadtweak-fabric-0.1.7+mc1.21.9-rc1.jar"
-hash = "ecc36ab95c45e43531fd8611d70e2943a2c144cd044c71e2b3061e0e6fbca043"
+file = "mods/threadtweak-fabric-0.1.7+mc1.21.9.jar"
+hash = "5cc2389a3b089929f8504f247cc39285ffd1171329bd56281229b6c7afcf7018"
 
 [[files]]
 file = "mods/tooltip-scroll.pw.toml"
-hash = "d45fda81ba6cf8367049b6990140ed81c75193ebc9866595ee050ff464a701eb"
+hash = "5e71eeaf44013675abc6b43afae416f5bcc65d6ab9ee214ea2797df8f6780590"
 metafile = true
 
 [[files]]
 file = "mods/viafabricplus.pw.toml"
-hash = "4e5fd83f1bcce729c0788ef5557a27200f418c36294e34685729cfc2417382ac"
+hash = "97da8aa107b5934bc6a37756a8ff3458565666c4433dce7f7021db6d238e8100"
 metafile = true
 
 [[files]]
