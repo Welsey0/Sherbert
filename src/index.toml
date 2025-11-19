@@ -182,6 +182,11 @@ hash = "0cb5b4c0a8be543ab4a605fd62f0c89b0db5089d095a2f930794a33cc9ea8953"
 metafile = true
 
 [[files]]
+file = "mods/chunks-fade-in.pw.toml"
+hash = "6955491d128a11ca3c49dea296d2d3db48cc9301b561100191daca74c0b567f4"
+metafile = true
+
+[[files]]
 file = "mods/cloth-config.pw.toml"
 hash = "717d8ac591dba59be4767a179e1359747561e54ccfcac42161fd6bf54339a78b"
 metafile = true
@@ -203,7 +208,7 @@ metafile = true
 
 [[files]]
 file = "mods/crash-assistant.pw.toml"
-hash = "62a6c4667f4ccf7dba7eedd114456148347d19b384e9eea94a4b846360418aa7"
+hash = "7f6d39e11ee7288ce9a2949e551388e3c363638674a8c3b36856901c2f53cfd9"
 metafile = true
 
 [[files]]
@@ -234,11 +239,6 @@ metafile = true
 [[files]]
 file = "mods/entitytexturefeatures.pw.toml"
 hash = "2a9e9968c598e234a84ccd9afc80a424d5c2ad9a37e4c85a0d36d06ddc9ebfa9"
-metafile = true
-
-[[files]]
-file = "mods/euphoria-patches.pw.toml"
-hash = "3e3121bb346acbcda458a6bcd2e2d3564d54ef84a4fdbc802ed82447a80f2536"
 metafile = true
 
 [[files]]
@@ -476,4 +476,9 @@ metafile = true
 [[files]]
 file = "shaderpacks/complementary-reimagined.pw.toml"
 hash = "531a8d239c952428d9a633ff99cb03461656ada28decbe2e1ef19f60f7fd5726"
+metafile = true
+
+[[files]]
+file = "shaderpacks/mellow.pw.toml"
+hash = "55191ceeb84776cf184dbce17983b966ab9a16b166c95664cb01fa161b980ccb"
 metafile = true

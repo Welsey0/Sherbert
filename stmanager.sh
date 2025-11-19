@@ -21,12 +21,22 @@ change_version_num() {
   exit 0
 }
 update_compat_checker() {
+  # USE ONLY ON NV BRANCHES
+  # Assist in converting modpack to new Minecraft versions.
   exit 1
 }
-mod_checker() {
+completion_helper() {
+  # Check modlist for missing/currently incompatible mods
+  #   Read packwiz index to find all included mods
+  #   Read modlist to find all listed mods
+  #   If mod is in index but not modlist:
+  #     Warn user and provide slug so they can fix that
+  #   If mod is in modlist but not index:
+  #     Check compatibility and add to list of missings
+  #   At end, list (mods in index/mods in list) as numbers and percent, list missing/incompatible mods
   exit 1
 }
-update_checker() {
+mod_updater() {
   PACKWIZ="../../packwiz"
   OUTFILE="../packwiz_update.log"
 
@@ -35,11 +45,11 @@ update_checker() {
   elif command -v packwiz >/dev/null 2>&1; then
     PW_CMD="packwiz"
   else
-    echo "[UDC] packwiz executable not found at $PACKWIZ or in PATH"
+    echo "[MUD] packwiz executable not found at $PACKWIZ or in PATH"
     return 1
   fi
 
-  echo "[UDC] Running $PW_CMD update --all, logging to $OUTFILE"
+  echo "[MUD] Running $PW_CMD update --all, logging to $OUTFILE"
   # stdout stderr capture
   "$PW_CMD" update --all 2>&1 | tee "$OUTFILE"
   rc=${PIPESTATUS[0]:-0}
@@ -52,10 +62,10 @@ update_checker() {
 parse_packwiz_output() {
   # Parse ../packwiz_update.log and emit a markdown summary similar to README.md formatting.
   LOGFILE="../packwiz_update.log"
-  CHANGELOG="../udc_output.md"
+  CHANGELOG="../MUD_output.md"
 
   if [ ! -f "$LOGFILE" ]; then
-    echo "[PPO] No packwiz log found at $LOGFILE. Run update first."
+    echo "[MUD] No packwiz log found at $LOGFILE. Run update first."
     return 1
   fi
 
@@ -109,7 +119,7 @@ parse_packwiz_output() {
     fi
   } > "$CHANGELOG"
 
-  echo "[PPO] Wrote update summary to $CHANGELOG"
+  echo "[MUD] Wrote update summary to $CHANGELOG"
   return 0
 }
 ### Menu
@@ -119,7 +129,7 @@ if [ "$parent_dir" != "src" ]; then
   echo "[STM] Make sure you're in src."
   exit 1
 fi
-echo -e "Select a Tool\n1: Change Version Number\n2: Update Compat Checker\n3: Mod Checker\n4: Update Checker"
+echo -e "Select a Tool\n1: Change Version Number\n2: Update Compat Checker\n3: Mod Updater"
 read number
 case $number in
   1)
@@ -129,13 +139,10 @@ case $number in
     update_compat_checker
     ;;
   3)
-    mod_checker
-    ;;
-  4)
-    update_checker
+    mod_updater
     ;;
   *)
-    echo "Invalid selection. Please enter a number between 1 and 4."
+    echo "Invalid selection. Please enter a number between 1 and 3."
     ;;
 esac
 

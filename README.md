@@ -4,9 +4,7 @@
 
 <a href="https://fabricmc.net"><img alt="Available for Fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg"></a><a href="https://download.fo"><img alt="Built on Fabulously Optimized" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/built-with/fabulously-optimized_vector.svg"></a><a href="https://github.com/Welsey0/Sherbert"><img alt="Available on GitHub" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg"></a>
 
-An almost-minimal opinionated OptiFine alternative built to perform with a couple of additional features.
-
-Check out the sister modpack [Sorbet](https://modrinth.com/modpack/Sorbet)!
+An opinionated daily driver built for performance and quality of life. Serves as the base for [ST Family modpacks](https://modrinth.com/collection/tBDkCBOo).
 
 ## Why Sherbert?
 - **Quick Setup**

@@ -1,4 +1,4 @@
-# A variable to store all the modrinth slugs
+# A variable to store all the modrinth slugs. If incompatible, put a note on it but leave it in. If it's manually included, comment out its line and leave a note
 modlist=(
     architectury-api
     badoptimizations
@@ -8,6 +8,7 @@ modlist=(
     capes
     chat-heads
     chat-impressive-animation
+    chunks-fade-in
     cloth-config
     clumps
     continuity
@@ -19,7 +20,6 @@ modlist=(
     entity-model-features
     entitytexturefeatures
     entityculling
-    euphoria-patches
     fabric-api
     fabric-language-kotlin
     fast-ip-ping
@@ -31,7 +31,7 @@ modlist=(
     iris
     krypton
     lambdynamiclights
-    #language-reload # Currently incompatible
+    language-reload # Currently incompatible
     lithium
     main-menu-credits
     mixintrace
