@@ -1,5 +1,7 @@
-# A variable to store all the modrinth slugs. If incompatible, put a note on it but leave it in. If it's manually included, comment out its line and leave a note
+# A variable to store all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
 modlist=(
+    alternate-current
+    animated-loading-screen
     architectury-api
     badoptimizations
     betteraddserver
@@ -27,6 +29,7 @@ modlist=(
     ferrite-core
     forge-config-api-port
     graceful-packets
+    hold-that-chunk
     immediatelyfast
     iris
     krypton
@@ -57,6 +60,7 @@ modlist=(
     simple-hud-enhanced
     smooth-scroll
     sodium
+    sodium-shadowy-path-blocks
     sodium-extra
     spark
     stackdeobf

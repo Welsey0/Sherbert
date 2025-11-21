@@ -1,3 +1,4 @@
 *.mrpack
 *.log
 mud_output.md
+cmp_output.md

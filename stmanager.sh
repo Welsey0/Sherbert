@@ -20,22 +20,137 @@ change_version_num() {
   echo "[CVN] JSON files updated with version '$version'."
   exit 0
 }
-update_compat_checker() {
-  # USE ONLY ON NV BRANCHES
-  # Assist in converting modpack to new Minecraft versions.
-  exit 1
+
+# cmp helper
+contains_element() {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
 }
+
 completion_helper() {
-  # Check modlist for missing/currently incompatible mods
-  #   Read packwiz index to find all included mods
-  #   Read modlist to find all listed mods
-  #   If mod is in index but not modlist:
-  #     Warn user and provide slug so they can fix that
-  #   If mod is in modlist but not index:
-  #     Check compatibility and add to list of missings
-  #   At end, list (mods in index/mods in list) as numbers and percent, list missing/incompatible mods
-  exit 1
+  INDEX_FILE="index.toml"
+  MODLIST_FILE="../modlists.sh"
+  CHANGELOG="../cmp_output.md"
+
+  echo "[CMP] Running Completion Helper..."
+
+  # read packwiz index for mods/<slug>.pw.toml
+  index_mods=()
+  while IFS= read -r line; do
+    index_mods+=("$line")
+  done < <(grep 'file = "mods/.*\.pw\.toml"' "$INDEX_FILE" | sed -e 's/file = "mods\///' -e 's/\.pw\.toml"//')
+
+  # read modlists.sh
+  source "$MODLIST_FILE"
+  
+  # note imcompatible mods
+  incompatible_list_mods=()
+  while IFS= read -r line; do
+    line_trimmed=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//') # trim whitespace
+    if [[ "$line_trimmed" == *"# Currently incompatible"* ]]; then
+      slug=$(echo "$line_trimmed" | awk '{print $1}' | sed 's/#//')
+      [ -n "$slug" ] && incompatible_list_mods+=("$slug")
+    fi
+  done < "$MODLIST_FILE"
+
+  # compare lists
+  
+  # in index but not in modlist
+  in_index_not_list=()
+  for mod in "${index_mods[@]}"; do
+    if ! contains_element "$mod" "${modlist[@]}"; then
+      in_index_not_list+=("$mod")
+    fi
+  done
+  
+  # in modlist but not in index
+  in_list_not_index=()
+  for mod in "${modlist[@]}"; do
+    if ! contains_element "$mod" "${index_mods[@]}"; then
+      in_list_not_index+=("$mod")
+    fi
+  done
+  
+  # categorize missing mods (in_list_not_index)
+  missing_mods=()
+  incompatible_missing_mods=()
+  
+  for mod in "${in_list_not_index[@]}"; do
+    if contains_element "$mod" "${incompatible_list_mods[@]}"; then
+      incompatible_missing_mods+=("$mod")
+    else
+      missing_mods+=("$mod")
+    fi
+  done
+
+  # report findings
+  num_index_mods=${#index_mods[@]}
+  num_incompatible_mods=${#incompatible_list_mods[@]}
+  num_list_mods=$(( ${#modlist[@]} - num_incompatible_mods )) # only active mods
+  
+  found_in_index=0
+  for mod in "${modlist[@]}"; do
+    if contains_element "$mod" "${index_mods[@]}"; then
+      found_in_index=$((found_in_index + 1))
+    fi
+  done
+
+  percent=0
+  if [ $num_list_mods -gt 0 ]; then
+    percent=$(awk "BEGIN {printf \"%.0f\", ($found_in_index / $num_list_mods) * 100}")
+  fi
+  
+  {
+    echo "# Completion Summary"
+    echo
+    echo "### Mods in index but NOT in modlist (Please add to modlists.sh)"
+    echo
+    if [ ${#in_index_not_list[@]} -eq 0 ]; then
+      echo "- None"
+    else
+      for mod in "${in_index_not_list[@]}"; do
+        echo "- $mod"
+      done
+    fi
+
+    echo
+    echo "### Mods in modlist but NOT in index (Missing from pack)"
+    echo
+    if [ ${#missing_mods[@]} -eq 0 ]; then
+      echo "- None"
+    else
+      for mod in "${missing_mods[@]}"; do
+        echo "- $mod"
+      done
+    fi
+    
+    echo
+    echo "### Mods in modlist but NOT in index (Marked as incompatible)"
+    echo
+    if [ ${#incompatible_missing_mods[@]} -eq 0 ]; then
+      echo "- None"
+    else
+      for mod in "${incompatible_missing_mods[@]}"; do
+        echo "- $mod"
+      done
+    fi
+
+    # summary
+    echo
+    echo "### Summary"
+    echo
+    echo "- **Mods in index:** $num_index_mods"
+    echo "- **Mods in modlist (active):** $num_list_mods"
+    echo "- **Completion:** $percent% ($found_in_index / $num_list_mods active mods from list are in index)"
+    echo
+  } > "$CHANGELOG"
+  
+  echo "[CMP] Wrote completion summary to $CHANGELOG"
+  exit 0
 }
+
 mod_updater() {
   PACKWIZ="../../packwiz"
   OUTFILE="../packwiz_update.log"
@@ -129,20 +244,16 @@ if [ "$parent_dir" != "src" ]; then
   echo "[STM] Make sure you're in src."
   exit 1
 fi
-echo -e "Select a Tool\n1: Change Version Number\n2: Update Compat Checker\n3: Mod Updater"
+echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater"
 read number
 case $number in
   1)
-    change_version_num
+    completion_helper
     ;;
   2)
-    update_compat_checker
-    ;;
-  3)
     mod_updater
     ;;
   *)
     echo "Invalid selection. Please enter a number between 1 and 3."
     ;;
 esac
-
