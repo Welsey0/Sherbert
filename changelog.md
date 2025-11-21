@@ -1,3 +1,2 @@
-- Added Chunks Fade In and Mellow Shader
-- Removed Complementary Reimagined & Euphoria Patcher
-- 1 mod update
+- Fabric updated to 18.1
+- 3 mod updates

@@ -1,15 +1,15 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "3.2.1"
+version = "3.2.2"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "85e0d53271e2dcee2a89dd0414317ff21a402360ff6f2a7eaf54f04ecfc8829f"
+hash = "f1f9f4c99dc3a3fa2a243d3b3018eab04fadf414ab16d6db0a9ea187e912f66c"
 
 [versions]
-fabric = "0.17.3"
+fabric = "0.18.1"
 minecraft = "1.21.10"
 
 [options]
