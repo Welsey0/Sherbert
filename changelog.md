@@ -1,2 +1,1 @@
-- Fabric updated to 18.1
-- 3 mod updates
+- Added Animated Loading Screen, Hold That Chunk, and Sodium Shadowy Path Blocks

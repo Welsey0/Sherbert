@@ -46,7 +46,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "b7f325f7502b5436c1ceff30f8abec171ac7b254f3f211b50a3249c03b345c96"
+hash = "790005830e4f305f8a9c64cfb64c35526c68bcb54cf33479d40b116ecaafb5f7"
 
 [[files]]
 file = "config/rrls.toml"
@@ -102,7 +102,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "b7f325f7502b5436c1ceff30f8abec171ac7b254f3f211b50a3249c03b345c96"
+hash = "790005830e4f305f8a9c64cfb64c35526c68bcb54cf33479d40b116ecaafb5f7"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
@@ -139,6 +139,11 @@ hash = "a408d4e2178b3796c7710158f4d84daef279d4834e59912c25922f5d2508c4f4"
 [[files]]
 file = "mods/alternate-current.pw.toml"
 hash = "ddc96b08f1a32a08edd9b8e34257b9a37ea9b3836ae4371e26f54c4ade4fe3f1"
+metafile = true
+
+[[files]]
+file = "mods/animated-loading-screen.pw.toml"
+hash = "5de1aff837c0d76519c37b60ccb4c595d7f27e27a84087f029bc09336b01b188"
 metafile = true
 
 [[files]]
@@ -273,6 +278,11 @@ metafile = true
 [[files]]
 file = "mods/graceful-packets.pw.toml"
 hash = "d1df19d44fae05e9a926a0b5bfa06b180a7322ba33288c0e2e2d710462de7043"
+metafile = true
+
+[[files]]
+file = "mods/hold-that-chunk.pw.toml"
+hash = "bad3336d3cd68a32e63295875d6295a639f363e6c2e93b5708915917af07db6b"
 metafile = true
 
 [[files]]
@@ -413,6 +423,11 @@ metafile = true
 [[files]]
 file = "mods/sodium-extra.pw.toml"
 hash = "4f57108f9e1c6281cfdaf3812e6bc2a2f16609a845c9912218ada90b1603e1b3"
+metafile = true
+
+[[files]]
+file = "mods/sodium-shadowy-path-blocks.pw.toml"
+hash = "2d27a6e7c7e28a33b4e3d85106f80fd6629f060ec31a8be525f1c2ac9f769cf1"
 metafile = true
 
 [[files]]

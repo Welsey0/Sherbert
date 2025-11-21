@@ -1,7 +1,10 @@
+name: Update Modrinth Description
+
 on:
   push:
     branches: [ main ]
     paths: [ README.md ]
+
 jobs:
   modrinth-desc:
     runs-on: 'ubuntu-latest'
