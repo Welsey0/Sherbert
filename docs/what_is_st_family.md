@@ -1,0 +1,2 @@
+# What is the ST Family of Minecraft Modpacks?
+The [ST Family](https://modrinth.com/collection/tBDkCBOo) is an opinionated set of modpacks designed to give you a good experience wherever you play Minecraft. It uses the Packwiz system and uses some cool custom tooling like ST Manager and GitHub Actions workflow to be easy to maintain. Sherbert here is where ST Family tooling is built, tested, and deployed.

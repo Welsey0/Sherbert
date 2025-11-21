@@ -10,6 +10,8 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
+    env:
+      PACK_NAME: Sherbert
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,7 +49,7 @@ jobs:
       - name: Construct Release Name
         id: construct_name
         run: |
-          release_name="Sherbert ${{ steps.get_version.outputs.value }}"
+          release_name="${{ env.PACK_NAME }} ${{ steps.get_version.outputs.value }}"
           echo "release_name=${release_name}" >> $GITHUB_OUTPUT
 
       - name: Determine Channel
@@ -63,7 +65,7 @@ jobs:
         uses: RubixDev/modrinth-upload@v1
         with:
           token: ${{ secrets.MODRINTH_TOKEN }}
-          file_path: src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
+          file_path: src/${{ env.PACK_NAME }}-${{ steps.get_version.outputs.value }}.mrpack
           name: ${{ steps.construct_name.outputs.release_name }}
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
@@ -80,7 +82,7 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.value }}
           name: ${{ steps.construct_name.outputs.release_name }}
           body: ${{ steps.get_changelog.outputs.changelog_content }}
-          files: src/Sherbert-${{ steps.get_version.outputs.value }}.mrpack
+          files: src/${{ env.PACK_NAME }}-${{ steps.get_version.outputs.value }}.mrpack
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

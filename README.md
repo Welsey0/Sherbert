@@ -18,7 +18,7 @@ An opinionated daily driver built for performance and quality of life. Serves as
 - **Performance**
   - Sherbert has a heavy focus on performing well in almost any environment without compromising on graphics or gameplay.
 - **Open Source & Extensible**
-  - All of Sherbert's code and configs are open-source and available for others to modify for their own use cases.
+  - All of Sherbert's code and configs are open-source. Add any mods you like and use the included guidelines (in the docs folder on github) to use ST Family tooling for your own packs.
 
 **Release** versions are feature-complete and polished.\
 **Beta** versions may be missing minor mods or functionality.\
