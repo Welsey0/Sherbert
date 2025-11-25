@@ -177,7 +177,7 @@ mod_updater() {
 parse_packwiz_output() {
   # Parse ../packwiz_update.log and emit a markdown summary similar to README.md formatting.
   LOGFILE="../packwiz_update.log"
-  CHANGELOG="../MUD_output.md"
+  CHANGELOG="../mud_output.md"
 
   if [ ! -f "$LOGFILE" ]; then
     echo "[MUD] No packwiz log found at $LOGFILE. Run update first."
@@ -244,7 +244,7 @@ if [ "$parent_dir" != "src" ]; then
   echo "[STM] Make sure you're in src."
   exit 1
 fi
-echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater"
+echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater\n3: Change Version Number"
 read number
 case $number in
   1)
@@ -252,6 +252,9 @@ case $number in
     ;;
   2)
     mod_updater
+    ;;
+  3)
+    change_version_num
     ;;
   *)
     echo "Invalid selection. Please enter a number between 1 and 3."

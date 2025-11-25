@@ -1,1 +1,3 @@
-- Added Animated Loading Screen, Hold That Chunk, and Sodium Shadowy Path Blocks
+- Added ModernFix-mVUS, Better Clouds, Very Many Players, Better Block Entities, NoisiumForked
+- Removed Clumps, Architectury API, Shulker Box Tooltips
+- 9 mod updates

@@ -2,9 +2,10 @@
 modlist=(
     alternate-current
     animated-loading-screen
-    architectury-api
     badoptimizations
     betteraddserver
+    better-block-entities
+    better-clouds
     better-mount-hud
     bettergrassify
     capes
@@ -12,7 +13,6 @@ modlist=(
     chat-impressive-animation
     chunks-fade-in
     cloth-config
-    clumps
     continuity
     controlling
     crash-assistant
@@ -38,12 +38,14 @@ modlist=(
     lithium
     main-menu-credits
     mixintrace
+    modernfix-mvus
     modmenu
     modelfix
     #mutils # Have been using my own (still not accepted) PR since 1.21.8
     morechathistory
     moreculling
     no-chat-reports
+    noisiumforked
     optigui
     packet-fixer
     placeholder-api
@@ -55,7 +57,6 @@ modlist=(
     scribble
     searchables
     serverpingerfixer
-    shulkerboxtooltip
     shut-up-realms
     simple-hud-enhanced
     smooth-scroll
@@ -66,6 +67,7 @@ modlist=(
     stackdeobf
     #threadtweak # Actions build
     tooltip-scroll
+    vmp-fabric
     viafabricplus
     yacl
     yosbr
