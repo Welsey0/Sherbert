@@ -1,3 +1,1 @@
-- Added ModernFix-mVUS, Better Clouds, Very Many Players, Better Block Entities, NoisiumForked
-- Removed Clumps, Architectury API, Shulker Box Tooltips
-- 9 mod updates
+- 4 mod updates

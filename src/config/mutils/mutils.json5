@@ -7,7 +7,7 @@
 	modpackName: "Sherbert",
 	modpackId: "sherbert",
 	modpackHome: "https://github.com/me/My-Modpack",
-	localVersion: "3.3.0",
+	localVersion: "3.3.1",
 	checkMcVersion: false,
 	loader: "fabric",
 	versionAPI: "https://raw.githubusercontent.com/me/My-Modpack/main/Packwiz/pack.toml",
