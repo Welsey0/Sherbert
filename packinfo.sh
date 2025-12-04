@@ -1,4 +1,4 @@
-# Stores information for packwiz pack.toml
+# Stores information about modpack
 info=(
     name="Sherbert"
     author="Welsey_"
@@ -9,6 +9,7 @@ info=(
 modlist=(
     alternate-current
     animated-loading-screen
+    aseprite-fonts
     badoptimizations
     betteraddserver
     better-block-entities
@@ -20,6 +21,7 @@ modlist=(
     chat-impressive-animation
     chunks-fade-in
     cloth-config
+    complementary-reimagined
     continuity
     controlling
     crash-assistant
@@ -44,6 +46,7 @@ modlist=(
     language-reload # Currently incompatible
     lithium
     main-menu-credits
+    mellow
     mixintrace
     modernfix-mvus
     modmenu
@@ -60,6 +63,7 @@ modlist=(
     reeses-sodium-options
     rrls
     resourcify
+    rethoughted-gui
     scalablelux
     scribble
     searchables

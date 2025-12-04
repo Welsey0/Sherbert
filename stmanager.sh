@@ -307,6 +307,11 @@ setup_packwiz() {
         toml_author=$(grep -E '^\s*author\s*=' "$PACK_TOML" | head -1 | sed -E 's/.*=\s*"?([^"]*)"?.*/\1/')
         toml_version=$(grep -E '^\s*version\s*=' "$PACK_TOML" | head -1 | sed -E 's/.*=\s*"?([^"]*)"?.*/\1/')
         
+        # Extract values from info array in packinfo.sh
+        info_name=$(grep -oP 'name="\K[^"]+' "$PACKINFO" | head -1)
+        info_author=$(grep -oP 'author="\K[^"]+' "$PACKINFO" | head -1)
+        info_version=$(grep -oP 'version="\K[^"]+' "$PACKINFO" | head -1)
+        
         echo "**pack.toml metadata:**"
         echo "- Name: $toml_name"
         echo "- Author: $toml_author"
@@ -314,22 +319,22 @@ setup_packwiz() {
         echo
         
         echo "**packinfo.sh metadata:**"
-        echo "- Name: ${pack_name:-[not set]}"
-        echo "- Author: ${pack_author:-[not set]}"
-        echo "- Version: ${pack_version:-[not set]}"
+        echo "- Name: ${info_name:-[not set]}"
+        echo "- Author: ${info_author:-[not set]}"
+        echo "- Version: ${info_version:-[not set]}"
         echo
         
         # Check for mismatches
         mismatch=0
-        if [ "$toml_name" != "$pack_name" ]; then
+        if [ "$toml_name" != "$info_name" ]; then
           echo "⚠️ **MISMATCH:** Name differs"
           mismatch=1
         fi
-        if [ "$toml_author" != "$pack_author" ]; then
+        if [ "$toml_author" != "$info_author" ]; then
           echo "⚠️ **MISMATCH:** Author differs"
           mismatch=1
         fi
-        if [ "$toml_version" != "$pack_version" ]; then
+        if [ "$toml_version" != "$info_version" ]; then
           echo "⚠️ **MISMATCH:** Version differs"
           mismatch=1
         fi
@@ -359,7 +364,7 @@ setup_packwiz() {
       echo
     fi
     
-    # Check .pw.toml files against modlist
+    # Check .pw.toml files in all folders
     echo "### Validating .pw.toml files"
     echo
     if [ ! -f "$PACKINFO" ]; then
@@ -368,7 +373,7 @@ setup_packwiz() {
     else
       source "$PACKINFO"
       
-      pw_toml_files=$(find mods -name "*.pw.toml" 2>/dev/null | sed -E 's|mods/||; s|\.pw\.toml||' || true)
+      pw_toml_files=$(find . -name "*.pw.toml" 2>/dev/null | sed -E 's|.*/||; s|\.pw\.toml$||' || true)
       
       toml_only=()
       for toml_mod in $pw_toml_files; do
@@ -389,31 +394,25 @@ setup_packwiz() {
       fi
     fi
     
-    echo "### Recommendation"
+    echo "### Next Steps (read me)"
     echo
     if [ -f "$PACK_TOML" ] && [ $mismatch -eq 0 ]; then
-      echo "Pack is already initialized and metadata matches. No action needed."
+      echo "Continuing with this script will remove packwiz-added projects in order for you to re-add them.\nIt's intended to help with migrating to a new version of Minecraft.\n\nAfter running this script, run \`../../packwiz init\` and then use the Autofill Modlist tool."
     else
-      echo "Consider running \`packwiz init\` to initialize/reset the pack."
+      echo "Run \`../../packwiz init\` and then use the Autofill Modlist tool to rebuild the packwiz files."
     fi
     
   } > "$REPORT"
   
   echo "[STP] Wrote setup report to $REPORT"
+  echo "[STP] Please review the report at $REPORT"
   
-  # Ask user if they want to proceed with init
-  if [ ! -f "$PACK_TOML" ]; then
-    read -p "[STP] Initialize packwiz? (y/N): " init_ans
-    if [[ "$init_ans" =~ ^[Yy]$ ]]; then
-      read -p "[STP] About to clear mods/, $INDEX_TOML, and $PACK_TOML (if they exist). Continue? (y/N): " confirm
-      if [[ "$confirm" =~ ^[Yy]$ ]]; then
-        echo "[STP] Clearing old packwiz files..."
-        rm -rf mods/ "$INDEX_TOML" "$PACK_TOML"
-        echo "[STP] Running packwiz init..."
-        "$PW_CMD" init
-        echo "[STP] Packwiz initialization complete."
-      fi
-    fi
+  read -p "[STP] Delete all .pw.toml files, pack.toml, and index.toml? (y/N): " cleanup_ans
+  if [[ "$cleanup_ans" =~ ^[Yy]$ ]]; then
+    echo "[STP] Deleting .pw.toml, pack.toml, and index.toml files..."
+    find . -name "*.pw.toml" -delete 2>/dev/null
+    rm -f "$PACK_TOML" "$INDEX_TOML"
+    echo "[STP] Cleanup complete."
   fi
   
   return 0
@@ -499,7 +498,7 @@ if [ "$parent_dir" != "src" ]; then
   echo "[STM] Make sure you're in src."
   exit 1
 fi
-echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater\n3: Change Version Number"
+echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater\n3: Change Version Number\n4: Autofill Modlist\n5: Setup Packwiz"
 read number
 case $number in
   1)
