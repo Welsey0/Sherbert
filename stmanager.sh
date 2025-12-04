@@ -1,6 +1,6 @@
 #!/bin/bash
 # A collection of tools for managing ST Family modpacks.
-# Written by https://github.com/Welsey0
+# Written by https://github.com/Welsey0 with the help of my good friend Al. :)
 
 ### Functions
 change_version_num() {
@@ -8,6 +8,7 @@ change_version_num() {
   TOML_FILE="pack.toml" # packwiz
   JSON_FILE1="config/mutils/mutils.json5"  # mutils
   JSON_FILE2="config/yosbr/config/mutils/mutils.json5"  # mutils in yosbr
+  PACKINFO_FILE="../packinfo.sh"
   read -p "[CVN] Enter the version you want to apply: " version
   if [ -z "$version" ]; then
     echo "[CVN] No version entered. Exiting."
@@ -16,8 +17,10 @@ change_version_num() {
   sed -i.bak "s/localVersion: .*/localVersion: \"$version\",/" "$JSON_FILE1" # apply to jsons
   sed -i.bak "s/localVersion: .*/localVersion: \"$version\",/" "$JSON_FILE2"
   sed -i.bak "s/^version\s*=.*/version = \"$version\"/" "$TOML_FILE" # apply to toml
-  rm -f "$JSON_FILE1.bak" "$JSON_FILE2.bak" "$TOML_FILE.bak"
-  echo "[CVN] JSON files updated with version '$version'."
+  # update version in packinfo.sh
+  sed -i.bak 's/version="[0-9a-zA-Z._-]*"/version="'"$version"'"/' "$PACKINFO_FILE"
+  rm -f "$JSON_FILE1.bak" "$JSON_FILE2.bak" "$TOML_FILE.bak" "$PACKINFO_FILE.bak"
+  echo "[CVN] JSON files and packinfo.sh updated with version '$version'."
   exit 0
 }
 
@@ -31,7 +34,7 @@ contains_element() {
 
 completion_helper() {
   INDEX_FILE="index.toml"
-  MODLIST_FILE="../modlists.sh"
+  MODLIST_FILE="../packinfo.sh"
   CHANGELOG="../cmp_output.md"
 
   echo "[CMP] Running Completion Helper..."
@@ -42,21 +45,31 @@ completion_helper() {
     index_mods+=("$line")
   done < <(grep 'file = "mods/.*\.pw\.toml"' "$INDEX_FILE" | sed -e 's/file = "mods\///' -e 's/\.pw\.toml"//')
 
-  # read modlists.sh
+  # read packinfo.sh
   source "$MODLIST_FILE"
-  
-  # note imcompatible mods
+
+  # note incompatible mods
   incompatible_list_mods=()
+  # collect commented out mods and their comments
+  commented_out_mods=()
+  commented_out_comments=()
   while IFS= read -r line; do
     line_trimmed=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//') # trim whitespace
     if [[ "$line_trimmed" == *"# Currently incompatible"* ]]; then
       slug=$(echo "$line_trimmed" | awk '{print $1}' | sed 's/#//')
       [ -n "$slug" ] && incompatible_list_mods+=("$slug")
     fi
+    # Only count commented out mod if there are two hashtags in the line
+    if [[ "$line_trimmed" =~ ^#([a-zA-Z0-9_-]+).*#.*$ ]]; then
+      mod_slug=$(echo "$line_trimmed" | sed -E 's/^#([a-zA-Z0-9_-]+).*/\1/')
+      mod_comment=$(echo "$line_trimmed" | sed -E 's/^#[a-zA-Z0-9_-]+[[:space:]]*# ?(.*)/\1/')
+      commented_out_mods+=("$mod_slug")
+      commented_out_comments+=("$mod_comment")
+    fi
   done < "$MODLIST_FILE"
 
   # compare lists
-  
+
   # in index but not in modlist
   in_index_not_list=()
   for mod in "${index_mods[@]}"; do
@@ -64,7 +77,7 @@ completion_helper() {
       in_index_not_list+=("$mod")
     fi
   done
-  
+
   # in modlist but not in index
   in_list_not_index=()
   for mod in "${modlist[@]}"; do
@@ -72,11 +85,11 @@ completion_helper() {
       in_list_not_index+=("$mod")
     fi
   done
-  
+
   # categorize missing mods (in_list_not_index)
   missing_mods=()
   incompatible_missing_mods=()
-  
+
   for mod in "${in_list_not_index[@]}"; do
     if contains_element "$mod" "${incompatible_list_mods[@]}"; then
       incompatible_missing_mods+=("$mod")
@@ -89,7 +102,7 @@ completion_helper() {
   num_index_mods=${#index_mods[@]}
   num_incompatible_mods=${#incompatible_list_mods[@]}
   num_list_mods=$(( ${#modlist[@]} - num_incompatible_mods )) # only active mods
-  
+
   found_in_index=0
   for mod in "${modlist[@]}"; do
     if contains_element "$mod" "${index_mods[@]}"; then
@@ -101,11 +114,11 @@ completion_helper() {
   if [ $num_list_mods -gt 0 ]; then
     percent=$(awk "BEGIN {printf \"%.0f\", ($found_in_index / $num_list_mods) * 100}")
   fi
-  
+
   {
     echo "# Completion Summary"
     echo
-    echo "### Mods in index but NOT in modlist (Please add to modlists.sh)"
+    echo "### Mods in index but NOT in modlist (Please add to packinfo.sh modlist)"
     echo
     if [ ${#in_index_not_list[@]} -eq 0 ]; then
       echo "- None"
@@ -125,7 +138,7 @@ completion_helper() {
         echo "- $mod"
       done
     fi
-    
+
     echo
     echo "### Mods in modlist but NOT in index (Marked as incompatible)"
     echo
@@ -134,6 +147,23 @@ completion_helper() {
     else
       for mod in "${incompatible_missing_mods[@]}"; do
         echo "- $mod"
+      done
+    fi
+
+    echo
+    echo "### Mods commented out in modlist"
+    echo
+    if [ ${#commented_out_mods[@]} -eq 0 ]; then
+      echo "- None"
+    else
+      for i in "${!commented_out_mods[@]}"; do
+        mod="${commented_out_mods[$i]}"
+        comment="${commented_out_comments[$i]}"
+        if [ -n "$comment" ]; then
+          echo "- $mod: $comment"
+        else
+          echo "- $mod"
+        fi
       done
     fi
 
@@ -146,7 +176,7 @@ completion_helper() {
     echo "- **Completion:** $percent% ($found_in_index / $num_list_mods active mods from list are in index)"
     echo
   } > "$CHANGELOG"
-  
+
   echo "[CMP] Wrote completion summary to $CHANGELOG"
   exit 0
 }
@@ -237,6 +267,231 @@ parse_packwiz_output() {
   echo "[MUD] Wrote update summary to $CHANGELOG"
   return 0
 }
+
+setup_packwiz() {
+  PACKWIZ="../../packwiz"
+  PACKINFO="../packinfo.sh"
+  PACK_TOML="pack.toml"
+  INDEX_TOML="index.toml"
+  REPORT="../stp_output.md"
+
+  if [ -x "$PACKWIZ" ]; then
+    PW_CMD="$PACKWIZ"
+  elif command -v packwiz >/dev/null 2>&1; then
+    PW_CMD="packwiz"
+  else
+    echo "[STP] packwiz executable not found at $PACKWIZ or in PATH"
+    return 1
+  fi
+
+  echo "[STP] Running Setup Packwiz..."
+
+  {
+    echo "# Packwiz Setup Report"
+    echo
+    
+    # Check if pack.toml exists
+    if [ -f "$PACK_TOML" ]; then
+      echo "### Existing pack.toml Found"
+      echo
+      
+      # Source packinfo.sh to get pack metadata
+      if [ ! -f "$PACKINFO" ]; then
+        echo "⚠️ **ERROR:** $PACKINFO not found. Cannot verify pack metadata."
+        echo
+      else
+        source "$PACKINFO"
+        
+        # Extract values from pack.toml
+        toml_name=$(grep -E '^\s*name\s*=' "$PACK_TOML" | head -1 | sed -E 's/.*=\s*"?([^"]*)"?.*/\1/')
+        toml_author=$(grep -E '^\s*author\s*=' "$PACK_TOML" | head -1 | sed -E 's/.*=\s*"?([^"]*)"?.*/\1/')
+        toml_version=$(grep -E '^\s*version\s*=' "$PACK_TOML" | head -1 | sed -E 's/.*=\s*"?([^"]*)"?.*/\1/')
+        
+        echo "**pack.toml metadata:**"
+        echo "- Name: $toml_name"
+        echo "- Author: $toml_author"
+        echo "- Version: $toml_version"
+        echo
+        
+        echo "**packinfo.sh metadata:**"
+        echo "- Name: ${pack_name:-[not set]}"
+        echo "- Author: ${pack_author:-[not set]}"
+        echo "- Version: ${pack_version:-[not set]}"
+        echo
+        
+        # Check for mismatches
+        mismatch=0
+        if [ "$toml_name" != "$pack_name" ]; then
+          echo "⚠️ **MISMATCH:** Name differs"
+          mismatch=1
+        fi
+        if [ "$toml_author" != "$pack_author" ]; then
+          echo "⚠️ **MISMATCH:** Author differs"
+          mismatch=1
+        fi
+        if [ "$toml_version" != "$pack_version" ]; then
+          echo "⚠️ **MISMATCH:** Version differs"
+          mismatch=1
+        fi
+        if [ $mismatch -eq 0 ]; then
+          echo "✓ All metadata matches"
+        fi
+        echo
+      fi
+    else
+      echo "### No pack.toml Found"
+      echo "Packwiz has not been initialized in this directory yet."
+      echo
+    fi
+    
+    # Check for .zip and .jar files
+    echo "### Scanning for .zip and .jar files"
+    echo
+    zip_jar_files=$(find . -type f \( -name "*.zip" -o -name "*.jar" \) 2>/dev/null)
+    if [ -n "$zip_jar_files" ]; then
+      echo "⚠️ **WARNING:** Found .zip/.jar files in directory:"
+      echo "$zip_jar_files" | while read -r f; do
+        echo "- $f"
+      done
+      echo
+    else
+      echo "✓ No .zip or .jar files found"
+      echo
+    fi
+    
+    # Check .pw.toml files against modlist
+    echo "### Validating .pw.toml files"
+    echo
+    if [ ! -f "$PACKINFO" ]; then
+      echo "⚠️ Cannot validate: $PACKINFO not found"
+      echo
+    else
+      source "$PACKINFO"
+      
+      pw_toml_files=$(find mods -name "*.pw.toml" 2>/dev/null | sed -E 's|mods/||; s|\.pw\.toml||' || true)
+      
+      toml_only=()
+      for toml_mod in $pw_toml_files; do
+        if ! contains_element "$toml_mod" "${modlist[@]}"; then
+          toml_only+=("$toml_mod")
+        fi
+      done
+      
+      if [ ${#toml_only[@]} -gt 0 ]; then
+        echo "⚠️ **WARNING:** .pw.toml files found but NOT in modlist:"
+        for mod in "${toml_only[@]}"; do
+          echo "- $mod"
+        done
+        echo
+      else
+        echo "✓ All .pw.toml files match modlist"
+        echo
+      fi
+    fi
+    
+    echo "### Recommendation"
+    echo
+    if [ -f "$PACK_TOML" ] && [ $mismatch -eq 0 ]; then
+      echo "Pack is already initialized and metadata matches. No action needed."
+    else
+      echo "Consider running \`packwiz init\` to initialize/reset the pack."
+    fi
+    
+  } > "$REPORT"
+  
+  echo "[STP] Wrote setup report to $REPORT"
+  
+  # Ask user if they want to proceed with init
+  if [ ! -f "$PACK_TOML" ]; then
+    read -p "[STP] Initialize packwiz? (y/N): " init_ans
+    if [[ "$init_ans" =~ ^[Yy]$ ]]; then
+      read -p "[STP] About to clear mods/, $INDEX_TOML, and $PACK_TOML (if they exist). Continue? (y/N): " confirm
+      if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        echo "[STP] Clearing old packwiz files..."
+        rm -rf mods/ "$INDEX_TOML" "$PACK_TOML"
+        echo "[STP] Running packwiz init..."
+        "$PW_CMD" init
+        echo "[STP] Packwiz initialization complete."
+      fi
+    fi
+  fi
+  
+  return 0
+}
+
+autofill_modlist() {
+  MODLIST_FILE="../packinfo.sh"
+  PACKWIZ="../../packwiz"
+  LOGFILE="../afm.log"
+
+  echo "[AFM] Running Autofill Modlist..."
+  # source modlist
+  if [ ! -f "$MODLIST_FILE" ]; then
+    echo "[AFM] $MODLIST_FILE not found." >&2
+    return 1
+  fi
+
+  source "$MODLIST_FILE"
+
+  # build list of mods explicitly marked "Currently incompatible" in the file
+  incompatible_list_mods=()
+  while IFS= read -r line; do
+    line_trimmed=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+    if [[ "$line_trimmed" == *"Currently incompatible"* ]]; then
+      slug=$(printf '%s' "$line_trimmed" | awk '{print $1}' | sed 's/^#//')
+      [ -n "$slug" ] && incompatible_list_mods+=("$slug")
+    fi
+  done < "$MODLIST_FILE"
+
+  : > "$LOGFILE"
+  echo "[AFM] Using '$PW_CMD' -- logging to $LOGFILE"
+
+  for mod in "${modlist[@]}"; do
+    # skip empty entries
+    [ -z "$mod" ] && continue
+
+    echo
+    echo "[AFM] Processing mod: $mod" | tee -a "$LOGFILE"
+
+    if contains_element "$mod" "${incompatible_list_mods[@]}"; then
+      read -p "[AFM] '$mod' is marked 'Currently incompatible'. Add anyway and attempt version-exception/add? (y/N): " ans
+      case "$ans" in
+        [Yy]* )
+          echo "[AFM] Attempting to add '$mod' despite incompatibility..." | tee -a "$LOGFILE"
+          if "$PW_CMD" mr add "$mod" 2>&1 | tee -a "$LOGFILE"; then
+            echo "[AFM] Added $mod" | tee -a "$LOGFILE"
+          else
+            echo "[AFM] Initial add failed for $mod. Asking to retry with --force." | tee -a "$LOGFILE"
+            read -p "[AFM] Retry add with --force? (y/N): " forceans
+            if [[ "$forceans" =~ ^[Yy]$ ]]; then
+              if "$PW_CMD" mr add "$mod" --force 2>&1 | tee -a "$LOGFILE"; then
+                echo "[AFM] Added $mod with --force" | tee -a "$LOGFILE"
+              else
+                echo "[AFM] Adding $mod failed even with --force. Please add manually. See $LOGFILE" | tee -a "$LOGFILE"
+              fi
+            else
+              echo "[AFM] Skipping $mod after failed add." | tee -a "$LOGFILE"
+            fi
+          fi
+          ;;
+        * )
+          echo "[AFM] Skipping $mod (left incompatible)" | tee -a "$LOGFILE"
+          ;;
+      esac
+    else
+      # normal add
+      if "$PW_CMD" mr add "$mod" 2>&1 | tee -a "$LOGFILE"; then
+        echo "[AFM] Added $mod" | tee -a "$LOGFILE"
+      else
+        echo "[AFM] Failed to add $mod. See $LOGFILE for details." | tee -a "$LOGFILE"
+      fi
+    fi
+  done
+
+  echo
+  echo "[AFM] Autofill complete. See $LOGFILE for detail."
+}
+
 ### Menu
 clear
 parent_dir=$(basename $PWD)
@@ -255,6 +510,12 @@ case $number in
     ;;
   3)
     change_version_num
+    ;;
+  4)
+    autofill_modlist
+    ;;
+  5)
+    setup_packwiz
     ;;
   *)
     echo "Invalid selection. Please enter a number between 1 and 3."

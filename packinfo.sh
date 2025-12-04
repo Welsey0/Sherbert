@@ -1,4 +1,11 @@
-# A variable to store all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
+# Stores information for packwiz pack.toml
+info=(
+    name="Sherbert"
+    author="Welsey_"
+    version="3.3.1"
+)
+
+# Stores all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
 modlist=(
     alternate-current
     animated-loading-screen
