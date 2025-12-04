@@ -186,17 +186,17 @@ mod_updater() {
   OUTFILE="../packwiz_update.log"
 
   if [ -x "$PACKWIZ" ]; then
-    PW_CMD="$PACKWIZ"
+    PACKWIZ="$PACKWIZ"
   elif command -v packwiz >/dev/null 2>&1; then
-    PW_CMD="packwiz"
+    PACKWIZ="packwiz"
   else
     echo "[MUD] packwiz executable not found at $PACKWIZ or in PATH"
     return 1
   fi
 
-  echo "[MUD] Running $PW_CMD update --all, logging to $OUTFILE"
+  echo "[MUD] Running $PACKWIZ update --all, logging to $OUTFILE"
   # stdout stderr capture
-  "$PW_CMD" update --all 2>&1 | tee "$OUTFILE"
+  "$PACKWIZ" update --all 2>&1 | tee "$OUTFILE"
   rc=${PIPESTATUS[0]:-0}
 
   parse_packwiz_output
@@ -276,9 +276,9 @@ setup_packwiz() {
   REPORT="../stp_output.md"
 
   if [ -x "$PACKWIZ" ]; then
-    PW_CMD="$PACKWIZ"
+    PACKWIZ="$PACKWIZ"
   elif command -v packwiz >/dev/null 2>&1; then
-    PW_CMD="packwiz"
+    PACKWIZ="packwiz"
   else
     echo "[STP] packwiz executable not found at $PACKWIZ or in PATH"
     return 1
@@ -397,9 +397,9 @@ setup_packwiz() {
     echo "### Next Steps (read me)"
     echo
     if [ -f "$PACK_TOML" ] && [ $mismatch -eq 0 ]; then
-      echo "Continuing with this script will remove packwiz-added projects in order for you to re-add them.\nIt's intended to help with migrating to a new version of Minecraft.\n\nAfter running this script, run \`../../packwiz init\` and then use the Autofill Modlist tool."
+      echo -e "Continuing with this script will remove packwiz-added projects in order for you to re-add them.\nIt's intended to help with migrating to a new version of Minecraft.\n\nAfter running this script, run \`../../packwiz init\` and then use the Autofill Modlist tool."
     else
-      echo "Run \`../../packwiz init\` and then use the Autofill Modlist tool to rebuild the packwiz files."
+      echo -e "Run \`../../packwiz init\` and then use the Autofill Modlist tool to rebuild the packwiz files."
     fi
     
   } > "$REPORT"
@@ -443,7 +443,10 @@ autofill_modlist() {
   done < "$MODLIST_FILE"
 
   : > "$LOGFILE"
-  echo "[AFM] Using '$PW_CMD' -- logging to $LOGFILE"
+  echo "[AFM] Using '$PACKWIZ' -- logging to $LOGFILE"
+
+  # Track mods that fail due to no valid versions
+  no_valid_versions_mods=()
 
   for mod in "${modlist[@]}"; do
     # skip empty entries
@@ -452,43 +455,61 @@ autofill_modlist() {
     echo
     echo "[AFM] Processing mod: $mod" | tee -a "$LOGFILE"
 
+    # Check if incompatible and ask user
+    is_incompatible=false
     if contains_element "$mod" "${incompatible_list_mods[@]}"; then
-      read -p "[AFM] '$mod' is marked 'Currently incompatible'. Add anyway and attempt version-exception/add? (y/N): " ans
-      case "$ans" in
-        [Yy]* )
-          echo "[AFM] Attempting to add '$mod' despite incompatibility..." | tee -a "$LOGFILE"
-          if "$PW_CMD" mr add "$mod" 2>&1 | tee -a "$LOGFILE"; then
-            echo "[AFM] Added $mod" | tee -a "$LOGFILE"
-          else
-            echo "[AFM] Initial add failed for $mod. Asking to retry with --force." | tee -a "$LOGFILE"
-            read -p "[AFM] Retry add with --force? (y/N): " forceans
-            if [[ "$forceans" =~ ^[Yy]$ ]]; then
-              if "$PW_CMD" mr add "$mod" --force 2>&1 | tee -a "$LOGFILE"; then
-                echo "[AFM] Added $mod with --force" | tee -a "$LOGFILE"
-              else
-                echo "[AFM] Adding $mod failed even with --force. Please add manually. See $LOGFILE" | tee -a "$LOGFILE"
-              fi
-            else
-              echo "[AFM] Skipping $mod after failed add." | tee -a "$LOGFILE"
-            fi
-          fi
-          ;;
-        * )
-          echo "[AFM] Skipping $mod (left incompatible)" | tee -a "$LOGFILE"
-          ;;
-      esac
-    else
-      # normal add
-      if "$PW_CMD" mr add "$mod" 2>&1 | tee -a "$LOGFILE"; then
-        echo "[AFM] Added $mod" | tee -a "$LOGFILE"
-      else
-        echo "[AFM] Failed to add $mod. See $LOGFILE for details." | tee -a "$LOGFILE"
+      is_incompatible=true
+      read -p "[AFM] '$mod' is marked 'Currently incompatible'. Add anyway? (y/N): " ans
+      if [[ ! "$ans" =~ ^[Yy]$ ]]; then
+        echo "[AFM] Skipping $mod (left incompatible)" | tee -a "$LOGFILE"
+        continue
       fi
+      echo "[AFM] Attempting to add '$mod' despite incompatibility..." | tee -a "$LOGFILE"
+    fi
+
+    # Attempt to add the mod
+    output=$("$PACKWIZ" mr add "$mod" --yes 2>&1 | tee -a "$LOGFILE")
+    add_exit_code=$?
+
+    # Check for no valid versions error
+    if echo "$output" | grep -q "no valid versions found"; then
+      no_valid_versions_mods+=("$mod")
+      echo "[AFM] Failed to add $mod: no valid versions found" | tee -a "$LOGFILE"
+    elif [ $add_exit_code -ne 0 ]; then
+      # Other errors - ask to retry
+      echo "[AFM] Failed to add $mod." | tee -a "$LOGFILE"
+      read -p "[AFM] Retry add? (y/N): " retryans
+      if [[ "$retryans" =~ ^[Yy]$ ]]; then
+        "$PACKWIZ" mr add "$mod" --yes 2>&1 | tee -a "$LOGFILE"
+        if [ $? -eq 0 ]; then
+          echo "[AFM] Added $mod on retry" | tee -a "$LOGFILE"
+        else
+          echo "[AFM] Adding $mod failed on retry. Please add manually. See $LOGFILE" | tee -a "$LOGFILE"
+        fi
+      else
+        echo "[AFM] Skipping $mod after failed add." | tee -a "$LOGFILE"
+      fi
+    else
+      echo "[AFM] Added $mod" | tee -a "$LOGFILE"
     fi
   done
 
   echo
   echo "[AFM] Autofill complete. See $LOGFILE for detail."
+
+  # Display warning for mods with no valid versions
+  if [ ${#no_valid_versions_mods[@]} -gt 0 ]; then
+    echo
+    echo "[AFM] ⚠️ The following mods failed with 'no valid versions found':"
+    for mod in "${no_valid_versions_mods[@]}"; do
+      echo "  - $mod"
+    done
+    echo
+    echo "[AFM] To fix this, you need to update packwiz's acceptable versions list:"
+    echo "[AFM] 1. Run: $PACKWIZ settings acceptable-versions -a <version>"
+    echo "[AFM]    (e.g., packwiz settings acceptable-versions -a 1.21.10)"
+    echo "[AFM] 2. Then retry adding these mods with: $PACKWIZ mr add <mod-slug>"
+  fi
 }
 
 ### Menu
@@ -517,6 +538,6 @@ case $number in
     setup_packwiz
     ;;
   *)
-    echo "Invalid selection. Please enter a number between 1 and 3."
+    echo "Invalid selection. Please enter a number between 1 and 5."
     ;;
 esac
