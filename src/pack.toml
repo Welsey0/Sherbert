@@ -1,16 +1,16 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "3.3.1"
+version = "4.0.0-beta1"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "c8e85ef15da7def04344ab79cab48d98700750e3381fc9b55476493d4f08b487"
+hash = "4779c18c772d6de61ee975a1662c30ef843341172703aae07c6a20625dd5451a"
 
 [versions]
-fabric = "0.18.1"
-minecraft = "1.21.10"
+fabric = "0.18.2"
+minecraft = "1.21.11"
 
 [options]
-acceptable-game-versions = ["1.21.1", "1.21.4", "1.21.5", "1.21.8", "1.21.9"]
+acceptable-game-versions = ["1.21.11"]
