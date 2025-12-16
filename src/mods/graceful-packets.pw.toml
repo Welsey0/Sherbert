@@ -1,0 +1,13 @@
+name = "Graceful Packets"
+filename = "graceful-packets-1.0.0_1.21.11.jar"
+side = "client"
+
+[download]
+url = "https://cdn.modrinth.com/data/hdvVNatk/versions/Hr1krgAu/graceful-packets-1.0.0_1.21.11.jar"
+hash-format = "sha512"
+hash = "f30070a48ada9271a1b4c3e0dca0f9d31b1bc27cbf85ee3f3ba7442d82a790a4a21921dcfdd54b7b2b3b56fe90a618fb91ed73726a76316d795c03d0a19afcc7"
+
+[update]
+[update.modrinth]
+mod-id = "hdvVNatk"
+version = "Hr1krgAu"
