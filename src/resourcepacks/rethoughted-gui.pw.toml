@@ -3,11 +3,11 @@ filename = "Rethoughted GUI.zip"
 side = "client"
 
 [download]
-url = "https://cdn.modrinth.com/data/nWisUqcQ/versions/ijFv1Gom/Rethoughted%20GUI.zip"
+url = "https://cdn.modrinth.com/data/nWisUqcQ/versions/c92vkWYT/Rethoughted%20GUI.zip"
 hash-format = "sha512"
-hash = "91c8a2b33baa4dd6121666ea919990142e0107380451b84475b95d1f5a8560bc7cf1943a890e40f7fd9f919136ab3b3bc09137aa3d5fb7c0ea06acef1354e5d2"
+hash = "05fe5a6876308112007e2500ce1bf2cfd80334195bb39f0027610201f6dd6280b3f688dc8cf9552c72d917889711c34864311ed5a1a0af42aaeed87969b876d3"
 
 [update]
 [update.modrinth]
 mod-id = "nWisUqcQ"
-version = "ijFv1Gom"
+version = "c92vkWYT"

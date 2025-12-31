@@ -2,7 +2,7 @@
 info=(
     name="Sherbert"
     author="Welsey_"
-    version="3.3.1"
+    version="4.0.0-beta1"
 )
 
 # Stores all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
@@ -34,7 +34,7 @@ modlist=(
     fabric-api
     fabric-language-kotlin
     fast-ip-ping
-    #fastquit # Actions build
+    fastquit
     ferrite-core
     forge-config-api-port
     graceful-packets
@@ -43,7 +43,7 @@ modlist=(
     iris
     krypton
     lambdynamiclights
-    language-reload # Currently incompatible
+    language-reload
     lithium
     main-menu-credits
     mellow
@@ -51,7 +51,7 @@ modlist=(
     modernfix-mvus
     modmenu
     modelfix
-    #mutils # Have been using my own (still not accepted) PR since 1.21.8
+    mutils # Have been using my own (still not accepted) PR since 1.21.8
     morechathistory
     moreculling
     no-chat-reports
@@ -76,7 +76,7 @@ modlist=(
     sodium-extra
     spark
     stackdeobf
-    #threadtweak # Actions build
+    threadtweak
     tooltip-scroll
     vmp-fabric
     viafabricplus
