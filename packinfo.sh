@@ -13,7 +13,7 @@ modlist=(
     badoptimizations
     betteraddserver
     better-block-entities
-    better-clouds # Currently incompatible
+    #better-clouds # Using orangishcat's PR
     better-mount-hud
     bettergrassify
     capes
@@ -53,7 +53,7 @@ modlist=(
     modmenu
     morechathistory
     moreculling
-    #mutils # Currently facing vexing issues with building my fork, will resolve later
+    #mutils # Using my own fork since the official version is not maintained.
     no-chat-reports
     noisiumforked
     optigui

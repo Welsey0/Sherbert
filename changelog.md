@@ -1,4 +1,3 @@
-- Missing 4 mods, including one major mod
-- Updated to 1.21.11
-- Bumped fabric to 0.18.4
-- Fixes and improvements to STM and configs
+- MUtils readded
+- Better Clouds readded (from a PR)
+- (Forgot to mention for the last changelog) Replaced Hold That Chunk with HTC V2
