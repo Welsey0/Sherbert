@@ -2,7 +2,7 @@
 info=(
     name="Sherbert"
     author="Welsey_"
-    version="4.0.0-alpha1"
+    version="4.0.0-beta1"
 )
 
 # Stores all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
