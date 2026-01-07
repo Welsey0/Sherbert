@@ -1,1 +1,4 @@
-- 4 mod updates
+- Missing 4 mods, including one major mod
+- Updated to 1.21.11
+- Bumped fabric to 0.18.4
+- Fixes and improvements to STM and configs

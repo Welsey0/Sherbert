@@ -1,7 +1,7 @@
 version:4440
 ao:true
 biomeBlendRadius:2
-enableVsync:true
+enableVsync:false
 entityDistanceScaling:1.0
 entityShadows:true
 forceUnicodeFont:false
@@ -52,8 +52,8 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:["vanilla","fabric","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert Colors.zip"]
-incompatibleResourcePacks:["file/Aseprite Fonts.zip","file/Sherbert Colors.zip"]
+resourcePacks:["vanilla","fabric","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert_Colors.zip"]
+incompatibleResourcePacks:["file/Aseprite Fonts.zip","file/Sherbert_Colors.zip"]
 lastServer:
 lang:en_us
 chatVisibility:0

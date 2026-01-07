@@ -5,10 +5,6 @@ file = "config/crash_assistant/config.toml"
 hash = "0f6f4e0da0355c82b64bec3b78ed74440010c21b4bd07ba1f0ea0046becec718"
 
 [[files]]
-file = "config/fabric_loader_dependencies.json"
-hash = "62ee2c39e787ac50e3068e2fa647b5bd3b7cc49a7a24fa5ae5d3ff0720271d87"
-
-[[files]]
 file = "config/isxander-main-menu-credits.json"
 hash = "3490f9bf466dc4ad0d1b1e7d4b37ee67443da6d4b1c335265aa3ae263656bb54"
 
@@ -46,7 +42,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/mutils/mutils.json5"
-hash = "ef37f6b24f094b2cf0a356182e740c3126f0b5241e1301fa1ecf6a9771fc336a"
+hash = "28a486a07944507ad1bff3fa5c1656c0fb29d751b95f4317999d3138ebebfb6c"
 
 [[files]]
 file = "config/rrls.toml"
@@ -102,7 +98,7 @@ hash = "54feeccfa91ab60a3cce90f1a46ec53e2961df2084a3a1a9d1bff50fb465fcdd"
 
 [[files]]
 file = "config/yosbr/config/mutils/mutils.json5"
-hash = "ef37f6b24f094b2cf0a356182e740c3126f0b5241e1301fa1ecf6a9771fc336a"
+hash = "28a486a07944507ad1bff3fa5c1656c0fb29d751b95f4317999d3138ebebfb6c"
 
 [[files]]
 file = "config/yosbr/config/puzzle.json"
@@ -130,7 +126,7 @@ hash = "477f1237b20985aa54cd5157adc7b342381f507fc069399880ff5e997bcb40b3"
 
 [[files]]
 file = "config/yosbr/options.txt"
-hash = "3be041270d8292266e8e274877adc7ce287d56ca3a717408e0c9e932fba830f0"
+hash = "16d343a204874d30f2c9ebc03f34e2d4df9d40b683f949635072734483c8adf7"
 
 [[files]]
 file = "mods/alternate-current.pw.toml"
@@ -158,6 +154,11 @@ hash = "6ef53c2c4e506e111b4bd7c1bc8804a5a7dcb2f6e3b79054575e73f6ce61ee94"
 metafile = true
 
 [[files]]
+file = "mods/betteraddserver.pw.toml"
+hash = "080f5f1221a2c25d466f215505459b766902621fbaa48fde2237ec719dd63ad2"
+metafile = true
+
+[[files]]
 file = "mods/bettergrassify.pw.toml"
 hash = "17e7de63579b066cea4b6db60318617956c1925891edc562085cd72544a763b9"
 metafile = true
@@ -179,7 +180,7 @@ metafile = true
 
 [[files]]
 file = "mods/chunks-fade-in.pw.toml"
-hash = "c1e11404f33dd9828e8eb7126860e2c006be5dc1780e49c21b3275d08247b6bf"
+hash = "d80a32a740255aa1ec3f3d4c4a3b6aaf35a78f020651409a6a3cd8b1d1e255f2"
 metafile = true
 
 [[files]]
@@ -209,12 +210,12 @@ metafile = true
 
 [[files]]
 file = "mods/dynamic-fps.pw.toml"
-hash = "a89555e4ccf7ba3541cae70de8e1c11b007a50993f3b7ffc490932029ed8fdf5"
+hash = "af8dc072b8d618de96260fccfa5fab7f79c5ca9679bc3a57473f6df4ce218fff"
 metafile = true
 
 [[files]]
 file = "mods/entity-model-features.pw.toml"
-hash = "8de5ec882920a22a75fe371efd2fbf205ef6d56dda5e6b0d40016c72fbd77bc1"
+hash = "7a2991786a3523846ee1dcaa4c34c9f1d7a544ea4dbf252df8482b19549009b4"
 metafile = true
 
 [[files]]
@@ -229,7 +230,7 @@ metafile = true
 
 [[files]]
 file = "mods/fabric-api.pw.toml"
-hash = "7adc0d54f139075d8f90dae18ca476753cc3145a70e09c9327736024adfe9b30"
+hash = "39b4f43a271700276ff1ae632cf05f90b85f79670d955b50ced036e363a0efe9"
 metafile = true
 
 [[files]]
@@ -258,6 +259,11 @@ hash = "935b33f6c11463aca36096834b70c964d2cfb8a42a55454520cd9073152ac8be"
 metafile = true
 
 [[files]]
+file = "mods/hold-that-chunk-v2.pw.toml"
+hash = "eb90e157646cd2c519fb35d1ebc3c0c1676d970083e142ca083547f28d6ce60c"
+metafile = true
+
+[[files]]
 file = "mods/immediatelyfast.pw.toml"
 hash = "402069ebe33a1f19e6e5c0c0235267b832ba44617f15ddbdc677faf2a2607e38"
 metafile = true
@@ -268,13 +274,28 @@ hash = "b7d33095f206cb34dc8cd3d5410a00597439a2fc793f4c158c7a2ecfc7e85e82"
 metafile = true
 
 [[files]]
+file = "mods/krypton.pw.toml"
+hash = "8f6e0157b42ba668c0ba9aa7eff94b3b91a8f58bcd357e574d70a7b160d4337c"
+metafile = true
+
+[[files]]
 file = "mods/lambdynamiclights.pw.toml"
 hash = "71255e25b05b6529d6a2873e4db079b7b6541f58a78d872bc19478afcb0ffd1c"
 metafile = true
 
 [[files]]
+file = "mods/language-reload.pw.toml"
+hash = "59d092d4627a3a2c01ba0c621e0de6e09d6b7c04e1f3230cd735740c4f1ea537"
+metafile = true
+
+[[files]]
 file = "mods/lithium.pw.toml"
 hash = "0e87ab10adb3db84b1d6d2ce8bdd7158878b56c965055056b10ad6cde2634568"
+metafile = true
+
+[[files]]
+file = "mods/main-menu-credits.pw.toml"
+hash = "fa3e6df3d222c94014c840673aa92455210d404eadceb05dd5ab3ae5a3eab6db"
 metafile = true
 
 [[files]]
@@ -284,7 +305,7 @@ metafile = true
 
 [[files]]
 file = "mods/modernfix-mvus.pw.toml"
-hash = "26845e27a13a67d29843cf4a23581c577ff058afb798f037c5ad39ff1ca4af6e"
+hash = "67116d1cf5d38dfd27aded9d675afcc625d720a4d457660ff82db760934d9f4d"
 metafile = true
 
 [[files]]
@@ -319,7 +340,7 @@ metafile = true
 
 [[files]]
 file = "mods/packet-fixer.pw.toml"
-hash = "7a1d18504e615e902ed766ad9fb4898bce1009073a8674d33d59118061d9ccdf"
+hash = "3b1cab0b2f9ff5880e8b82c53c47cf502c4b47f74a45f4a9a45a6aef0de24b9a"
 metafile = true
 
 [[files]]
@@ -379,7 +400,7 @@ metafile = true
 
 [[files]]
 file = "mods/smooth-scroll.pw.toml"
-hash = "93d394fd47f78b85e46914e0066ec63989146d5ea58a1549ee8df42a01a9d7e7"
+hash = "2c4c5f6afde7fc7a310ecb7e9afd2f28e0e62d3f41c26ea4367b925622cc9bb0"
 metafile = true
 
 [[files]]
@@ -438,7 +459,7 @@ hash = "d74d244b3524bea2326becd2ceaa27b8e231156aba33448533cd29b12ed48318"
 metafile = true
 
 [[files]]
-file = "resourcepacks/Sherbert Colors.zip"
+file = "resourcepacks/Sherbert_Colors.zip"
 hash = "1ec5f292c352a30c93984db0674f555d8f2a2b988a83eb9937d164fb6454c4c8"
 
 [[files]]
