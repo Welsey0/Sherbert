@@ -2,7 +2,7 @@
 info=(
     name="Sherbert"
     author="Welsey_"
-    version="3.3.1"
+    version="4.0.0-alpha1"
 )
 
 # Stores all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
@@ -13,7 +13,7 @@ modlist=(
     badoptimizations
     betteraddserver
     better-block-entities
-    better-clouds
+    #better-clouds # Using orangishcat's PR
     better-mount-hud
     bettergrassify
     capes
@@ -26,7 +26,7 @@ modlist=(
     controlling
     crash-assistant
     cubes-without-borders
-    debugify
+    debugify # Currently incompatible
     dynamic-fps
     entity-model-features
     entitytexturefeatures
@@ -34,26 +34,26 @@ modlist=(
     fabric-api
     fabric-language-kotlin
     fast-ip-ping
-    #fastquit # Actions build
+    fastquit # Currently incompatible
     ferrite-core
     forge-config-api-port
     graceful-packets
-    hold-that-chunk
+    hold-that-chunk-v2
     immediatelyfast
     iris
     krypton
     lambdynamiclights
-    language-reload # Currently incompatible
+    language-reload
     lithium
     main-menu-credits
     mellow
-    mixintrace
+    midnightlib
+    mixintrace # Currently incompatible
     modernfix-mvus
     modmenu
-    modelfix
-    #mutils # Have been using my own (still not accepted) PR since 1.21.8
     morechathistory
     moreculling
+    #mutils # Using my own fork since the official version is not maintained.
     no-chat-reports
     noisiumforked
     optigui
@@ -76,7 +76,7 @@ modlist=(
     sodium-extra
     spark
     stackdeobf
-    #threadtweak # Actions build
+    threadtweak # Currently incompatible
     tooltip-scroll
     vmp-fabric
     viafabricplus

@@ -1,6 +1,6 @@
 #!/bin/bash
 # A collection of tools for managing ST Family modpacks.
-# Written by https://github.com/Welsey0 with the help of my good friend Al. :)
+# Written by Welsey0 with the help of my good friend AI. :)
 
 ### Functions
 change_version_num() {
@@ -39,27 +39,34 @@ completion_helper() {
 
   echo "[CMP] Running Completion Helper..."
 
-  # read packwiz index for mods/<slug>.pw.toml
-  index_mods=()
-  while IFS= read -r line; do
-    index_mods+=("$line")
-  done < <(grep 'file = "mods/.*\.pw\.toml"' "$INDEX_FILE" | sed -e 's/file = "mods\///' -e 's/\.pw\.toml"//')
+  # Function to collect files from specified directories
+  collect_files() {
+    local dir="$1"
+    local files=()
+    while IFS= read -r line; do
+      files+=("$line")
+    done < <(find "$dir" -type f \( -name "*.pw.toml" -o -name "*.zip" -o -name "*.jar" \) | sed -e "s|$dir/||" -e 's/\.pw\.toml$//')
+    echo "${files[@]}"
+  }
 
-  # read packinfo.sh
+  # Collect files from mods, resourcepacks, and shaderpacks
+  index_mods=($(collect_files "mods"))
+  index_resourcepacks=($(collect_files "resourcepacks"))
+  index_shaderpacks=($(collect_files "shaderpacks"))
+
+  # Read packinfo.sh
   source "$MODLIST_FILE"
 
-  # note incompatible mods
+  # Note incompatible mods
   incompatible_list_mods=()
-  # collect commented out mods and their comments
   commented_out_mods=()
   commented_out_comments=()
   while IFS= read -r line; do
-    line_trimmed=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//') # trim whitespace
+    line_trimmed=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//') # Trim whitespace
     if [[ "$line_trimmed" == *"# Currently incompatible"* ]]; then
       slug=$(echo "$line_trimmed" | awk '{print $1}' | sed 's/#//')
       [ -n "$slug" ] && incompatible_list_mods+=("$slug")
     fi
-    # Only count commented out mod if there are two hashtags in the line
     if [[ "$line_trimmed" =~ ^#([a-zA-Z0-9_-]+).*#.*$ ]]; then
       mod_slug=$(echo "$line_trimmed" | sed -E 's/^#([a-zA-Z0-9_-]+).*/\1/')
       mod_comment=$(echo "$line_trimmed" | sed -E 's/^#[a-zA-Z0-9_-]+[[:space:]]*# ?(.*)/\1/')
@@ -68,28 +75,24 @@ completion_helper() {
     fi
   done < "$MODLIST_FILE"
 
-  # compare lists
-
-  # in index but not in modlist
+  # Compare lists and categorize files
   in_index_not_list=()
-  for mod in "${index_mods[@]}"; do
+  for mod in "${index_mods[@]}" "${index_resourcepacks[@]}" "${index_shaderpacks[@]}"; do
     if ! contains_element "$mod" "${modlist[@]}"; then
       in_index_not_list+=("$mod")
     fi
   done
 
-  # in modlist but not in index
   in_list_not_index=()
   for mod in "${modlist[@]}"; do
-    if ! contains_element "$mod" "${index_mods[@]}"; then
+    if ! contains_element "$mod" "${index_mods[@]}" && ! contains_element "$mod" "${index_resourcepacks[@]}" && ! contains_element "$mod" "${index_shaderpacks[@]}"; then
       in_list_not_index+=("$mod")
     fi
   done
 
-  # categorize missing mods (in_list_not_index)
+  # Categorize missing mods
   missing_mods=()
   incompatible_missing_mods=()
-
   for mod in "${in_list_not_index[@]}"; do
     if contains_element "$mod" "${incompatible_list_mods[@]}"; then
       incompatible_missing_mods+=("$mod")
@@ -98,14 +101,16 @@ completion_helper() {
     fi
   done
 
-  # report findings
+  # Report findings
   num_index_mods=${#index_mods[@]}
+  num_index_resourcepacks=${#index_resourcepacks[@]}
+  num_index_shaderpacks=${#index_shaderpacks[@]}
   num_incompatible_mods=${#incompatible_list_mods[@]}
-  num_list_mods=$(( ${#modlist[@]} - num_incompatible_mods )) # only active mods
+  num_list_mods=$(( ${#modlist[@]} - num_incompatible_mods )) 
 
   found_in_index=0
   for mod in "${modlist[@]}"; do
-    if contains_element "$mod" "${index_mods[@]}"; then
+    if contains_element "$mod" "${index_mods[@]}" || contains_element "$mod" "${index_resourcepacks[@]}" || contains_element "$mod" "${index_shaderpacks[@]}"; then
       found_in_index=$((found_in_index + 1))
     fi
   done
@@ -127,6 +132,7 @@ completion_helper() {
         echo "- $mod"
       done
     fi
+
 
     echo
     echo "### Mods in modlist but NOT in index (Missing from pack)"
