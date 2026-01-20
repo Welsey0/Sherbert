@@ -1,12 +1,12 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "4.0.0-beta1"
+version = "4.0.0"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "1fb4476020067daf17b0a592db2b0f0c772c0ef8335f9f412b7ce4fe808e7153"
+hash = "212c19f1dacce1156d514c1b40ffef33895c3a3e5713b4bdcbfd91f589ff2b0c"
 
 [versions]
 fabric = "0.18.4"

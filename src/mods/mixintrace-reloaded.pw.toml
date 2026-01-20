@@ -1,0 +1,13 @@
+name = "MixinTrace Reloaded [UNOFFICIAL]"
+filename = "MixinTrace reloaded-1.1.0+1.21.11.jar"
+side = "client"
+
+[download]
+url = "https://cdn.modrinth.com/data/wx2WW8va/versions/ujz2Ar1y/MixinTrace%20reloaded-1.1.0%2B1.21.11.jar"
+hash-format = "sha512"
+hash = "c2fb8b529338f57508b11a4d83dc23aa634806a71ab98a00ea2cd5120f717ed564a1cbef51882509c7d1b34a337e587fd407b91bd63d883e8bbeb9497e4e422f"
+
+[update]
+[update.modrinth]
+mod-id = "wx2WW8va"
+version = "ujz2Ar1y"

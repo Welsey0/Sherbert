@@ -2,7 +2,7 @@
 info=(
     name="Sherbert"
     author="Welsey_"
-    version="4.0.0-beta1"
+    version="4.0.0"
 )
 
 # Stores all the modrinth slugs. If incompatible, add 'Currently incompatible' comment. If it's manually included, comment out its line and leave a note
@@ -26,7 +26,7 @@ modlist=(
     controlling
     crash-assistant
     cubes-without-borders
-    debugify # Currently incompatible
+    debugify
     dynamic-fps
     entity-model-features
     entitytexturefeatures
@@ -34,7 +34,7 @@ modlist=(
     fabric-api
     fabric-language-kotlin
     fast-ip-ping
-    fastquit # Currently incompatible
+    fastquit
     ferrite-core
     forge-config-api-port
     graceful-packets
@@ -48,7 +48,7 @@ modlist=(
     main-menu-credits
     mellow
     midnightlib
-    mixintrace # Currently incompatible
+    mixintrace-reloaded
     modernfix-mvus
     modmenu
     morechathistory

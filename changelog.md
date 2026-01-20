@@ -1,3 +1,2 @@
-- MUtils readded
-- Better Clouds readded (from a PR)
-- (Forgot to mention for the last changelog) Replaced Hold That Chunk with HTC V2
+- Updated mods
+- Readded 3 mods
