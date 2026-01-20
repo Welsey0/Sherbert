@@ -28,6 +28,7 @@ modlist=(
     cubes-without-borders
     debugify
     dynamic-fps
+    e4mc
     entity-model-features
     entitytexturefeatures
     entityculling

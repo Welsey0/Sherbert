@@ -1,2 +1,2 @@
-- Updated mods
-- Readded 3 mods
+- Updated options.txt
+- Added e4mc
