@@ -525,7 +525,7 @@ if [ "$parent_dir" != "src" ]; then
   echo "[STM] Make sure you're in src."
   exit 1
 fi
-echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater\n3: Change Version Number\n4: Autofill Modlist\n5: Setup Packwiz"
+echo -e "Select a Tool\n1: Completion Helper\n2: Mod Updater\n3: Change Version Number\n4: Autofill Modlist\n5: Setup Packwiz\n\nRemember to update the version number!"
 read number
 case $number in
   1)
