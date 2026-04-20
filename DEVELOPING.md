@@ -22,9 +22,8 @@ Root Folder (In my case called Modpacks)
 ```
 
 ## Tips
-- Always work from your `src` folder.
-- Run packwiz by typing `../../packwiz`
-- Run ST Manager by typing `../stmanager.sh` or `bash ../stmanager.sh`.
+- Always work from your project's root folder.
+- Only ever run packwiz inside of a modloader's src folder, and only if you know what you are doing.
+- STManager requires Python to run.
 - Pushing to `changelog.md` will release a new version.
 - Pushing to `README.md` will update the Modrinth description to follow suit.
-- Remember to update the version number with ST Manager for each new version.

@@ -5,6 +5,12 @@ on:
     branches: [ main ]
     paths: [ changelog.md ]
   workflow_dispatch:
+    inputs:
+      allow_empty_artifacts:
+        description: "Allow run to continue even if no .mrpack files are generated"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   publish:
@@ -12,6 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PACK_NAME: Sherbert
+    outputs:
+      upload_matrix: ${{ steps.discover.outputs.upload_matrix }}
+      has_uploads: ${{ steps.discover.outputs.has_uploads }}
+      version: ${{ steps.get_version.outputs.value }}
+      mc_version: ${{ steps.get_minecraft_version.outputs.value }}
+      changelog: ${{ steps.get_changelog.outputs.changelog_content }}
+      release_name: ${{ steps.construct_name.outputs.release_name }}
+      channel: ${{ steps.determine_channel.outputs.channel }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,70 +34,121 @@ jobs:
       - name: Install Packwiz
         uses: actionhippie/install-packwiz@v1
 
-      - name: Run packwiz mr export
+      - name: Build the modpack
         run: |
-          cd src
-          packwiz mr export
+          python stmanager.py build
 
       - name: Get Version
         id: get_version
         uses: sravinet/toml-select@v1.0.1
         with:
-          file: 'src/pack.toml'
-          field: 'version'
+          file: src/pack.toml
+          field: version
 
       - name: Get Minecraft Version
         id: get_minecraft_version
         uses: sravinet/toml-select@v1.0.1
         with:
-          file: 'src/pack.toml'
-          field: 'versions.minecraft'
-      
+          file: src/pack.toml
+          field: versions.minecraft
+
       - name: Get Changelog
         id: get_changelog
         run: |
           changelog_content=$(cat changelog.md)
-          echo "changelog_content<<EOF" >> $GITHUB_OUTPUT
-          echo "$changelog_content" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "changelog_content<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$changelog_content" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Construct Release Name
         id: construct_name
         run: |
           release_name="${{ env.PACK_NAME }} ${{ steps.get_version.outputs.value }}"
-          echo "release_name=${release_name}" >> $GITHUB_OUTPUT
+          echo "release_name=${release_name}" >> "$GITHUB_OUTPUT"
 
       - name: Determine Channel
         id: determine_channel
         run: |
           if [[ "${{ steps.construct_name.outputs.release_name }}" == *"beta"* ]]; then
-            echo "channel=beta" >> $GITHUB_OUTPUT
+            echo "channel=beta" >> "$GITHUB_OUTPUT"
           else
-            echo "channel=release" >> $GITHUB_OUTPUT
+            echo "channel=release" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Upload to Modrinth
-        uses: RubixDev/modrinth-upload@v1
-        with:
-          token: ${{ secrets.MODRINTH_TOKEN }}
-          file_path: src/${{ env.PACK_NAME }}-${{ steps.get_version.outputs.value }}.mrpack
-          name: ${{ steps.construct_name.outputs.release_name }}
-          version: ${{ steps.get_version.outputs.value }}
-          changelog: ${{ steps.get_changelog.outputs.changelog_content }}
-          game_versions: ${{ steps.get_minecraft_version.outputs.value }}
-          release_type: ${{ steps.determine_channel.outputs.channel }}
-          loaders: fabric
-          featured: true
-          project_id: ${{ secrets.MODRINTH_PID }}
+      - name: Discover upload targets
+        id: discover
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import tomllib, glob, json, re
+
+          with open("packinfo.toml", "rb") as f:
+              cfg = tomllib.load(f)
+
+          targets = cfg.get("targets", {})
+          loaders = [k for k, v in targets.items() if k != "mc" and str(v).lower() != "none"]
+
+          files = sorted(glob.glob("*.mrpack"))
+          matrix = []
+
+          for loader in loaders:
+              pat = re.compile(rf"(^|[-_.]){re.escape(loader)}([-.]|$)", re.IGNORECASE)
+              matched = [f for f in files if pat.search(f)]
+              for file in matched:
+                  matrix.append({"loader": loader, "file": file})
+
+          # Fallback for single-loader/single-file naming that doesn't include loader token.
+          if not matrix and len(loaders) == 1 and len(files) == 1:
+              matrix = [{"loader": loaders[0], "file": files[0]}]
+
+          print(f"upload_matrix={json.dumps(matrix)}")
+          print(f"has_uploads={'true' if matrix else 'false'}")
+          print(f"artifact_count={len(files)}")
+          PY
+
+      - name: Fail if no artifacts were built
+        if: steps.discover.outputs.has_uploads != 'true' && !(github.event_name == 'workflow_dispatch' && github.event.inputs.allow_empty_artifacts == 'true')
+        run: |
+          echo "No uploadable .mrpack files were found in repository root after build."
+          echo "Set workflow_dispatch input allow_empty_artifacts=true to bypass this check."
+          exit 1
 
       - name: Create Release
+        if: steps.discover.outputs.has_uploads == 'true'
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.value }}
           name: ${{ steps.construct_name.outputs.release_name }}
           body: ${{ steps.get_changelog.outputs.changelog_content }}
-          files: src/${{ env.PACK_NAME }}-${{ steps.get_version.outputs.value }}.mrpack
-
+          files: ./*.mrpack
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  upload_modrinth:
+    name: Upload to Modrinth
+    needs: publish
+    if: needs.publish.outputs.has_uploads == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        item: ${{ fromJSON(needs.publish.outputs.upload_matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload artifact to Modrinth
+        uses: RubixDev/modrinth-upload@v1
+        with:
+          token: ${{ secrets.MODRINTH_TOKEN }}
+          file_path: ${{ matrix.item.file }}
+          name: ${{ needs.publish.outputs.release_name }} (${{ matrix.item.loader }})
+          version: ${{ needs.publish.outputs.version }}-${{ matrix.item.loader }}
+          changelog: ${{ needs.publish.outputs.changelog }}
+          game_versions: ${{ needs.publish.outputs.mc_version }}
+          release_type: ${{ needs.publish.outputs.channel }}
+          loaders: ${{ matrix.item.loader }}
+          featured: true
+          project_id: ${{ secrets.MODRINTH_PID }}
