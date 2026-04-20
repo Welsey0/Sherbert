@@ -34,6 +34,18 @@ jobs:
       - name: Install Packwiz
         uses: actionhippie/install-packwiz@v1
 
+      - name: Validate pack structure
+        run: |
+          python stmanager.py validate --report-file validation-report.json
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: validation-report.json
+          if-no-files-found: warn
+
       - name: Build the modpack
         run: |
           python stmanager.py build
