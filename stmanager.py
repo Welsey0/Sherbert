@@ -21,10 +21,13 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
+import time
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -38,6 +41,7 @@ TEMPLATE_PACK_PATH = ROOT / "templates" / "pack.toml"
 ADD_REMOTES_LOG = ROOT / "addremotes.log"
 MOD_UPDATES_LOG = ROOT / "modupdates.log"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
+STATE_PATH = ROOT / ".stmanager-state.json"
 
 
 @dataclass
@@ -66,6 +70,23 @@ def load_packinfo() -> dict[str, Any]:
 		raise FileNotFoundError(f"Missing {PACKINFO_PATH}")
 	with PACKINFO_PATH.open("rb") as handle:
 		return tomllib.load(handle)
+
+
+def load_state() -> dict[str, Any]:
+	if not STATE_PATH.exists():
+		return {"updatables": {}}
+	try:
+		data = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+		if isinstance(data, dict):
+			data.setdefault("updatables", {})
+			return data
+	except (json.JSONDecodeError, OSError):
+		pass
+	return {"updatables": {}}
+
+
+def save_state(state: dict[str, Any]) -> None:
+	STATE_PATH.write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
 def active_loaders(packinfo: dict[str, Any]) -> list[str]:
@@ -132,9 +153,59 @@ def copy_file(src: Path, dst: Path) -> None:
 	shutil.copy2(src, dst)
 
 
+def make_tree_writable(path: Path) -> None:
+	for root, dirs, files in os.walk(path, topdown=False):
+		for name in files + dirs:
+			entry = Path(root) / name
+			try:
+				entry.chmod(entry.stat().st_mode | stat.S_IWRITE)
+			except OSError:
+				pass
+	try:
+		path.chmod(path.stat().st_mode | stat.S_IWRITE)
+	except OSError:
+		pass
+
+
+def _rmtree_onexc(func: Any, path: str, _exc: Any) -> None:
+	entry = Path(path)
+	try:
+		entry.chmod(entry.stat().st_mode | stat.S_IWRITE)
+	except OSError:
+		pass
+	func(path)
+
+
+def remove_tree(path: Path) -> None:
+	if not path.exists():
+		return
+
+	last_error: OSError | None = None
+	for attempt in range(3):
+		make_tree_writable(path)
+		try:
+			shutil.rmtree(path, onexc=_rmtree_onexc)
+			return
+		except OSError as exc:
+			last_error = exc
+			if attempt < 2:
+				time.sleep(0.2 * (attempt + 1))
+
+	hint = (
+		"Close apps that may be using files there (Explorer windows, editors, game instances, antivirus scans), then re-run the command."
+		if os.name == "nt"
+		else "Close processes using this path and re-run (use lsof/fuser if needed)."
+	)
+
+	if isinstance(last_error, PermissionError):
+		raise RuntimeError(f"Could not remove '{path}'. Access denied. {hint}") from last_error
+
+	raise RuntimeError(f"Could not remove '{path}': {last_error}. {hint}") from last_error
+
+
 def copy_tree(src: Path, dst: Path) -> None:
 	if dst.exists():
-		shutil.rmtree(dst)
+		remove_tree(dst)
 	shutil.copytree(src, dst)
 
 
@@ -186,6 +257,98 @@ def read_info(*, json_out: bool = False) -> int:
 	return 0
 
 
+def guide(*, goal: str) -> int:
+	workflows: dict[str, dict[str, Any]] = {
+		"first-run": {
+			"title": "First run (new architecture setup)",
+			"steps": [
+				"1. python stmanager.py --dry-run setup-folders --yes",
+				"2. python stmanager.py setup-folders --yes",
+				"3. python stmanager.py --dry-run add-remotes",
+				"4. python stmanager.py add-remotes --write-unsuccessful",
+				"5. python stmanager.py validate --report-file validation-report.json",
+			],
+			"notes": [
+				"Use --dry-run first on destructive or network-dependent commands.",
+				"If setup fails with access denied, close Explorer/editor/game windows using src-* paths and re-run.",
+			],
+		},
+		"version-bump": {
+			"title": "Version bump and metadata refresh",
+			"steps": [
+				"1. Update version in packinfo.toml",
+				"2. python stmanager.py update-updatables",
+				"3. python stmanager.py validate",
+			],
+			"notes": [
+				"update-updatables is repeatable and tracks previously applied versions in .stmanager-state.json.",
+				"If a file cannot be safely updated, stmanager prints a warning with next action.",
+			],
+		},
+		"mod-maintenance": {
+			"title": "Mod maintenance",
+			"steps": [
+				"1. python stmanager.py --dry-run update-mods",
+				"2. python stmanager.py update-mods",
+				"3. python stmanager.py validate",
+			],
+			"notes": [
+				"Check modupdates.log for per-loader update counts and failures.",
+			],
+		},
+		"release": {
+			"title": "Pre-release checklist",
+			"steps": [
+				"1. python stmanager.py validate --strict --report-file validation-report.json",
+				"2. python stmanager.py --dry-run build",
+				"3. python stmanager.py build",
+			],
+			"notes": [
+				"build requires packwiz and src-<loader> folders to be ready.",
+			],
+		},
+		"troubleshoot": {
+			"title": "Troubleshooting",
+			"steps": [
+				"1. python stmanager.py read-info",
+				"2. python stmanager.py validate --report-file validation-report.json",
+				"3. python stmanager.py completion-helper",
+			],
+			"notes": [
+				"validation-report.json gives machine-readable error and warning details for CI or debugging.",
+				"completion-helper shows exact expected files missing per loader.",
+			],
+		},
+	}
+
+	if goal == "all":
+		print("ST Manager Guide")
+		print("Pick one goal and run: python stmanager.py guide --goal <goal>")
+		print("Goals: first-run, version-bump, mod-maintenance, release, troubleshoot")
+		print("")
+		for key in ("first-run", "version-bump", "mod-maintenance", "release", "troubleshoot"):
+			item = workflows[key]
+			print(f"[{key}] {item['title']}")
+			for step in item["steps"]:
+				print(step)
+			for note in item["notes"]:
+				print(f"Note: {note}")
+			print("")
+		return 0
+
+	if goal not in workflows:
+		print(f"Unknown guide goal: {goal}", file=sys.stderr)
+		return 2
+
+	item = workflows[goal]
+	print(f"ST Manager Guide - {item['title']}")
+	for step in item["steps"]:
+		print(step)
+	for note in item["notes"]:
+		print(f"Note: {note}")
+	return 0
+
+
 def write_loader_pack_toml(packinfo: dict[str, Any], loader: str, target_dir: Path) -> None:
 	template = TEMPLATE_PACK_PATH.read_text(encoding="utf-8")
 	rendered = (
@@ -231,7 +394,7 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 			if dry_run:
 				print(f"[dry-run] remove {path}")
 			else:
-				shutil.rmtree(path)
+				remove_tree(path)
 
 		if dry_run:
 			print(f"[dry-run] create {path}")
@@ -290,6 +453,9 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 
 def update_updatables(*, dry_run: bool) -> int:
 	packinfo = load_packinfo()
+	state = load_state()
+	state_updatables = state.setdefault("updatables", {})
+	state_changed = False
 	version = str(packinfo.get("version", ""))
 	paths = list(packinfo.get("updatables", {}).get("version", []))
 	ldirs = loader_dirs(packinfo)
@@ -299,23 +465,72 @@ def update_updatables(*, dry_run: bool) -> int:
 		return 0
 
 	replaced = 0
+	already_current = 0
+	skipped_unsafe = 0
 	for loader, ldir in ldirs.items():
+		if not ldir.exists():
+			print(
+				f"Warning: loader folder missing for {loader}: {ldir} "
+				"(updatable paths are relative to each src-* folder root)",
+				file=sys.stderr,
+			)
+			continue
 		for rel in paths:
 			target = ldir / rel
 			if not target.exists():
-				print(f"Warning: updatable path not found for {loader}: {target}", file=sys.stderr)
+				print(
+					f"Warning: updatable path not found for {loader}: {target} "
+					"(defined relative to each src-* folder root)",
+					file=sys.stderr,
+				)
 				continue
 			text = target.read_text(encoding="utf-8")
-			if "<!VERSION!>" not in text:
-				continue
-			updated = text.replace("<!VERSION!>", version)
-			if dry_run:
-				print(f"[dry-run] update version token in {target}")
-			else:
-				target.write_text(updated, encoding="utf-8")
-			replaced += 1
 
-	print(f"Updated version token in {replaced} files.")
+			state_key = str(target.relative_to(ROOT)).replace("\\", "/")
+			previous_version = state_updatables.get(state_key)
+
+			if "<!VERSION!>" in text:
+				updated = text.replace("<!VERSION!>", version)
+				if dry_run:
+					print(f"[dry-run] replaced <!VERSION!> token in {target}")
+				else:
+					target.write_text(updated, encoding="utf-8")
+				state_updatables[state_key] = version
+				state_changed = True
+				replaced += 1
+				continue
+
+			if version in text:
+				state_updatables[state_key] = version
+				state_changed = True
+				already_current += 1
+				continue
+
+			if isinstance(previous_version, str) and previous_version and previous_version in text:
+				updated = text.replace(previous_version, version)
+				if dry_run:
+					print(f"[dry-run] replaced previous version ({previous_version} -> {version}) in {target}")
+				else:
+					target.write_text(updated, encoding="utf-8")
+				state_updatables[state_key] = version
+				state_changed = True
+				replaced += 1
+				continue
+
+			skipped_unsafe += 1
+			print(
+				f"Warning: cannot safely update {target}. "
+				"No <!VERSION!> token and no known prior applied version found.",
+				file=sys.stderr,
+			)
+
+	if not dry_run and state_changed:
+		save_state(state)
+
+	print(
+		f"Updatables summary: replaced={replaced}, already_current={already_current}, "
+		f"skipped_unsafe={skipped_unsafe}"
+	)
 	return 0
 
 
@@ -552,14 +767,20 @@ def validate(*, strict: bool, report_file: str | None) -> int:
 
 	for rel in packinfo.get("updatables", {}).get("version", []):
 		for loader, ldir in ldirs.items():
+			if not ldir.exists():
+				# LOADER_DIR_MISSING already explains root cause for this loader.
+				continue
 			candidate = ldir / rel
 			if not candidate.exists():
 				issues.append(
 					ValidationIssue(
 						level="warning",
 						code="UPDATABLE_PATH_MISSING",
-						message=f"Updatable path missing for {loader}: {ldir.name}/{rel}",
-						hint="Create file or remove it from [updatables].version.",
+						message=(
+							f"Updatable path missing for {loader}: {ldir.name}/{rel} "
+							"(path is relative to each src-* folder root)"
+						),
+						hint="Create file in that loader folder or remove it from [updatables].version.",
 					)
 				)
 
@@ -646,6 +867,7 @@ def run_function(name: str, *, dry_run: bool) -> int:
 	canonical = name.strip().lower()
 	mapping: dict[str, Any] = {
 		"readinfo": lambda: read_info(json_out=False),
+		"guide": lambda: guide(goal="all"),
 		"validate": lambda: validate(strict=False, report_file=None),
 		"setupfolders": lambda: setup_folders(yes=False, dry_run=dry_run),
 		"updateupdatables": lambda: update_updatables(dry_run=dry_run),
@@ -670,24 +892,40 @@ def parser() -> argparse.ArgumentParser:
 	info = sp.add_parser("read-info", help="Read packinfo.toml and print summary")
 	info.add_argument("--json", action="store_true", help="Output as JSON")
 
+	guide_parser = sp.add_parser("guide", help="Show guided command flows based on user goal")
+	guide_parser.add_argument(
+		"--goal",
+		default="all",
+		choices=["all", "first-run", "version-bump", "mod-maintenance", "release", "troubleshoot"],
+		help="Which workflow guide to show",
+	)
+
 	validate_parser = sp.add_parser("validate", help="Validate src-* loader structure against packinfo ground truth")
 	validate_parser.add_argument("--strict", action="store_true", help="Treat warnings as failures")
 	validate_parser.add_argument("--report-file", help="Write a JSON validation report relative to repo root")
+	validate_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Accepted for CLI consistency")
 
 	setup = sp.add_parser("setup-folders", help="Create src-<loader> folders from packinfo ground truth")
 	setup.add_argument("--yes", action="store_true", help="Confirm deletion of existing src-* folders")
+	setup.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
-	sp.add_parser("update-updatables", help="Replace <!VERSION!> in updatable paths")
-	sp.add_parser("update-mods", help="Run packwiz update in each src-* folder")
+	update_updatables_parser = sp.add_parser("update-updatables", help="Replace <!VERSION!> in updatable paths")
+	update_updatables_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
+
+	update_mods_parser = sp.add_parser("update-mods", help="Run packwiz update in each src-* folder")
+	update_mods_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz")
 
 	add = sp.add_parser("add-remotes", help="Run packwiz mr add for remotes in each src-* folder")
 	add.add_argument("--write-unsuccessful", action="store_true", help="Write unsuccessful remotes to unsuccessful.md")
+	add.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz")
 
 	sp.add_parser("completion-helper", help="Check expected files from packinfo against src-* folders")
-	sp.add_parser("build", help="Run packwiz refresh/export and move renamed .mrpack files to root")
+	build_parser = sp.add_parser("build", help="Run packwiz refresh/export and move renamed .mrpack files to root")
+	build_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz")
 
 	fn = sp.add_parser("run-function", help="Run internal function by name (legacy compatibility)")
 	fn.add_argument("name", help="Function name, e.g. readInfo, setupFolders, build")
+	fn.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz or writing changes")
 
 	return p
 
@@ -698,6 +936,8 @@ def main() -> int:
 	try:
 		if args.command == "read-info":
 			return read_info(json_out=args.json)
+		if args.command == "guide":
+			return guide(goal=args.goal)
 		if args.command == "validate":
 			return validate(strict=args.strict, report_file=args.report_file)
 		if args.command == "setup-folders":

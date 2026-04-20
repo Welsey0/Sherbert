@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "4.0.2"
+version = "4.0.3"
 
 [targets]
 mc = "1.21.11"
