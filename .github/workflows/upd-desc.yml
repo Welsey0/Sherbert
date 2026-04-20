@@ -13,4 +13,4 @@ jobs:
     - uses: funnyboy-roks/modrinth-auto-desc@v1.7
       with:
         auth-token: ${{ secrets.MODRINTH_TOKEN }}
-        slug: 'sherbert'
+        slug: ${{ secrets.MODRINTH_PID }}

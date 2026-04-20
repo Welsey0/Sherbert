@@ -56,9 +56,9 @@ jobs:
         id: determine_channel
         run: |
           if [[ "${{ steps.construct_name.outputs.release_name }}" == *"beta"* ]]; then
-            echo "channel=beta" >> $GITHUB_ENV
+            echo "channel=beta" >> $GITHUB_OUTPUT
           else
-            echo "channel=release" >> $GITHUB_ENV
+            echo "channel=release" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload to Modrinth
