@@ -24,7 +24,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent
-SRC_LEGACY = ROOT / "src"
+SRC = ROOT / "src"
 PACKINFO_PATH = ROOT / "packinfo.toml"
 TEMPLATE_PACK_PATH = ROOT / "templates" / "pack.toml"
 ADD_REMOTES_LOG = ROOT / "addremotes.log"
@@ -204,6 +204,12 @@ def remotes_for_loader(packinfo: dict[str, Any], loader: str) -> list[str]:
 	return [item for item in all_remote + loader_remote if item]
 
 
+def pinned_remotes_for_loader(packinfo: dict[str, Any], loader: str) -> list[dict[str, Any]]:
+	entries = list(content_section(packinfo, "all").get("pinned_remote", []))
+	entries.extend(content_section(packinfo, loader).get("pinned_remote", []))
+	return [item for item in entries if isinstance(item, dict)]
+
+
 def remote_exceptions_for_loader(packinfo: dict[str, Any], loader: str) -> list[dict[str, Any]]:
 	exceptions = list(content_section(packinfo, "all").get("remote_exception", []))
 	exceptions.extend(content_section(packinfo, loader).get("remote_exception", []))
@@ -229,6 +235,10 @@ def read_info(*, json_out: bool = False) -> int:
 			loader: len(remotes_for_loader(packinfo, loader))
 			for loader in loaders
 		},
+		"pinned_remotes": {
+			loader: len(pinned_remotes_for_loader(packinfo, loader))
+			for loader in loaders
+		},
 	}
 
 	if json_out:
@@ -242,7 +252,10 @@ def read_info(*, json_out: bool = False) -> int:
 	print(f"- Minecraft: {payload['mc']}")
 	print("- Loaders:")
 	for loader, version in payload["loaders"].items():
-		print(f"  - {loader}: {version} ({payload['remotes'][loader]} remotes)")
+		print(
+			f"  - {loader}: {version} "
+			f"({payload['remotes'][loader]} remotes, {payload['pinned_remotes'][loader]} pinned remotes)"
+		)
 	return 0
 
 
@@ -266,10 +279,12 @@ def guide(*, goal: str) -> int:
 			"title": "Version bump and metadata refresh",
 			"steps": [
 				"1. Update version in packinfo.toml",
-				"2. python stmanager.py update-updatables",
-				"3. python stmanager.py validate",
+				"2. python stmanager.py sync-loaders",
+				"3. python stmanager.py update-updatables",
+				"4. python stmanager.py validate",
 			],
 			"notes": [
+				"sync-loaders pulls packinfo/src changes into existing src-* folders without a full rebuild.",
 				"update-updatables is repeatable and tracks previously applied versions in .stmanager-state.json.",
 				"If a file cannot be safely updated, stmanager prints a warning with next action.",
 			],
@@ -283,6 +298,7 @@ def guide(*, goal: str) -> int:
 			],
 			"notes": [
 				"Check modupdates.log for per-loader update counts and failures.",
+				"For exact pinned Modrinth versions (including different MC versions), use [[...pinned_remote]] with allow_different_mc = true.",
 			],
 		},
 		"release": {
@@ -369,13 +385,13 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 			print(f"- {path.name}", file=sys.stderr)
 		return 1
 
-	if not SRC_LEGACY.exists():
-		print("Legacy src folder not found; cannot seed new architecture.", file=sys.stderr)
+	if not SRC.exists():
+		print("src folder not found; cannot create modloader daughter folders.", file=sys.stderr)
 		return 1
 
-	config_src = SRC_LEGACY / "config"
+	config_src = SRC / "config"
 	if not config_src.exists():
-		print("Legacy src/config folder not found; cannot copy base config.", file=sys.stderr)
+		print("src/config folder not found; cannot copy base config.", file=sys.stderr)
 		return 1
 
 	for loader, path in ldirs.items():
@@ -406,7 +422,7 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 			rel = entry.get("file")
 			if not rel:
 				continue
-			src = SRC_LEGACY / rel
+			src = SRC / rel
 			dst = path / rel
 			if not src.exists():
 				print(f"Warning: nonremote source file missing: {src}", file=sys.stderr)
@@ -420,7 +436,7 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 			rel = entry.get("file")
 			if not rel:
 				continue
-			src = SRC_LEGACY / rel
+			src = SRC / rel
 			dst = path / rel
 			if not src.exists():
 				print(f"Warning: remote exception file missing: {src}", file=sys.stderr)
@@ -437,6 +453,88 @@ def setup_folders(*, yes: bool, dry_run: bool) -> int:
 
 		print(f"Prepared {path.name}")
 
+	return 0
+
+
+def sync_loaders(*, dry_run: bool) -> int:
+	"""Sync loader folders from current packinfo/src without full folder rebuild."""
+	packinfo = load_packinfo()
+	ldirs = loader_dirs(packinfo)
+
+	if not ldirs:
+		print("No active loaders found in packinfo targets.", file=sys.stderr)
+		return 1
+
+	if not SRC.exists():
+		print("src folder not found; cannot sync modloader folders.", file=sys.stderr)
+		return 1
+
+	config_src = SRC / "config"
+	if not config_src.exists():
+		print("src/config folder not found; cannot sync base config.", file=sys.stderr)
+		return 1
+
+	copied_files = 0
+	warnings = 0
+
+	for loader, path in ldirs.items():
+		if dry_run:
+			print(f"[dry-run] ensure folder {path}")
+		else:
+			path.mkdir(parents=True, exist_ok=True)
+
+		for folder in ("mods", "resourcepacks", "shaderpacks"):
+			target = path / folder
+			if dry_run:
+				print(f"[dry-run] ensure folder {target}")
+			else:
+				target.mkdir(parents=True, exist_ok=True)
+
+		if dry_run:
+			print(f"[dry-run] sync config {config_src} -> {path / 'config'}")
+		else:
+			copy_tree(config_src, path / "config")
+
+		if dry_run:
+			print(f"[dry-run] render pack.toml for {loader} in {path}")
+		else:
+			write_loader_pack_toml(packinfo, loader, path)
+
+		for entry in nonremotes_for_loader(packinfo, loader):
+			rel = entry.get("file")
+			if not rel:
+				continue
+			src = SRC / rel
+			dst = path / rel
+			if not src.exists():
+				warnings += 1
+				print(f"Warning: nonremote source file missing: {src}", file=sys.stderr)
+				continue
+			if dry_run:
+				print(f"[dry-run] sync {src} -> {dst}")
+			else:
+				copy_file(src, dst)
+			copied_files += 1
+
+		for entry in remote_exceptions_for_loader(packinfo, loader):
+			rel = entry.get("file")
+			if not rel:
+				continue
+			src = SRC / rel
+			dst = path / rel
+			if not src.exists():
+				warnings += 1
+				print(f"Warning: remote exception source file missing: {src}", file=sys.stderr)
+				continue
+			if dry_run:
+				print(f"[dry-run] sync {src} -> {dst}")
+			else:
+				copy_file(src, dst)
+			copied_files += 1
+
+		print(f"Synchronized {path.name}")
+
+	print(f"Sync summary: copied_files={copied_files}, warnings={warnings}")
 	return 0
 
 
@@ -531,6 +629,18 @@ def parse_packwiz_fail(stdout: str, stderr: str) -> str:
 	return " | ".join(lines[-3:])
 
 
+def _pinned_add_commands(entry: dict[str, Any]) -> list[list[str]]:
+	mod_id = str(entry.get("id", "")).strip()
+	version_id = str(entry.get("version", "")).strip()
+	allow_different_mc = bool(entry.get("allow_different_mc", False))
+
+	base = ["packwiz", "mr", "add", mod_id, "--version-id", version_id]
+	commands: list[list[str]] = [base]
+	if allow_different_mc:
+		commands.insert(0, base + ["--ignore-game-version"])
+	return commands
+
+
 def add_remotes_for_loader(
 	packinfo: dict[str, Any],
 	loader: str,
@@ -539,7 +649,8 @@ def add_remotes_for_loader(
 	dry_run: bool,
 ) -> tuple[int, int, list[tuple[str, str]]]:
 	remotes = remotes_for_loader(packinfo, loader)
-	if not remotes:
+	pinned = pinned_remotes_for_loader(packinfo, loader)
+	if not remotes and not pinned:
 		return 0, 0, []
 
 	success = 0
@@ -564,6 +675,51 @@ def add_remotes_for_loader(
 			else:
 				failed += 1
 				failures.append((remote_id, parse_packwiz_fail(result.stdout, result.stderr)))
+
+		for entry in pinned:
+			mod_id = str(entry.get("id", "")).strip()
+			version_id = str(entry.get("version", "")).strip()
+			if not mod_id or not version_id:
+				failed += 1
+				failures.append((
+					f"{mod_id or '<missing-id>'}",
+					"Invalid pinned_remote entry: requires id and version",
+				))
+				continue
+
+			commands = _pinned_add_commands(entry)
+			last_result: RunResult | None = None
+			for idx, command in enumerate(commands):
+				result = run_cmd(command, ldir, dry_run=dry_run)
+				last_result = result
+				log.write(f"$ {' '.join(command)}\n")
+				log.write(result.stdout)
+				if result.stderr:
+					log.write("\n[stderr]\n")
+					log.write(result.stderr)
+				log.write("\n")
+
+				if result.ok:
+					success += 1
+					break
+
+				# If the first try used an unsupported override flag, try fallback command form.
+				if idx < len(commands) - 1 and "unknown flag" in (result.stderr or "").lower():
+					continue
+
+				failed += 1
+				failures.append((
+					f"{mod_id}@{version_id}",
+					parse_packwiz_fail(result.stdout, result.stderr),
+				))
+				break
+
+			if last_result is None:
+				failed += 1
+				failures.append((
+					f"{mod_id}@{version_id}",
+					"No command variant executed",
+				))
 
 	return success, failed, failures
 
@@ -679,6 +835,7 @@ def completion_helper() -> int:
 
 def expected_files_for_loader(packinfo: dict[str, Any], loader: str) -> list[str]:
 	entries = [f"mods/{item}.pw.toml" for item in remotes_for_loader(packinfo, loader)]
+	entries.extend(f"mods/{item}.pw.toml" for item in [str(pin.get("id", "")).strip() for pin in pinned_remotes_for_loader(packinfo, loader)] if item)
 	for item in nonremotes_for_loader(packinfo, loader):
 		rel = item.get("file")
 		if rel:
@@ -708,6 +865,33 @@ def validate(*, strict: bool, report_file: str | None) -> int:
 
 	for loader in loaders:
 		ldir = ldirs[loader]
+
+		for entry in pinned_remotes_for_loader(packinfo, loader):
+			mod_id = str(entry.get("id", "")).strip()
+			version_id = str(entry.get("version", "")).strip()
+			allow_different_mc = entry.get("allow_different_mc", False)
+			if not mod_id or not version_id:
+				issues.append(
+					ValidationIssue(
+						level="error",
+						code="PINNED_REMOTE_INVALID",
+						message=(
+							f"Invalid pinned_remote entry for {loader}: id='{mod_id}', version='{version_id}'"
+						),
+						hint="Each pinned_remote must include non-empty id and version fields.",
+					)
+				)
+			if not isinstance(allow_different_mc, bool):
+				issues.append(
+					ValidationIssue(
+						level="error",
+						code="PINNED_REMOTE_INVALID",
+						message=(
+							f"Invalid allow_different_mc for pinned_remote {mod_id}@{version_id} in {loader}"
+						),
+						hint="allow_different_mc must be true or false.",
+					)
+				)
 		if not ldir.exists():
 			issues.append(
 				ValidationIssue(
@@ -859,6 +1043,7 @@ def run_function(name: str, *, dry_run: bool) -> int:
 		"guide": lambda: guide(goal="all"),
 		"validate": lambda: validate(strict=False, report_file=None),
 		"setupfolders": lambda: setup_folders(yes=False, dry_run=dry_run),
+		"syncloaders": lambda: sync_loaders(dry_run=dry_run),
 		"updateupdatables": lambda: update_updatables(dry_run=dry_run),
 		"updatemods": lambda: update_mods(dry_run=dry_run),
 		"addremotesoption": lambda: add_remotes_option(write_unsuccessful=False, dry_run=dry_run),
@@ -898,6 +1083,9 @@ def parser() -> argparse.ArgumentParser:
 	setup.add_argument("--yes", action="store_true", help="Confirm deletion of existing src-* folders")
 	setup.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
+	sync_parser = sp.add_parser("sync-loaders", help="Sync existing src-* folders from packinfo/src changes")
+	sync_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
+
 	update_updatables_parser = sp.add_parser("update-updatables", help="Replace <!VERSION!> in updatable paths")
 	update_updatables_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
@@ -912,7 +1100,7 @@ def parser() -> argparse.ArgumentParser:
 	build_parser = sp.add_parser("build", help="Run packwiz refresh/export and move renamed .mrpack files to root")
 	build_parser.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz")
 
-	fn = sp.add_parser("run-function", help="Run internal function by name (legacy compatibility)")
+	fn = sp.add_parser("run-function", help="Run internal function by name")
 	fn.add_argument("name", help="Function name, e.g. readInfo, setupFolders, build")
 	fn.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without running packwiz or writing changes")
 
@@ -931,6 +1119,8 @@ def main() -> int:
 			return validate(strict=args.strict, report_file=args.report_file)
 		if args.command == "setup-folders":
 			return setup_folders(yes=args.yes, dry_run=args.dry_run)
+		if args.command == "sync-loaders":
+			return sync_loaders(dry_run=args.dry_run)
 		if args.command == "update-updatables":
 			return update_updatables(dry_run=args.dry_run)
 		if args.command == "update-mods":

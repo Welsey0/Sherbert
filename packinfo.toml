@@ -89,10 +89,16 @@ fabric = "0.18.4"
         ]
 
         # [[content.remote_exception]]
-        #     id = "example"
+        #     id = "modrinth-project-id-or-slug"
         #     reason = "Example usage of this feature"
         #     file = "n/a"
         #     date = "n/a"
+
+        # [[content.pinned_remote]]
+        #     id = "modrinth-project-id-or-slug"
+        #     version = "modrinth-version-id"
+        #     allow_different_mc = true
+        #     note = "Optional reason for pinning this exact version"
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
