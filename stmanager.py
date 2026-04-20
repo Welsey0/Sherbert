@@ -126,11 +126,49 @@ def run_cmd(command: list[str], cwd: Path, *, dry_run: bool) -> RunResult:
 	)
 
 
-def require_packwiz(dry_run: bool) -> None:
+def _packwiz_candidate_paths() -> list[Path]:
+	names = ["packwiz"]
+	if os.name == "nt":
+		names = ["packwiz.exe", "packwiz.cmd", "packwiz.bat", "packwiz"]
+
+	# DEVELOPING.md layout: packwiz executable in the parent root folder.
+	bases = [ROOT.parent, ROOT]
+	paths: list[Path] = []
+	for base in bases:
+		for name in names:
+			paths.append(base / name)
+	return paths
+
+
+def resolve_packwiz_executable() -> str | None:
+	for candidate in _packwiz_candidate_paths():
+		if candidate.is_file():
+			return str(candidate)
+
+	from_path = shutil.which("packwiz")
+	if from_path:
+		return from_path
+
+	return None
+
+
+def require_packwiz(dry_run: bool) -> str:
+	executable = resolve_packwiz_executable()
+	if executable:
+		return executable
+
 	if dry_run:
-		return
-	if shutil.which("packwiz") is None:
-		raise RuntimeError("packwiz is required for this command but was not found in PATH")
+		return "packwiz"
+
+	raise RuntimeError(
+		"packwiz executable not found. Place it in the parent folder above this repo "
+		"(as documented in DEVELOPING.md), in this repo root, or add it to PATH."
+	)
+
+
+def run_packwiz(args: list[str], cwd: Path, *, dry_run: bool) -> RunResult:
+	executable = require_packwiz(dry_run)
+	return run_cmd([executable, *args], cwd, dry_run=dry_run)
 
 
 def ensure_parent(path: Path) -> None:
@@ -298,6 +336,7 @@ def guide(*, goal: str) -> int:
 			],
 			"notes": [
 				"Check modupdates.log for per-loader update counts and failures.",
+				"Packwiz executable is auto-resolved from the parent folder layout in DEVELOPING.md, repo root, or PATH.",
 				"For exact pinned Modrinth versions (including different MC versions), use [[...pinned_remote]] with allow_different_mc = true.",
 			],
 		},
@@ -634,7 +673,7 @@ def _pinned_add_commands(entry: dict[str, Any]) -> list[list[str]]:
 	version_id = str(entry.get("version", "")).strip()
 	allow_different_mc = bool(entry.get("allow_different_mc", False))
 
-	base = ["packwiz", "mr", "add", mod_id, "--version-id", version_id]
+	base = ["mr", "add", mod_id, "--version-id", version_id]
 	commands: list[list[str]] = [base]
 	if allow_different_mc:
 		commands.insert(0, base + ["--ignore-game-version"])
@@ -661,8 +700,8 @@ def add_remotes_for_loader(
 		stamp = dt.datetime.now().isoformat(timespec="seconds")
 		log.write(f"\n[{stamp}] loader={loader} folder={ldir}\n")
 		for remote_id in remotes:
-			command = ["packwiz", "mr", "add", remote_id]
-			result = run_cmd(command, ldir, dry_run=dry_run)
+			command = ["mr", "add", remote_id]
+			result = run_packwiz(command, ldir, dry_run=dry_run)
 			log.write(f"$ {' '.join(command)}\n")
 			log.write(result.stdout)
 			if result.stderr:
@@ -690,7 +729,7 @@ def add_remotes_for_loader(
 			commands = _pinned_add_commands(entry)
 			last_result: RunResult | None = None
 			for idx, command in enumerate(commands):
-				result = run_cmd(command, ldir, dry_run=dry_run)
+				result = run_packwiz(command, ldir, dry_run=dry_run)
 				last_result = result
 				log.write(f"$ {' '.join(command)}\n")
 				log.write(result.stdout)
@@ -783,7 +822,7 @@ def update_mods(*, dry_run: bool) -> int:
 			print(f"Warning: missing folder {ldir}", file=sys.stderr)
 			failures += 1
 			continue
-		result = run_cmd(["packwiz", "update"], ldir, dry_run=dry_run)
+		result = run_packwiz(["update"], ldir, dry_run=dry_run)
 		if not result.ok:
 			failures += 1
 		count = extract_update_count(result.stdout)
@@ -1009,8 +1048,8 @@ def build(*, dry_run: bool) -> int:
 			continue
 
 		before = {path.name for path in ldir.glob("*.mrpack")}
-		refresh = run_cmd(["packwiz", "refresh"], ldir, dry_run=dry_run)
-		export = run_cmd(["packwiz", "mr", "export"], ldir, dry_run=dry_run)
+		refresh = run_packwiz(["refresh"], ldir, dry_run=dry_run)
+		export = run_packwiz(["mr", "export"], ldir, dry_run=dry_run)
 		if not refresh.ok or not export.ok:
 			failures += 1
 			continue
