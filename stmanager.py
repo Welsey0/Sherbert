@@ -1,19 +1,8 @@
-"""ST Manager.
+"""ST Manager
+Command line tool for managing ST Family modpacks
 
-Command line tool for ST Family modpack automation.
-
-Implemented functions/options:
-- readInfo
-- addRemotes (internal function)
-- Individual Function Option via run-function <name>
-- setupFolders
-- updateUpdatables
-- updateMods
-- addRemotesOption
-- completionHelper
-- build
-
-All functionality uses only Python standard library.
+Try using the guide command to get to grips with the tool.
+Vibecoded, but was based off of an entirely human-written outline.
 """
 
 from __future__ import annotations
