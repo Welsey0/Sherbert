@@ -94,6 +94,18 @@ fabric = "0.18.4"
         #     file = "n/a"
         #     date = "n/a"
 
+        [[content.remote_exception]]
+            id = "better-clouds"
+            reason = "Using orangishcat's PR"
+            file = "mods/better-clouds-1.11.3-alpha+1.21.11-fabric.rev.40cd82f.jar"
+            date = "n/a"
+
+        [[content.remote_exception]]
+            id = "mutils"
+            reason = "Using my own fork because the developer hasn't updated it"
+            file = "mods/ModpackUtils-1.2.0+fabric.1.21.11.jar"
+            date = "n/a"
+
         # [[content.pinned_remote]]
         #     id = "modrinth-project-id-or-slug"
         #     version = "modrinth-version-id"
