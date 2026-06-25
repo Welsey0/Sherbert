@@ -43,7 +43,6 @@ Use these commands from the repository root:
 ```bash
 python stmanager.py guide
 python stmanager.py sync-loaders
-python stmanager.py update-updatables
 python stmanager.py --dry-run add-remotes
 python stmanager.py add-remotes --write-unsuccessful
 python stmanager.py validate --report-file validation-report.json

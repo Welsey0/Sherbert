@@ -5,7 +5,7 @@ Sherbert is the tooling base for that family.
 
 It combines:
 - Packwiz for dependency management.
-- STManager for architecture setup, synchronization, validation, and build routines.
+- STManager for architecture setup, synchronization, and validation routines.
 - GitHub Actions for release automation.
 
 Current architecture model:
