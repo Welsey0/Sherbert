@@ -73,15 +73,15 @@ jobs:
         id: get_version
         uses: sravinet/toml-select@v1.0.1
         with:
-          file: src/pack.toml
+          file: packinfo.toml
           field: version
 
       - name: Get Minecraft Version
         id: get_minecraft_version
         uses: sravinet/toml-select@v1.0.1
         with:
-          file: src/pack.toml
-          field: versions.minecraft
+          file: packinfo.toml
+          field: targets.mc
 
       - name: Ensure version has not already been released
         env:
