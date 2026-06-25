@@ -1,0 +1,130 @@
+name = "Sherbert"
+author = "Welsey_"
+version = "4.0.3"
+
+[targets]
+mc = "1.21.11"
+neo = "none"
+fabric = "0.18.4"
+
+[content]
+    [all]
+        remotes = [
+            "alternate-current",
+            "animated-loading-screen",
+            "aseprite-fonts",
+            "badoptimizations",
+            "betteraddserver",
+            "better-block-entities",
+            "better-clouds",
+            "better-mount-hud",
+            "bettergrassify",
+            "capes",
+            "chat-heads",
+            "chat-impressive-animation",
+            "chunks-fade-in",
+            "cloth-config",
+            "complementary-reimagined",
+            "continuity",
+            "controlling",
+            "crash-assistant",
+            "cubes-without-borders",
+            "debugify",
+            "dynamic-fps",
+            "e4mc",
+            "entity-model-features",
+            "entitytexturefeatures",
+            "entityculling",
+            "fabric-language-kotlin",
+            "fast-ip-ping",
+            "fastquit",
+            "ferrite-core",
+            "forge-config-api-port",
+            "graceful-packets",
+            "hold-that-chunk-v2",
+            "immediatelyfast",
+            "iris",
+            "krypton",
+            "lambdynamiclights",
+            "language-reload",
+            "lithium",
+            "main-menu-credits",
+            "mellow",
+            "midnightlib",
+            "mixintrace-reloaded",
+            "modernfix-mvus",
+            "modmenu",
+            "morechathistory",
+            "moreculling",
+            "mutils",
+            "no-chat-reports",
+            "noisiumforked",
+            "optigui",
+            "packet-fixer",
+            "placeholder-api",
+            "puzzle",
+            "reeses-sodium-options",
+            "rrls",
+            "resourcify",
+            "rethoughted-gui",
+            "scalablelux",
+            "scribble",
+            "searchables",
+            "serverpingerfixer",
+            "shut-up-realms",
+            "simple-hud-enhanced",
+            "smooth-scroll",
+            "sodium",
+            "sodium-shadowy-path-blocks",
+            "sodium-extra",
+            "spark",
+            "stackdeobf",
+            "threadtweak",
+            "tooltip-scroll",
+            "vmp-fabric",
+            "viafabricplus",
+            "yacl",
+            "yosbr",
+            "zoomify"
+        ]
+
+        # [[content.remote_exception]]
+        #     id = "modrinth-project-id-or-slug"
+        #     reason = "Example usage of this feature"
+        #     file = "n/a"
+        #     date = "n/a"
+
+        [[content.remote_exception]]
+            id = "better-clouds"
+            reason = "Using orangishcat's PR"
+            file = "mods/better-clouds-1.11.3-alpha+1.21.11-fabric.rev.40cd82f.jar"
+            date = "n/a"
+
+        [[content.remote_exception]]
+            id = "mutils"
+            reason = "Using my own fork because the developer hasn't updated it"
+            file = "mods/ModpackUtils-1.2.0+fabric.1.21.11.jar"
+            date = "n/a"
+
+        # [[content.pinned_remote]]
+        #     id = "modrinth-project-id-or-slug"
+        #     version = "modrinth-version-id"
+        #     allow_different_mc = true
+        #     note = "Optional reason for pinning this exact version"
+
+        [[content.nonremote]]
+            file = "resourcepacks/Sherbert_Colors.zip"
+            note = "Provides colors and other UI stuff"
+
+    [fabric]
+        remotes = [
+            "fabric-api"
+        ]
+
+    [neo]
+
+[updatables]
+    version = [
+        "config/mutils/mutils.json5",
+        "config/yosbr/config/mutils/mutils.json5"
+    ]

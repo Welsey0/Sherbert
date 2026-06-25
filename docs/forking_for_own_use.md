@@ -1,33 +1,56 @@
-# Forking For Your Own Use
-I encourage you to fork and use ST Family tooling for your own projects. I love Minecraft modding and find that the biggest barrier to playing modded with friends is the intracacies that can be required to set up a modpack. I hope my work here can make it just that little bit easier for you. If you plan to fork or copy ST Family tooling, please link back here or give credit in some way. Here are some instructions to set up properly.
+# Forking for Your Own Use
+You are welcome to fork ST Family tooling for your own modpack projects. If you reuse this tooling, please credit this repository.
 
-## Step 1: Development Environment
-Please see DEVELOPING.md to set up a development environment.
+## Step 1: Set Up Development Environment
+Follow [DEVELOPING.md](../DEVELOPING.md) first.
 
-## Step 2: Setting Up Packwiz Pack
+## Step 2: Understand the New Flow
+This repo uses:
+- `packinfo.toml` as source of truth.
+- `src/` as base content.
+- `src-*` loader folders generated and maintained by STManager.
 
-### If you want to keep Sherbert's existing content:
-It would probably be easier to install Sherbert and then add the mods you want in your Minecraft launcher. I do not recommend this as much of Sherbert's content is tailored for specific use here. If you still want to do this, find `pack.toml` in the `src` folder and edit the information accordingly. Please do not distribute a pack containing Sherbert's colors or branding.
+Avoid editing generated loader folders manually unless you know exactly why.
 
-### If you want to start a new pack:
-Delete the contents of the `src` folder but not the folder itself, Then make sure you are located in the `src` folder and run `../../packwiz init`. Follow the prompts to set up your new modpack! From there should delete the content of `modlists.sh` and fill it with your own mods if you want to use STM's Completion Helper. Add new mods with Packwiz.
+## Step 3: Forking Paths
+### Keep Sherbert content as a base
+1. Fork the repository.
+2. Update metadata in `packinfo.toml`.
+3. Run:
 
-## Step 3: Modrinth
-The tooling included here is build to distribute this modpack on the [Modrinth platform](https://modrinth.com). Here are two support articles on making a modpack:
-- [Modpacks on Modrinth - Modrinth Support](https://support.modrinth.com/en/articles/8802250-modpacks-on-modrinth)
-- [Sharing Modpacks - Modrinth Support](https://support.modrinth.com/en/articles/8797522-sharing-modpacks)
+```bash
+python stmanager.py setup-folders --yes
+python stmanager.py sync-loaders
+python stmanager.py sync-content --write-unsuccessful
+python stmanager.py update-updatables
+python stmanager.py validate
+```
 
-## Step 4: API Keys
-The GitHub Actions workflows included here require some Modrinth API keys as GitHub secrets in order to work properly. Head to the [Modrinth Personal Access Token page in your settings](https://modrinth.com/settings/pats) to create these keys. When creating a new PAT for your modpack, give it the following scopes:
+### Start a new pack from tooling only
+1. Keep tooling files and workflow files.
+2. Replace `src/` content with your own base files and config.
+3. Update `packinfo.toml` (`targets`, remotes, nonremotes, updatables, and optional pinned remotes).
+4. Run the same STManager commands as above.
+
+## Step 4: Modrinth Setup
+The workflows in this repo are designed for publishing on [Modrinth](https://modrinth.com).
+
+Helpful support links:
+- [Modpacks on Modrinth](https://support.modrinth.com/en/articles/8802250-modpacks-on-modrinth)
+- [Sharing Modpacks](https://support.modrinth.com/en/articles/8797522-sharing-modpacks)
+
+## Step 5: GitHub Secrets and Permissions
+Create these repository secrets:
+- `MODRINTH_TOKEN`
+- `MODRINTH_PID`
+
+Recommended PAT scopes:
 - Create versions
 - Write projects
 - Write versions
-After you have aquired a PAT, head to Settings > Secrets and variables > Actions and create a new repository secret. Name it `MODRINTH_TOKEN` and paste in your PAT. Hop back to the Modrinth page of your new modpack and find the three dots `More options` menu. Copy your modpack's ID and turn it into another GitHub secret called `MODRINTH_PID`.
 
-## Step 5: Finishing Touches
-In your GitHub repository settings, head to Actions > General, down to Workflow Permissions, and select `Read and write permissions`. Head over to `.github/workflows/publish.yml` and set the `PACK_NAME` variable to your own.
-
-Congratulations, you've got a new modpack!
-
-## Tips
-- Refer to the [Packwiz documentation](https://packwiz.infra.link/) for more information on its use.
+Also set repository workflow permissions to `Read and write permissions`.
+## Notes
+- `[[content.pinned_remote]]` lets you pin exact Modrinth version IDs.
+- Set `allow_different_mc = true` for a pinned remote when you intentionally want a version from a different Minecraft line.
+- Refer to [Packwiz documentation](https://packwiz.infra.link/) for deeper Packwiz usage.

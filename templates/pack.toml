@@ -1,0 +1,8 @@
+name = "<!NAME!>"
+author = "<!AUTHOR!>"
+version = "<!VERSION!>"
+pack-format = "packwiz:1.1.0"
+
+[versions]
+<!MODLOADER!> = "<!LOADERVERSION!>"
+minecraft = "<!MCVERSION!>"
