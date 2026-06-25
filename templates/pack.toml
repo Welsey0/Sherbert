@@ -6,3 +6,6 @@ pack-format = "packwiz:1.1.0"
 [versions]
 <!MODLOADER!> = "<!LOADERVERSION!>"
 minecraft = "<!MCVERSION!>"
+
+[options]
+acceptable-game-versions = ["26.1"]
