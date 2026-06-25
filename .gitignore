@@ -1,4 +1,4 @@
 *.mrpack
 *.log
+src-*
 unsuccessful.md
-updated.md

@@ -37,17 +37,17 @@ python stmanager.py setup-folders --yes
 
 This creates and prepares `src-<loader>` folders based on `packinfo.toml`.
 
-## Step 5: Daily Workflow
-Use these commands from the repository root:
+## Step 5: STManager Quick Guide
+Use `stmanager.py` from the repository root for the core pack workflow:
 
-```bash
-python stmanager.py guide
-python stmanager.py sync-loaders
-python stmanager.py --dry-run add-remotes
-python stmanager.py add-remotes --write-unsuccessful
-python stmanager.py validate --report-file validation-report.json
-python stmanager.py --dry-run build
-```
+- `python stmanager.py setup-folders --yes` creates or resets each `src-<loader>` folder from `packinfo.toml` and `src/`.
+- `python stmanager.py sync-loaders` refreshes existing loader folders from the current source files.
+- `python stmanager.py sync-content --write-unsuccessful` syncs local exceptions, nonremotes, pinned remotes, and Packwiz remotes, then writes any failures to `unsuccessful.md`.
+- `python stmanager.py update-updatables` replaces the version token in files listed under `updatables.version`.
+- `python stmanager.py validate --report-file validation-report.json` checks the generated loader folders against `packinfo.toml` and each loader's `index.toml`, so resource packs, shader packs, and other non-mod files are covered too.
+- `python stmanager.py build` refreshes and exports the final `.mrpack` artifacts into the repo root.
+
+For a safe preview, add `--dry-run` to the command you want to inspect first.
 
 ## Notes
 - `packinfo.toml` is source of truth.

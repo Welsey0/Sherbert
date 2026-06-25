@@ -21,7 +21,8 @@ Avoid editing generated loader folders manually unless you know exactly why.
 ```bash
 python stmanager.py setup-folders --yes
 python stmanager.py sync-loaders
-python stmanager.py add-remotes --write-unsuccessful
+python stmanager.py sync-content --write-unsuccessful
+python stmanager.py update-updatables
 python stmanager.py validate
 ```
 

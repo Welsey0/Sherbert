@@ -92,12 +92,12 @@ def loader_dirs(packinfo: dict[str, Any]) -> dict[str, Path]:
 
 
 def loader_entries(packinfo: dict[str, Any], loader: str) -> tuple[list[str], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
-	all_section = content_section(packinfo, "all")
+	shared_section = packinfo.get("content", {}) if isinstance(packinfo.get("content", {}), dict) else {}
 	loader_section = content_section(packinfo, loader)
-	remotes = [item for item in list(all_section.get("remotes", [])) + list(loader_section.get("remotes", [])) if item]
-	pinned = [item for item in list(all_section.get("pinned_remote", [])) + list(loader_section.get("pinned_remote", [])) if isinstance(item, dict)]
-	exceptions = [item for item in list(all_section.get("remote_exception", [])) + list(loader_section.get("remote_exception", [])) if isinstance(item, dict)]
-	nonremotes = [item for item in list(all_section.get("nonremote", [])) + list(loader_section.get("nonremote", [])) if isinstance(item, dict)]
+	remotes = [item for item in list(packinfo.get("all", {}).get("remotes", [])) + list(loader_section.get("remotes", [])) if item]
+	pinned = [item for item in list(shared_section.get("pinned_remote", [])) + list(loader_section.get("pinned_remote", [])) if isinstance(item, dict)]
+	exceptions = [item for item in list(shared_section.get("remote_exception", [])) + list(loader_section.get("remote_exception", [])) if isinstance(item, dict)]
+	nonremotes = [item for item in list(shared_section.get("nonremote", [])) + list(loader_section.get("nonremote", [])) if isinstance(item, dict)]
 	return remotes, pinned, exceptions, nonremotes
 
 
@@ -172,7 +172,7 @@ def make_tree_writable(path: Path) -> None:
 		pass
 
 
-def _rmtree_onexc(func: Any, path: str, _exc: Any) -> None:
+def _rmtree_onerror(func: Any, path: str, _exc: Any) -> None:
 	entry = Path(path)
 	try:
 		entry.chmod(entry.stat().st_mode | stat.S_IWRITE)
@@ -189,7 +189,7 @@ def remove_tree(path: Path) -> None:
 	for attempt in range(3):
 		make_tree_writable(path)
 		try:
-			shutil.rmtree(path, onexc=_rmtree_onexc)
+			shutil.rmtree(path, onerror=_rmtree_onerror)
 			return
 		except OSError as exc:
 			last_error = exc
@@ -248,6 +248,14 @@ def materialize_loader(packinfo: dict[str, Any], loader: str, target_dir: Path, 
 	else:
 		copy_tree(config_src, target_dir / "config")
 
+	index_src = SRC / "index.toml"
+	index_dst = target_dir / "index.toml"
+	if index_src.exists():
+		if dry_run:
+			print(f"[dry-run] copy {index_src} -> {index_dst}")
+		else:
+			copy_file(index_src, index_dst)
+
 	_, _, exceptions, nonremotes = loader_entries(packinfo, loader)
 	for entry in [*nonremotes, *exceptions]:
 		rel = str(entry.get("file", "")).strip()
@@ -267,6 +275,23 @@ def materialize_loader(packinfo: dict[str, Any], loader: str, target_dir: Path, 
 		print(f"[dry-run] render pack.toml for {loader} in {target_dir}")
 	else:
 		render_pack_toml(packinfo, loader, target_dir)
+
+
+def copy_local_content(packinfo: dict[str, Any], loader: str, target_dir: Path, *, dry_run: bool) -> None:
+	_, _, exceptions, nonremotes = loader_entries(packinfo, loader)
+	for entry in [*nonremotes, *exceptions]:
+		rel = str(entry.get("file", "")).strip()
+		if not rel:
+			continue
+		src = SRC / rel
+		dst = target_dir / rel
+		if not src.exists():
+			print(f"Warning: source file missing: {src}", file=sys.stderr)
+			continue
+		if dry_run:
+			print(f"[dry-run] copy {src} -> {dst}")
+		else:
+			copy_file(src, dst)
 
 
 def setup_folders(*, yes: bool, dry_run: bool) -> int:
@@ -316,20 +341,36 @@ def pinned_add_commands(entry: dict[str, Any]) -> list[list[str]]:
 	return [base]
 
 
-def add_remotes_for_loader(packinfo: dict[str, Any], loader: str, loader_dir: Path, *, dry_run: bool) -> tuple[int, int, list[tuple[str, str]]]:
-	remotes, pinned, _, _ = loader_entries(packinfo, loader)
+def sync_content_for_loader(packinfo: dict[str, Any], loader: str, loader_dir: Path, *, dry_run: bool) -> tuple[int, int, int, list[tuple[str, str]]]:
+	remotes, pinned, exceptions, _ = loader_entries(packinfo, loader)
+	exception_notes = {
+		str(entry.get("id", "")).strip(): str(entry.get("reason", "")).strip()
+		for entry in exceptions
+		if str(entry.get("id", "")).strip()
+	}
 	success = failed = 0
+	skipped = 0
 	failures: list[tuple[str, str]] = []
 
-	for remote_id in remotes:
-		result = run_packwiz(["mr", "add", remote_id], loader_dir, dry_run=dry_run)
+	copy_local_content(packinfo, loader, loader_dir, dry_run=dry_run)
+
+	for index, remote_id in enumerate(remotes, start=1):
+		if remote_id in exception_notes:
+			reason = exception_notes.get(remote_id) or "declared as a local remote exception"
+			print(f"[{loader}] skipping local exception {remote_id}: {reason}")
+			skipped += 1
+			continue
+		print(f"[{loader}] adding remote {index}/{len(remotes)}: {remote_id}")
+		result = run_packwiz(["-y", "mr", "add", remote_id], loader_dir, dry_run=dry_run)
 		if result.ok:
 			success += 1
 		else:
 			failed += 1
-			failures.append((remote_id, (result.stderr or result.stdout).strip() or "packwiz failed"))
+			reason = (result.stderr or result.stdout).strip() or "packwiz failed"
+			print(f"[{loader}] warning: could not add {remote_id}: {reason}; continuing")
+			failures.append((remote_id, reason))
 
-	for entry in pinned:
+	for index, entry in enumerate(pinned, start=1):
 		mod_id = str(entry.get("id", "")).strip()
 		version_id = str(entry.get("version", "")).strip()
 		if not mod_id or not version_id:
@@ -337,18 +378,24 @@ def add_remotes_for_loader(packinfo: dict[str, Any], loader: str, loader_dir: Pa
 			failures.append((mod_id or "<missing-id>", "Invalid pinned_remote entry: requires id and version"))
 			continue
 
-		command = pinned_add_commands(entry)[0]
+		print(f"[{loader}] adding pinned remote {index}/{len(pinned)}: {mod_id}@{version_id}")
+		command = ["-y", *pinned_add_commands(entry)[0]]
 		result = run_packwiz(command, loader_dir, dry_run=dry_run)
 		if result.ok:
 			success += 1
 		else:
 			failed += 1
-			failures.append((f"{mod_id}@{version_id}", (result.stderr or result.stdout).strip() or "packwiz failed"))
+			reason = (result.stderr or result.stdout).strip() or "packwiz failed"
+			print(f"[{loader}] warning: could not add {mod_id}@{version_id}: {reason}; continuing")
+			failures.append((f"{mod_id}@{version_id}", reason))
 
-	return success, failed, failures
+	if skipped:
+		print(f"[{loader}] skipped {skipped} local exception(s)")
+
+	return success, failed, skipped, failures
 
 
-def add_remotes_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
+def sync_content_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 	require_packwiz(dry_run)
 	packinfo = load_packinfo()
 	loaders = loader_dirs(packinfo)
@@ -357,25 +404,88 @@ def add_remotes_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 		return 1
 
 	total_success = total_failed = 0
+	total_skipped = 0
 	all_failures: list[tuple[str, str, str]] = []
 	for loader, loader_dir in loaders.items():
 		if not loader_dir.exists():
 			print(f"Warning: skipping missing folder {loader_dir}", file=sys.stderr)
 			continue
-		success, failed, failures = add_remotes_for_loader(packinfo, loader, loader_dir, dry_run=dry_run)
+		success, failed, skipped, failures = sync_content_for_loader(packinfo, loader, loader_dir, dry_run=dry_run)
 		total_success += success
 		total_failed += failed
+		total_skipped += skipped
 		all_failures.extend((loader, remote_id, reason) for remote_id, reason in failures)
 
 	attempted = total_success + total_failed
 	percent = (total_success / attempted * 100.0) if attempted else 100.0
-	print(f"Add remotes summary: {total_success} succeeded, {total_failed} failed, {percent:.1f}% success")
+	print(f"Sync content summary: {total_success} succeeded, {total_failed} failed, {total_skipped} skipped, {percent:.1f}% success")
 	if write_unsuccessful and all_failures:
 		lines = ["# Unsuccessful remotes", ""]
 		lines.extend(f"- loader={loader} id={remote_id}: {reason}" for loader, remote_id, reason in all_failures)
 		UNSUCCESSFUL_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
 		print(f"Wrote failure report to {UNSUCCESSFUL_PATH.name}")
 	return 0 if total_failed == 0 else 1
+
+
+def update_updatables(*, dry_run: bool) -> int:
+	packinfo = load_packinfo()
+	loaders = loader_dirs(packinfo)
+	paths = list(packinfo.get("updatables", {}).get("version", []))
+	if not paths:
+		print("No [updatables].version entries found.")
+		return 0
+	if not loaders:
+		print("No active loaders found in packinfo targets.", file=sys.stderr)
+		return 1
+
+	version = str(packinfo.get("version", ""))
+	updated = 0
+	current = 0
+	missing = 0
+
+	for loader, loader_dir in loaders.items():
+		if not loader_dir.exists():
+			print(f"Warning: skipping missing folder {loader_dir}", file=sys.stderr)
+			continue
+		for rel in paths:
+			target = loader_dir / rel
+			if not target.exists():
+				missing += 1
+				print(f"Warning: updatable path not found for {loader}: {target}", file=sys.stderr)
+				continue
+			text = target.read_text(encoding="utf-8")
+			if "<!VERSION!>" in text:
+				if dry_run:
+					print(f"[dry-run] replace <!VERSION!> in {target}")
+				else:
+					target.write_text(text.replace("<!VERSION!>", version), encoding="utf-8")
+				updated += 1
+			elif version in text:
+				current += 1
+			else:
+				missing += 1
+				print(f"Warning: cannot safely update {target}; expected <!VERSION!> token or current version string.", file=sys.stderr)
+
+	print(f"Updatables summary: updated={updated}, current={current}, missing={missing}")
+	return 0 if missing == 0 else 1
+
+
+def index_files_for_loader(loader_dir: Path) -> list[str]:
+	index_path = loader_dir / "index.toml"
+	if not index_path.exists():
+		return []
+	if _TOML is None:
+		raise RuntimeError("No TOML parser found. Use Python 3.11+ or install tomli.")
+	with index_path.open("rb") as handle:
+		data = _TOML.load(handle)
+	files: list[str] = []
+	for entry in data.get("files", []):
+		if not isinstance(entry, dict):
+			continue
+		rel = str(entry.get("file", "")).strip()
+		if rel and rel not in {"pack.toml", "index.toml"}:
+			files.append(rel)
+	return files
 
 
 def validate(*, strict: bool, report_file: str | None) -> int:
@@ -399,6 +509,8 @@ def validate(*, strict: bool, report_file: str | None) -> int:
 
 		if not (loader_dir / "pack.toml").exists():
 			issues.append(Issue("error", "PACK_TOML_MISSING", f"Missing {loader_dir.name}/pack.toml", "Run setup-folders so pack.toml is rendered from templates/pack.toml."))
+		if not (loader_dir / "index.toml").exists():
+			issues.append(Issue("error", "INDEX_TOML_MISSING", f"Missing {loader_dir.name}/index.toml", "Run sync-content so Packwiz can manage all files in the loader folder."))
 
 		_, pinned, _, _ = loader_entries(packinfo, loader)
 		for entry in pinned:
@@ -409,9 +521,10 @@ def validate(*, strict: bool, report_file: str | None) -> int:
 			if not isinstance(entry.get("allow_different_mc", False), bool):
 				issues.append(Issue("error", "PINNED_REMOTE_INVALID", f"Invalid allow_different_mc for pinned_remote {mod_id}@{version_id} in {loader}", "allow_different_mc must be true or false."))
 
-		for rel in expected_files_for_loader(packinfo, loader):
+		expected_files = set(index_files_for_loader(loader_dir))
+		for rel in sorted(expected_files):
 			if not (loader_dir / rel).exists():
-				issues.append(Issue("error", "EXPECTED_FILE_MISSING", f"Missing expected file for {loader}: {loader_dir.name}/{rel}", "Run add-remotes and ensure nonremote/remote_exception files are copied."))
+				issues.append(Issue("error", "EXPECTED_FILE_MISSING", f"Missing expected file for {loader}: {loader_dir.name}/{rel}", "Run sync-content so Packwiz can keep all tracked files in sync."))
 
 	errors = [item for item in issues if item.level == "error"]
 	warnings = [item for item in issues if item.level == "warning"]
@@ -496,8 +609,11 @@ def parser() -> argparse.ArgumentParser:
 
 	sp.add_parser("sync-loaders", help="Sync existing src-* folders from packinfo/src changes")
 
-	add = sp.add_parser("add-remotes", help="Run packwiz mr add for remotes in each src-* folder")
+	add = sp.add_parser("sync-content", aliases=["add-remotes"], help="Sync local files, remote exceptions, pinned remotes, and Packwiz remotes into each src-* folder")
 	add.add_argument("--write-unsuccessful", action="store_true", help="Write unsuccessful remotes to unsuccessful.md")
+
+	updatables = sp.add_parser("update-updatables", help="Replace version tokens in files listed under [updatables].version")
+	updatables.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	validate_parser = sp.add_parser("validate", help="Validate src-* loader structure against packinfo ground truth")
 	validate_parser.add_argument("--strict", action="store_true", help="Treat warnings as failures")
@@ -515,8 +631,10 @@ def main() -> int:
 			return setup_folders(yes=args.yes, dry_run=args.dry_run)
 		if args.command == "sync-loaders":
 			return sync_loaders(dry_run=args.dry_run)
-		if args.command == "add-remotes":
-			return add_remotes_option(write_unsuccessful=args.write_unsuccessful, dry_run=args.dry_run)
+		if args.command in {"sync-content", "add-remotes"}:
+			return sync_content_option(write_unsuccessful=args.write_unsuccessful, dry_run=args.dry_run)
+		if args.command == "update-updatables":
+			return update_updatables(dry_run=args.dry_run)
 		if args.command == "validate":
 			return validate(strict=args.strict, report_file=args.report_file)
 		if args.command == "build":
