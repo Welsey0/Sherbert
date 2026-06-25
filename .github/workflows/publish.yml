@@ -51,7 +51,7 @@ jobs:
 
       - name: Update versioned files
         run: |
-          python stmanager.py update-updatables
+          python stmanager.py update-variable-values
 
       - name: Validate pack structure
         run: |
