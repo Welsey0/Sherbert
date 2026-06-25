@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Packwiz
-        uses: actionhippie/install-packwiz@v2.0.0
+        uses: actionhippie/install-packwiz@v1
 
       - name: Bootstrap loader folders
         run: |
