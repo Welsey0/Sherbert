@@ -428,7 +428,7 @@ def sync_content_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 	return 0 if total_failed == 0 else 1
 
 
-def update_updatables(*, dry_run: bool) -> int:
+def update_variable_values(*, dry_run: bool) -> int:
 	packinfo = load_packinfo()
 	loaders = loader_dirs(packinfo)
 	paths = list(packinfo.get("updatables", {}).get("version", []))
@@ -610,10 +610,10 @@ def parser() -> argparse.ArgumentParser:
 
 	sp.add_parser("sync-loaders", help="Sync existing src-* folders from packinfo/src changes")
 
-	add = sp.add_parser("sync-content", aliases=["add-remotes"], help="Sync local files, remote exceptions, pinned remotes, and Packwiz remotes into each src-* folder")
+	add = sp.add_parser("sync-content", help="Sync local files, remote exceptions, pinned remotes, and Packwiz remotes into each src-* folder")
 	add.add_argument("--write-unsuccessful", action="store_true", help="Write unsuccessful remotes to unsuccessful.md")
 
-	updatables = sp.add_parser("update-updatables", help="Replace version tokens in files listed under [updatables].version")
+	updatables = sp.add_parser("update-variable-values", help="Replace version tokens in files listed under [updatables].version")
 	updatables.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	validate_parser = sp.add_parser("validate", help="Validate src-* loader structure against packinfo ground truth")
@@ -634,8 +634,8 @@ def main() -> int:
 			return sync_loaders(dry_run=args.dry_run)
 		if args.command in {"sync-content", "add-remotes"}:
 			return sync_content_option(write_unsuccessful=args.write_unsuccessful, dry_run=args.dry_run)
-		if args.command == "update-updatables":
-			return update_updatables(dry_run=args.dry_run)
+		if args.command == "update-variable-values":
+			return update_variable_values(dry_run=args.dry_run)
 		if args.command == "validate":
 			return validate(strict=args.strict, report_file=args.report_file)
 		if args.command == "build":

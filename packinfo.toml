@@ -1,11 +1,11 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "4.0.3"
+version = "5.0.0-alpha1"
 
 [targets]
-mc = "1.21.11"
+mc = "26.2"
 neo = "none"
-fabric = "0.18.4"
+fabric = "0.19.3"
 
 [content]
     [all]
@@ -14,7 +14,7 @@ fabric = "0.18.4"
             "animated-loading-screen",
             "aseprite-fonts",
             "badoptimizations",
-            "betteraddserver",
+            #"betteraddserver",
             "better-block-entities",
             "better-clouds",
             "better-mount-hud",
@@ -22,7 +22,7 @@ fabric = "0.18.4"
             "capes",
             "chat-heads",
             "chat-impressive-animation",
-            "chunks-fade-in",
+            #"chunks-fade-in",
             "cloth-config",
             "complementary-reimagined",
             "continuity",
@@ -37,14 +37,14 @@ fabric = "0.18.4"
             "entityculling",
             "fabric-language-kotlin",
             "fast-ip-ping",
-            "fastquit",
+            #"fastquit",
             "ferrite-core",
             "forge-config-api-port",
-            "graceful-packets",
+            #"graceful-packets",
             "hold-that-chunk-v2",
             "immediatelyfast",
-            "iris",
-            "krypton",
+            #"iris",
+            #"krypton",
             "lambdynamiclights",
             "language-reload",
             "lithium",
@@ -59,7 +59,7 @@ fabric = "0.18.4"
             "mutils",
             "no-chat-reports",
             "noisiumforked",
-            "optigui",
+            #"optigui",
             "packet-fixer",
             "placeholder-api",
             "puzzle",
@@ -78,10 +78,10 @@ fabric = "0.18.4"
             "sodium-shadowy-path-blocks",
             "sodium-extra",
             "spark",
-            "stackdeobf",
-            "threadtweak",
+            #"stackdeobf",
+            #"threadtweak",
             "tooltip-scroll",
-            "vmp-fabric",
+            #"vmp-fabric",
             "viafabricplus",
             "yacl",
             "yosbr",
@@ -94,17 +94,6 @@ fabric = "0.18.4"
         #     file = "n/a"
         #     date = "n/a"
 
-        [[content.remote_exception]]
-            id = "better-clouds"
-            reason = "Using orangishcat's PR"
-            file = "mods/better-clouds-1.11.3-alpha+1.21.11-fabric.rev.40cd82f.jar"
-            date = "n/a"
-
-        [[content.remote_exception]]
-            id = "mutils"
-            reason = "Using my own fork because the developer hasn't updated it"
-            file = "mods/ModpackUtils-1.2.0+fabric.1.21.11.jar"
-            date = "n/a"
 
         # [[content.pinned_remote]]
         #     id = "modrinth-project-id-or-slug"

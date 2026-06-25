@@ -1,2 +1,2 @@
-- Rewrote backend services and build process.
-(This version is hopefully identical to 4.0.2)
+- Very alpha update to 26.2
+- Disabled a significant number of mods. This build also has known issues.
