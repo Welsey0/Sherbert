@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Packwiz
-        uses: actionhippie/install-packwiz@v1
+        uses: actionhippie/install-packwiz@v2.0.0
 
       - name: Bootstrap loader folders
         run: |
@@ -306,7 +306,7 @@ jobs:
       - name: Create Release
         if: steps.discover.outputs.has_uploads == 'true'
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@3.0.1
         with:
           tag_name: ${{ steps.get_version.outputs.value }}
           name: ${{ steps.construct_name.outputs.release_name }}
@@ -326,19 +326,24 @@ jobs:
         item: ${{ fromJSON(needs.publish.outputs.upload_matrix) }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download mrpack(s) from release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release download ${{ needs.publish.outputs.version }} \
+            --pattern "*.mrpack" \
+            --repo ${{ github.repository }}
 
       - name: Upload artifact to Modrinth
-        uses: RubixDev/modrinth-upload@v1
+        uses: Kir-Antipov/mc-publish@v3
         with:
-          token: ${{ secrets.MODRINTH_TOKEN }}
-          file_path: ${{ matrix.item.file }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-id: ${{ secrets.MODRINTH_PID }}
+          files: ${{ matrix.item.file }}
           name: ${{ needs.publish.outputs.release_name }} (${{ matrix.item.loader }})
           version: ${{ needs.publish.outputs.version }}-${{ matrix.item.loader }}
           changelog: ${{ needs.publish.outputs.changelog }}
-          game_versions: ${{ needs.publish.outputs.mc_version }}
-          release_type: ${{ needs.publish.outputs.channel }}
+          game-versions: ${{ needs.publish.outputs.mc_version }}
+          version-type: ${{ needs.publish.outputs.channel }}
           loaders: ${{ matrix.item.loader }}
-          featured: true
-          project_id: ${{ secrets.MODRINTH_PID }}
+          modrinth-featured: true
