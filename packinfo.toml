@@ -56,7 +56,7 @@ fabric = "0.19.3"
             "modmenu",
             "morechathistory",
             "moreculling",
-            "mutils",
+            #"mutils",
             "no-chat-reports",
             "noisiumforked",
             #"optigui",
