@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 PACKINFO_PATH = ROOT / "packinfo.toml"
 TEMPLATE_PACK_PATH = ROOT / "templates" / "pack.toml"
+TEMPLATE_INDEX_PATH = ROOT / "templates" /  "index.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
 
 

@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   publish:
-    name: Publish
+    name: Build and Release
     runs-on: ubuntu-latest
     env:
       PACK_NAME: Sherbert
