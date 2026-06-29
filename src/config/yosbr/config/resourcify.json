@@ -1,0 +1,12 @@
+{
+  "defaultService": "Modrinth",
+  "guiScale": -1,
+  "fullResThumbnail": false,
+  "openLinkInResourcify": true,
+  "adsEnabled": false,
+  "resourcePacksEnabled": true,
+  "dataPacksEnabled": true,
+  "shaderPacksEnabled": true,
+  "worldsEnabled": true,
+  "gifsDisabled": false
+}

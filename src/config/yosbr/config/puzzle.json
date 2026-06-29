@@ -6,10 +6,10 @@
   "biggerModels": true,
   "debugMessages": false,
   "hasCustomSplashScreen": false,
-  "backgroundColor": 15675965,
-  "progressBarColor": 16777215,
-  "progressBarBackgroundColor": 15675965,
-  "progressFrameColor": 16777215,
+  "backgroundColor": 863045,
+  "progressBarColor": 13664601,
+  "progressBarBackgroundColor": 863045,
+  "progressFrameColor": 13664601,
   "disableBlend": false,
   "customBlendFunction": []
 }

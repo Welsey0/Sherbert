@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.0.0-alpha1"
+version = "5.0.0-alpha2"
 
 [targets]
 mc = "26.2"
@@ -11,7 +11,7 @@ fabric = "0.19.3"
     [all]
         remotes = [
             "alternate-current",
-            "animated-loading-screen",
+            "animated-mojang-logo",
             "aseprite-fonts",
             "badoptimizations",
             #"betteraddserver",
@@ -22,7 +22,7 @@ fabric = "0.19.3"
             "capes",
             "chat-heads",
             "chat-impressive-animation",
-            #"chunks-fade-in",
+            "chunks-fade-in",
             "cloth-config",
             "complementary-reimagined",
             "continuity",
@@ -40,7 +40,7 @@ fabric = "0.19.3"
             #"fastquit",
             "ferrite-core",
             "forge-config-api-port",
-            #"graceful-packets",
+            "graceful-packets",
             "hold-that-chunk-v2",
             "immediatelyfast",
             #"iris",
@@ -59,7 +59,7 @@ fabric = "0.19.3"
             #"mutils",
             "no-chat-reports",
             "noisiumforked",
-            #"optigui",
+            "optigui",
             "packet-fixer",
             "placeholder-api",
             "puzzle",

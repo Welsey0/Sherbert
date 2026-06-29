@@ -16,7 +16,6 @@ leavesCullingMode = "DEFAULT"
 leavesCullingAmount = 2
 includeMangroveRoots = true
 endGatewayCulling = true
-beaconBeamCulling = true
 useOnModdedBlocksByDefault = true
 
 [modCompatibility]

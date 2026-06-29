@@ -28,7 +28,7 @@
   "hidden_mods": [],
   "hidden_configs": [
     "mutils",
-    "dark-loading-screen",
+    "animated-mojang-logo",
     "rrls"
   ],
   "disable_update_checker": []
