@@ -38,8 +38,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Packwiz
-        uses: actionhippie/install-packwiz@v2
+      - name: Setup Packwiz
+        run: |
+          chmod +x ./packwiz
+          sudo mv ./packwiz /usr/local/bin/
 
       - name: Bootstrap loader folders
         run: |
