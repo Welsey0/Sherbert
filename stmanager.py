@@ -336,7 +336,8 @@ def sync_loaders(*, dry_run: bool) -> int:
 
 
 def pinned_add_commands(entry: dict[str, Any]) -> list[list[str]]:
-	base = ["mr", "add", str(entry.get("id", "")).strip(), "--version-id", str(entry.get("version", "")).strip()]
+	url = f"https://modrinth.com/mod/{str(entry.get('id', '')).strip()}/version/{str(entry.get('version', '')).strip()}"
+	base = ["mr", "add", url]
 	if bool(entry.get("allow_different_mc", False)):
 		return [base + ["--ignore-game-version"], base]
 	return [base]

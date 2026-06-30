@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.0.0-alpha2"
+version = "5.0.0-beta1"
 
 [targets]
 mc = "26.2"
@@ -39,11 +39,13 @@ fabric = "0.19.3"
             "fast-ip-ping",
             #"fastquit",
             "ferrite-core",
+            "fism",
             "forge-config-api-port",
             "graceful-packets",
             "hold-that-chunk-v2",
             "immediatelyfast",
-            #"iris",
+            "iris",
+            "irissearch",
             #"krypton",
             "lambdynamiclights",
             "language-reload",
@@ -74,7 +76,7 @@ fabric = "0.19.3"
             "shut-up-realms",
             "simple-hud-enhanced",
             "smooth-scroll",
-            "sodium",
+            #"sodium",
             "sodium-shadowy-path-blocks",
             "sodium-extra",
             "spark",
@@ -94,12 +96,17 @@ fabric = "0.19.3"
         #     file = "n/a"
         #     date = "n/a"
 
-
         # [[content.pinned_remote]]
         #     id = "modrinth-project-id-or-slug"
         #     version = "modrinth-version-id"
         #     allow_different_mc = true
         #     note = "Optional reason for pinning this exact version"
+
+        [[content.pinned_remote]]
+            id = "sodium"
+            version = "3QgJXuSK"
+            allow_different_mc = false
+            note = "Pinned 0.9.0 because 0.9.1 causes incompatibility with latest Iris at time of writing."
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
