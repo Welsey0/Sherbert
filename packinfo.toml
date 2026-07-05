@@ -130,8 +130,21 @@ fabric = "0.19.3"
 
     [neo]
 
-[updatables]
+[variablevalues]
     version = [
         "config/mutils/mutils.json5",
         "config/yosbr/config/mutils/mutils.json5"
+    ]
+
+[forcedconfigs]
+    files = [
+        "config/yosbr/config/animated-mojang-logo.json",
+        "config/yosbr/config/isxander-main-menu-credits.json",
+        "config/yosbr/config/modmenu.json",
+        "config/yosbr/config/rrls.toml"
+    ]
+
+    folders = [
+        "config/yosbr/config/crash_assistant",
+        "config/yosbr/config/mutils"
     ]

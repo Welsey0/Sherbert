@@ -272,6 +272,36 @@ def materialize_loader(packinfo: dict[str, Any], loader: str, target_dir: Path, 
 		else:
 			copy_file(src, dst)
 
+	forced_configs = packinfo.get("forcedconfigs", {})
+	target_config_root = target_dir / "config"
+
+	for file_rel in forced_configs.get("files", []):
+		src_file = SRC / file_rel
+		if not src_file.exists():
+			print(f"Warning: forced config file missing: {src_file}", file=sys.stderr)
+			continue
+		
+		dst_file = target_config_root / Path(file_rel).name
+
+		if dry_run:
+			print(f"[dry-run] forced-copy file {src_file} -> {dst_file}")
+		else:
+			dst_file.parent.mkdir(parents=True, exist_ok=True)
+			copy_file(src_file, dst_file)
+
+	for folder_rel in forced_configs.get("folders", []):
+		src_folder = SRC / folder_rel
+		if not src_folder.exists():
+			print(f"Warning: forced config folder missing: {src_folder}", file=sys.stderr)
+			continue
+
+		dst_folder = target_config_root / Path(folder_rel).name
+
+		if dry_run:
+			print(f"[dry-run] forced-copytree folder {src_folder} -> {dst_folder}")
+		else:
+			copy_tree(src_folder, dst_folder)
+
 	if dry_run:
 		print(f"[dry-run] render pack.toml for {loader} in {target_dir}")
 	else:
@@ -432,9 +462,9 @@ def sync_content_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 def update_variable_values(*, dry_run: bool) -> int:
 	packinfo = load_packinfo()
 	loaders = loader_dirs(packinfo)
-	paths = list(packinfo.get("updatables", {}).get("version", []))
+	paths = list(packinfo.get("variablevalues", {}).get("version", []))
 	if not paths:
-		print("No [updatables].version entries found.")
+		print("No [variablevalues].version entries found.")
 		return 0
 	if not loaders:
 		print("No active loaders found in packinfo targets.", file=sys.stderr)
@@ -468,7 +498,7 @@ def update_variable_values(*, dry_run: bool) -> int:
 				missing += 1
 				print(f"Warning: cannot safely update {target}; expected <!VERSION!> token or current version string.", file=sys.stderr)
 
-	print(f"Updatables summary: updated={updated}, current={current}, missing={missing}")
+	print(f"Variable values summary: updated={updated}, current={current}, missing={missing}")
 	return 0 if missing == 0 else 1
 
 
@@ -614,8 +644,8 @@ def parser() -> argparse.ArgumentParser:
 	add = sp.add_parser("sync-content", help="Sync local files, remote exceptions, pinned remotes, and Packwiz remotes into each src-* folder")
 	add.add_argument("--write-unsuccessful", action="store_true", help="Write unsuccessful remotes to unsuccessful.md")
 
-	updatables = sp.add_parser("update-variable-values", help="Replace version tokens in files listed under [updatables].version")
-	updatables.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
+	variablevalues = sp.add_parser("update-variable-values", help="Replace version tokens in files listed under [variablevalues].version")
+	variablevalues.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	validate_parser = sp.add_parser("validate", help="Validate src-* loader structure against packinfo ground truth")
 	validate_parser.add_argument("--strict", action="store_true", help="Treat warnings as failures")

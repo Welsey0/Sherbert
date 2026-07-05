@@ -155,6 +155,7 @@
 	#Same as upload_all_button_foreground_color, but for Request Help button.
 	#Default for this button is "0_0_178" (dark blue color).
 	request_help_button_foreground_color = "0_0_178"
+	theme_file_name = "FlatMacDarkLaf"
 
 #Checks crash_assistant compatibility with other incompatible mods.
 #Highly unrecommended to disable!
