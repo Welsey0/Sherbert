@@ -47,7 +47,7 @@ fabric = "0.19.3"
             "forge-config-api-port",
             "graceful-packets",
             "hold-that-chunk-v2",
-            "immediatelyfast",
+            #"immediatelyfast",
             "iris",
             "irissearch",
             "ixeris",
