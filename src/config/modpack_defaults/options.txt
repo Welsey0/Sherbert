@@ -64,7 +64,7 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:["vanilla","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert_Colors.zip"]
+resourcePacks:["vanilla","file/Aseprite Fonts.zip","file/Rethoughted GUI.zip","file/Sherbert_Colors.zip","file/Chat Reporting Helper.zip","file/SodiumTranslations.zip","continuity:default","continuity:glass_pane_culling_fix"]
 incompatibleResourcePacks:["file/Sherbert_Colors.zip"]
 lastServer:
 lang:en_us

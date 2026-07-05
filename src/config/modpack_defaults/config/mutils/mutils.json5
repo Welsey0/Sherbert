@@ -24,7 +24,7 @@
 	// Window Utils
 	customIcon: true,
 	customTitle: true,
-	title: "<modpack-name> | Minecraft <mc>",
+	title: "<modpack-name> <version> | Minecraft <mc>",
 	// MMC
 	mainMenuCreditsIntegeration: "OFF",
 	customMmc: [
