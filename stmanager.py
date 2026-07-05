@@ -426,6 +426,24 @@ def sync_content_for_loader(packinfo: dict[str, Any], loader: str, loader_dir: P
 
 	return success, failed, skipped, failures
 
+def update_pw_toml_sides(target_dir: Path, *, dry_run: bool) -> None:
+	mods_dir = target_dir / "mods"
+	if not mods_dir.is_dir():
+		return
+
+	for file_path in mods_dir.glob("*.pw.toml"):
+		if dry_run:
+			print(f"[dry-run] checking side rules for {file_path.relative_to(ROOT)}")
+			continue
+
+		try:
+			lines = file_path.read_text(encoding="utf-8").splitlines(keepends=True)
+			if len(lines) >= 3 and 'side = "server"' in lines[2]:
+				lines[2] = lines[2].replace('side = "server"', 'side = "client"')
+				file_path.write_text("".join(lines), encoding="utf-8")
+				print(f"Updated side to 'client' on line 3 of {file_path.name}")
+		except Exception as exc:
+			print(f"Warning: Failed to process side rule check on {file_path.name}: {exc}", file=sys.stderr)
 
 def sync_content_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 	require_packwiz(dry_run)
@@ -447,6 +465,8 @@ def sync_content_option(*, write_unsuccessful: bool, dry_run: bool) -> int:
 		total_failed += failed
 		total_skipped += skipped
 		all_failures.extend((loader, remote_id, reason) for remote_id, reason in failures)
+		path = ROOT / f"src-{loader}"
+		update_pw_toml_sides(path, dry_run=dry_run)
 
 	attempted = total_success + total_failed
 	percent = (total_success / attempted * 100.0) if attempted else 100.0
