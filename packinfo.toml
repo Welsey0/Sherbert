@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.0.0"
+version = "5.1.0"
 
 [targets]
 mc = "26.2"
@@ -12,18 +12,21 @@ fabric = "0.19.3"
         remotes = [
             "alternate-current",
             "animated-mojang-logo",
+            "animaticarefabricated",
             "aseprite-fonts",
+            #"audiothrottle",
             "badoptimizations",
             #"betteraddserver",
-            "better-block-entities",
             "better-clouds",
             "better-mount-hud",
             "bettergrassify",
-            "capes",
+            "cape-provider",
             "chat-heads",
             "chat-impressive-animation",
+            "chat-reporting-helper",
             "chunks-fade-in",
             "cloth-config",
+            "configmanager",
             "complementary-reimagined",
             "continuity",
             "controlling",
@@ -32,6 +35,7 @@ fabric = "0.19.3"
             "debugify",
             "dynamic-fps",
             "e4mc",
+            "emojis",
             "entity-model-features",
             "entitytexturefeatures",
             "entityculling",
@@ -46,13 +50,13 @@ fabric = "0.19.3"
             "immediatelyfast",
             "iris",
             "irissearch",
+            "ixeris",
             #"krypton",
             "lambdynamiclights",
             "language-reload",
             "lithium",
             "main-menu-credits",
             "mellow",
-            "midnightlib",
             "mixintrace-reloaded",
             "modernfix-mvus",
             "modmenu",
@@ -61,10 +65,13 @@ fabric = "0.19.3"
             #"mutilsc",
             "no-chat-reports",
             "noisiumforked",
+            "obe",
             "optigui",
             "packet-fixer",
+            "paginatedadvancements",
             "placeholder-api",
             "puzzle",
+            "quick-pack",
             #"reeses-sodium-options",
             "rrls",
             "resourcify",
@@ -75,18 +82,22 @@ fabric = "0.19.3"
             "serverpingerfixer",
             "shut-up-realms",
             "simple-hud-enhanced",
+            "skyboxify",
+            #"smart-particles",
             "smooth-scroll",
             #"sodium",
             "sodium-shadowy-path-blocks",
             "sodium-extra",
             "spark",
             #"stackdeobf",
+            #"taskmanager",
             #"threadtweak",
             "tooltip-scroll",
-            #"vmp-fabric",
+            "translations-for-sodium",
+            "vmp-fabric",
             "viafabricplus",
             "yacl",
-            "yosbr",
+            "zfastnoise",
             "zoomify"
         ]
 
@@ -117,7 +128,7 @@ fabric = "0.19.3"
             id = "reeses-sodium-options"
             version = "zD41FWKT"
             allow_different_mc = false
-            note = "Pinnes RSO to avoid problems with requiring the newest Sodium."
+            note = "Pins RSO to avoid problems with requiring the newest Sodium."
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
@@ -133,18 +144,17 @@ fabric = "0.19.3"
 [variablevalues]
     version = [
         "config/mutils/mutils.json5",
-        "config/yosbr/config/mutils/mutils.json5"
     ]
 
 [forcedconfigs]
     files = [
-        "config/yosbr/config/animated-mojang-logo.json",
-        "config/yosbr/config/isxander-main-menu-credits.json",
-        "config/yosbr/config/modmenu.json",
-        "config/yosbr/config/rrls.toml"
+        "config/modpack_defaults/config/animated-mojang-logo.json",
+        "config/modpack_defaults/config/isxander-main-menu-credits.json",
+        "config/modpack_defaults/config/modmenu.json",
+        "config/modpack_defaults/config/rrls.toml"
     ]
 
     folders = [
-        "config/yosbr/config/crash_assistant",
-        "config/yosbr/config/mutils"
+        "config/modpack_defaults/config/crash_assistant",
+        "config/modpack_defaults/config/mutils"
     ]

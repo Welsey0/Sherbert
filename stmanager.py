@@ -631,6 +631,32 @@ def build(*, dry_run: bool) -> int:
 
 	return 0 if failures == 0 else 1
 
+def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
+    print("Starting quick build...")
+    print("--> [1/5] Bootstrapping loader folders...")
+
+    res = run_cmd([sys.executable, __file__, "setup-folders", "--yes"], cwd=ROOT, dry_run=dry_run)
+    if not res.ok: return res.returncode
+
+    print("--> [2/5] Syncing pack content...")
+    res = run_cmd([sys.executable, __file__, "sync-content", "--write-unsuccessful"], cwd=ROOT, dry_run=dry_run)
+    if not res.ok: return res.returncode
+
+    print("--> [3/5] Updating variable values...")
+    res = run_cmd([sys.executable, __file__, "update-variable-values"], cwd=ROOT, dry_run=dry_run)
+    if not res.ok: return res.returncode
+
+    print("--> [4/5] Validating result...")
+    res = run_cmd([sys.executable, __file__, "validate", "--report-file", "validation-report.json"], cwd=ROOT, dry_run=dry_run)
+    if not res.ok: return res.returncode
+
+    print("--> [5/5] Building pack...")
+    res = run_cmd([sys.executable, __file__, "build"], cwd=ROOT, dry_run=dry_run)
+    if not res.ok: return res.returncode
+
+    print("✅ Quick build completed successfully!")
+    return 0
+
 def parser() -> argparse.ArgumentParser:
 	p = argparse.ArgumentParser(description="ST Manager")
 	p.add_argument("--dry-run", action="store_true", help="Print actions without running packwiz or writing changes")
@@ -653,11 +679,14 @@ def parser() -> argparse.ArgumentParser:
 
 	sp.add_parser("build", help="Run packwiz refresh/export and move the final .mrpack files to root")
 
+	sp.add_parser( "quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence.")
+
 	return p
 
 
 def main() -> int:
 	args = parser().parse_args()
+	packinfo = load_packinfo()
 	try:
 		if args.command == "setup-folders":
 			return setup_folders(yes=args.yes, dry_run=args.dry_run)
@@ -671,6 +700,8 @@ def main() -> int:
 			return validate(strict=args.strict, report_file=args.report_file)
 		if args.command == "build":
 			return build(dry_run=args.dry_run)
+		if args.command in ("quick-build", "qb"):
+			sys.exit(quick_build(packinfo, dry_run=args.dry_run))
 		print(f"Unknown command: {args.command}", file=sys.stderr)
 		return 2
 	except (FileNotFoundError, RuntimeError, ValueError) as exc:
