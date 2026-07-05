@@ -1,3 +1,2 @@
-- Readded Iris and two support mods for it
-- Downgraded and pinned Sodium to 0.9.0 to prevent a conflict with Iris
-- Fixed pin version system
+- ModpackUtils has been updated and readded.
+- Mod loader names have been removed from version numbers.
