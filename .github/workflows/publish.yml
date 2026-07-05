@@ -344,8 +344,8 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-id: ${{ secrets.MODRINTH_PID }}
           files: ${{ matrix.item.file }}
-          name: ${{ needs.publish.outputs.release_name }} (${{ matrix.item.loader }})
-          version: ${{ needs.publish.outputs.version }}-${{ matrix.item.loader }}
+          name: ${{ needs.publish.outputs.release_name }}
+          version: ${{ needs.publish.outputs.version }}
           changelog: ${{ needs.publish.outputs.changelog }}
           game-versions: ${{ needs.publish.outputs.mc_version }}
           version-type: ${{ needs.publish.outputs.channel }}
