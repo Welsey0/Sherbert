@@ -631,6 +631,33 @@ def build(*, dry_run: bool) -> int:
 
 	return 0 if failures == 0 else 1
 
+def cleanup(*, yes: bool, dry_run: bool) -> int:
+	if not yes:
+		print("WARNING: This command irreversibly deletes untracked files (specified by the .gitignore).", file=sys.stderr)
+		print("To proceed, re-run this command with the '--yes' flag.", file=sys.stderr)
+		return 0
+	
+	cmd = ["git", "clean", "-X", "-d", "-f"]
+	
+	if dry_run:
+		print("Cleaning up (dry-run)...")
+		cmd.append("-n")
+	else:
+		print("Cleaning up...")
+	
+	run_cmd(cmd, cwd=ROOT, dry_run=False)
+
+	if UNSUCCESSFUL_PATH.exists():
+		if dry_run:
+			print(f"[dry-run] Would remove unsuccessful.md: {UNSUCCESSFUL_PATH.name}")
+		else:
+			print(f"Removing unsuccessful.md: {UNSUCCESSFUL_PATH.name}")
+			try:
+				UNSUCCESSFUL_PATH.unlink()
+			except OSError as e:
+				print(f"Could not remove unsuccessful.md: {e}", file=sys.stderr)
+	return 0
+
 def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     print("Starting quick build...")
     print("--> [1/5] Bootstrapping loader folders...")
@@ -647,7 +674,7 @@ def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     if not res.ok: return res.returncode
 
     print("--> [4/5] Validating result...")
-    res = run_cmd([sys.executable, __file__, "validate", "--report-file", "validation-report.json"], cwd=ROOT, dry_run=dry_run)
+    res = run_cmd([sys.executable, __file__, "validate"], cwd=ROOT, dry_run=dry_run)
     if not res.ok: return res.returncode
 
     print("--> [5/5] Building pack...")
@@ -679,7 +706,10 @@ def parser() -> argparse.ArgumentParser:
 
 	sp.add_parser("build", help="Run packwiz refresh/export and move the final .mrpack files to root")
 
-	sp.add_parser( "quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence.")
+	sp.add_parser("quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence.")
+
+	cleanup = sp.add_parser("cleanup", aliases=["c", "cu"], help="Cleans up generated files from builds.")
+	cleanup.add_argument("--yes", action="store_true", help="Confirm deletion of untracked files.")
 
 	return p
 
@@ -702,6 +732,8 @@ def main() -> int:
 			return build(dry_run=args.dry_run)
 		if args.command in ("quick-build", "qb"):
 			sys.exit(quick_build(packinfo, dry_run=args.dry_run))
+		if args.command in ("cleanup", "c", "cu"):
+			return cleanup(yes=args.yes, dry_run=args.dry_run)
 		print(f"Unknown command: {args.command}", file=sys.stderr)
 		return 2
 	except (FileNotFoundError, RuntimeError, ValueError) as exc:
