@@ -1,18 +1,1 @@
-- Added several new mods for more performance and quality-of-life features:
-    - Animatica Refabricated
-    - Audio Throttle (disabled for now)
-    - Cape Provider (replaces Capes)
-    - Chat Reporting Helper (resource pack)
-    - Config Manager (replaces YOSBR)
-    - Emojis
-    - Ixeris
-    - Optimized Block Entities (replaces EBE)
-    - Paginated Advancements
-    - Quick Pack
-    - Skyboxify
-    - Smart Particles (disabled for now)
-    - Task Manager (disabled for now)
-    - Translations for Sodium (resource pack)
-    - Fast Noise
-- Readded VMP
-- Backend improvements
+- Removed ImmediatelyFast due to various bugs.
