@@ -65,7 +65,7 @@ fabric = "0.19.3"
             "packet-fixer",
             "placeholder-api",
             "puzzle",
-            "reeses-sodium-options",
+            #"reeses-sodium-options",
             "rrls",
             "resourcify",
             "rethoughted-gui",
@@ -100,7 +100,6 @@ fabric = "0.19.3"
             id = "mutilsc"
             reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
             file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
-            date = "7/5/2026"
 
         # [[content.pinned_remote]]
         #     id = "modrinth-project-id-or-slug"
@@ -113,6 +112,12 @@ fabric = "0.19.3"
             version = "3QgJXuSK"
             allow_different_mc = false
             note = "Pinned 0.9.0 because 0.9.1 causes incompatibility with latest Iris at time of writing."
+
+        [[content.pinned_remote]]
+            id = "reeses-sodium-options"
+            version = "zD41FWKT"
+            allow_different_mc = false
+            note = "Pinnes RSO to avoid problems with requiring the newest Sodium."
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
