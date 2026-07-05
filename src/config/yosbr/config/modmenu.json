@@ -27,7 +27,7 @@
   "disable_drag_and_drop": false,
   "hidden_mods": [],
   "hidden_configs": [
-    "mutils",
+    "mutilsc",
     "animated-mojang-logo",
     "rrls"
   ],
