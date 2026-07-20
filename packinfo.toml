@@ -52,7 +52,7 @@ fabric = "0.19.3"
             "iris",
             "irissearch",
             "ixeris",
-            "krypton",
+            #"krypton",
             "lambdynamiclights",
             "language-reload",
             "lithium",
