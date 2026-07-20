@@ -1,3 +1,1 @@
-- All mods updated to latest versions
-- Added AudioThrottle and Krypton
-- Unpinned Sodium and RSO
+- Removed krypton due to a critical issue that prevents joining worlds
