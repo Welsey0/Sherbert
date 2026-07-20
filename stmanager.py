@@ -158,6 +158,10 @@ def copy_file(src: Path, dst: Path) -> None:
 	ensure_parent(dst)
 	shutil.copy2(src, dst)
 
+def copy_folder(src: Path, dst: Path) -> None:
+	ensure_parent(dst)
+	shutil.copytree(src, dst)
+
 
 def make_tree_writable(path: Path) -> None:
 	for root, dirs, files in os.walk(path, topdown=False):
@@ -699,22 +703,28 @@ def setup_workspace(*, yes: bool, dry_run: bool) -> int:
 			raise FileNotFoundError(f"Missing {template_path.name}")
 		if target_path.exists():
 			if dry_run:
-				print(f"[dry-run] Would remove: {template_path.name}")
+				print(f"[dry-run] Would remove: {target_path.name}")
 			else:
-				print(f"Removing: {template_path.name}")
+				print(f"Removing: {target_path.name}")
 				try:
-					template_path.unlink()
+					target_path.unlink()
 				except OSError as e:
-					print(f"Could not remove: {e}", file=sys.stderr)
+					try: 
+						shutil.rmtree(target_path)
+					except OSError as e:
+						print(f"Could not remove: {e}", file=sys.stderr)
 			
 		if dry_run:
-			print(f"[dry-run] Would copy: {template_path.name} --> {target_path.name}")
+			print(f"[dry-run] Would copy: {template_path.name}")
 		else:
-			print(f"Copying: {template_path.name} --> {target_path.name}")
+			print(f"Copying: {template_path.name}")
 			try:
 				copy_file(template_path, target_path)
 			except OSError as e:
-				print(f"Could not copy: {e}", file=sys.stderr)
+				try:
+					copy_folder(template_path, target_path)
+				except:
+					print(f"Could not copy: {e}", file=sys.stderr)
 	return 0
 
 
@@ -760,11 +770,14 @@ def parser() -> argparse.ArgumentParser:
 
 	setup = sp.add_parser("setup-folders", help="Create src-<loader> folders from packinfo ground truth")
 	setup.add_argument("--yes", action="store_true", help="Confirm deletion of existing src-* folders")
+	setup.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
-	sp.add_parser("sync-loaders", help="Sync existing src-* folders from packinfo/src changes")
+	loaders = sp.add_parser("sync-loaders", help="Sync existing src-* folders from packinfo/src changes")
+	loaders.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	add = sp.add_parser("sync-content", help="Sync local files, remote exceptions, pinned remotes, and Packwiz remotes into each src-* folder")
 	add.add_argument("--write-unsuccessful", action="store_true", help="Write unsuccessful remotes to unsuccessful.md")
+	add.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	variablevalues = sp.add_parser("update-variable-values", help="Replace version tokens in files listed under [variablevalues].version")
 	variablevalues.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
@@ -773,15 +786,19 @@ def parser() -> argparse.ArgumentParser:
 	validate_parser.add_argument("--strict", action="store_true", help="Treat warnings as failures")
 	validate_parser.add_argument("--report-file", help="Write a JSON validation report relative to repo root")
 
-	sp.add_parser("build", help="Run packwiz refresh/export and move the final .mrpack files to root")
+	build = sp.add_parser("build", help="Run packwiz refresh/export and move the final .mrpack files to root")
+	build.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
-	sp.add_parser("quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence")
+	qb = sp.add_parser("quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence")
+	qb.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	cleanup = sp.add_parser("cleanup", aliases=["c", "cu"], help="Cleans up generated files from builds")
 	cleanup.add_argument("--yes", action="store_true", help="Confirm deletion of untracked files")
+	cleanup.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	setup_workspace = sp.add_parser("setup-workspace", help="Sets up files and folders for a new modpack")
 	setup_workspace.add_argument("--yes", action="store_true", help="Confirm workspace setup")
+	setup_workspace.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
 	return p
 
