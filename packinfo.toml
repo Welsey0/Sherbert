@@ -4,7 +4,7 @@ version = "5.1.1"
 
 [targets]
 mc = "26.2"
-mc-acceptable-versions = "26.1"
+mc-acceptable-versions = '"26.1"'
 neo = "none"
 fabric = "0.19.3"
 

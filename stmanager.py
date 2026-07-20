@@ -83,7 +83,7 @@ def content_section(packinfo: dict[str, Any], section: str) -> dict[str, Any]:
 def active_loaders(packinfo: dict[str, Any]) -> list[str]:
 	loaders: list[str] = []
 	for key, value in packinfo.get("targets", {}).items():
-		if key != "mc" and str(value).lower() != "none":
+		if key != "mc" and key != "mc-acceptable-versions" and str(value).lower() != "none":
 			loaders.append(key)
 	return loaders
 
@@ -222,7 +222,7 @@ def render_pack_toml(packinfo: dict[str, Any], loader: str, target_dir: Path) ->
 		.replace("<!MODLOADER!>", loader)
 		.replace("<!LOADERVERSION!>", str(packinfo.get("targets", {}).get(loader, "")))
 		.replace("<!MCVERSION!>", str(packinfo.get("targets", {}).get("mc", "")))
-		.replace("<!ACCEPTEDVERSIONS!>", str(packinfo.get("targets", {}).get("mc-acceptable-versions", ""))),
+		.replace("<!ACCEPTABLEVERSIONS!>", str(packinfo.get("targets", {}).get("mc-acceptable-versions", ""))),
 		encoding="utf-8",
 	)
 

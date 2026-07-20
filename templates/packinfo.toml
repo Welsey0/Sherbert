@@ -4,7 +4,7 @@ version = "" # Modpack version
 
 [targets] # Versions that the modpack is targeting. For mod loaders, I always recommend the latest one.
 mc = "" # Minecraft version
-mc-acceptable-versions = "" # Allow mods supporting other Minecraft versions to be downloaded
+mc-acceptable-versions = '' # Allow mods supporting other Minecraft versions to be downloaded
 neo = "" # Neoforge Loader version
 fabric = "" # Fabric Loader version
 
