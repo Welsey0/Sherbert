@@ -1,0 +1,47 @@
+name = "" # Name/ID of modpack
+author = "" # Author's name
+version = "" # Modpack version
+
+[targets] # Versions that the modpack is targeting. For mod loaders, I always recommend the latest one.
+mc = "" # Minecraft version
+mc-acceptable-versions = "" # Allow mods supporting other Minecraft versions to be downloaded
+neo = "" # Neoforge Loader version
+fabric = "" # Fabric Loader version
+
+[content] # Define what is in the pack here.
+    [all] # Included in all loaders
+        remotes = [ # Put Modrinth slugs (https://modrinth.com/mod/<slug>) below to include them
+        ]
+
+        # [[content.remote_exception]] # Replace a remote mod with a local copy
+        #     id = "modrinth-project-id-or-slug"
+        #     reason = "Reason for file replacement printed in logs during build"
+        #     file = "file-location-from-project-root"
+
+        # [[content.pinned_remote]] # Keep a remote mod pinned to a specific version
+        #     id = "modrinth-project-id-or-slug"
+        #     version = "modrinth-version-id"
+        #     allow_different_mc = true
+        #     note = "Optional reason for pinning this exact version"
+
+        # [[content.nonremote]] # Include a local file that has no remote
+        #     file = "file-location-from-project-root"
+        #     note = "Optional note"
+
+    [fabric] # Only included in Fabric loader
+
+    [neo] # Only included in Neoforge loader.
+
+[variablevalues] # Values to find and update in certain config files during build process.
+    version = [ # Replaces the text <!VERSION!> with the modpack version specified in this file
+        # "file-location-from-project-root"
+    ]
+
+[forcedconfigs] # Files and folders copied to the main config directory, used with YOSBR and similar mods to force a configuration update when the modpack is updated.
+    files = [
+        # "file-location-from-project-root"
+    ]
+
+    folders = [
+        # "file-location-from-project-root"
+    ]

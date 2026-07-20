@@ -102,22 +102,10 @@ fabric = "0.19.3"
             "zoomify"
         ]
 
-        # [[content.remote_exception]]
-        #     id = "modrinth-project-id-or-slug"
-        #     reason = "Example usage of this feature"
-        #     file = "n/a"
-        #     date = "n/a"
-
         [[content.remote_exception]]
             id = "mutilsc"
             reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
             file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
-
-        # [[content.pinned_remote]]
-        #     id = "modrinth-project-id-or-slug"
-        #     version = "modrinth-version-id"
-        #     allow_different_mc = true
-        #     note = "Optional reason for pinning this exact version"
 
         [[content.pinned_remote]]
             id = "sodium"

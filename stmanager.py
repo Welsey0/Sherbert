@@ -1,8 +1,5 @@
 """ST Manager
 Command line tool for managing ST Family modpacks.
-
-This keeps only the user-facing workflow needed to bootstrap, sync,
-and validate loader folders from packinfo.toml.
 """
 
 from __future__ import annotations
@@ -34,8 +31,11 @@ except ModuleNotFoundError:
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 PACKINFO_PATH = ROOT / "packinfo.toml"
+CHANGELOG_PATH = ROOT / "changelog.md"
 TEMPLATE_PACK_PATH = ROOT / "templates" / "pack.toml"
-TEMPLATE_INDEX_PATH = ROOT / "templates" /  "index.toml"
+TEMPLATE_SRC_PATH = ROOT / "templates" / "src"
+TEMPLATE_CHANGELOG_PATH = ROOT / "templates" / "changelog.md"
+TEMPLATE_PACKINFO_PATH = ROOT / "templates" / "packinfo.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
 
 
@@ -679,6 +679,54 @@ def cleanup(*, yes: bool, dry_run: bool) -> int:
 				print(f"Could not remove unsuccessful.md: {e}", file=sys.stderr)
 	return 0
 
+def setup_workspace(*, yes: bool, dry_run: bool) -> int:
+	if not yes:
+		print("WARNING: This command irreversibly deletes any prexisting modpack data including the src folder.", file=sys.stderr)
+		print("To proceed, re-run this command with the '--yes' flag.", file=sys.stderr)
+		return 0
+
+	if not TEMPLATE_SRC_PATH.exists():
+		raise FileNotFoundError(f"Missing {PACKINFO_PATH}")
+	
+	paths = {
+		SRC: TEMPLATE_SRC_PATH,
+		PACKINFO_PATH: TEMPLATE_PACKINFO_PATH,
+		CHANGELOG_PATH: TEMPLATE_CHANGELOG_PATH
+	}
+	
+	for target_path, template_path in paths.items():
+		if not template_path.exists():
+			raise FileNotFoundError(f"Missing {template_path.name}")
+		if target_path.exists():
+			if dry_run:
+				print(f"[dry-run] Would remove: {template_path.name}")
+			else:
+				print(f"Removing: {template_path.name}")
+				try:
+					template_path.unlink()
+				except OSError as e:
+					print(f"Could not remove: {e}", file=sys.stderr)
+			
+		if dry_run:
+			print(f"[dry-run] Would copy: {template_path.name} --> {target_path.name}")
+		else:
+			print(f"Copying: {template_path.name} --> {target_path.name}")
+			try:
+				copy_file(template_path, target_path)
+			except OSError as e:
+				print(f"Could not copy: {e}", file=sys.stderr)
+	return 0
+
+
+	# remove a src folder if present
+	# copy src template into working
+	
+	# remove packinfo.toml if present
+	# copy packinfo from templates to working
+	# advise on setting up stuff in packinfo.toml
+
+	# replace changelog.md with preset
+
 def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     print("Starting quick build...")
     print("--> [1/5] Bootstrapping loader folders...")
@@ -727,10 +775,13 @@ def parser() -> argparse.ArgumentParser:
 
 	sp.add_parser("build", help="Run packwiz refresh/export and move the final .mrpack files to root")
 
-	sp.add_parser("quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence.")
+	sp.add_parser("quick-build", aliases=["qb"], help="Runs all the commands to build the modpack in sequence")
 
-	cleanup = sp.add_parser("cleanup", aliases=["c", "cu"], help="Cleans up generated files from builds.")
-	cleanup.add_argument("--yes", action="store_true", help="Confirm deletion of untracked files.")
+	cleanup = sp.add_parser("cleanup", aliases=["c", "cu"], help="Cleans up generated files from builds")
+	cleanup.add_argument("--yes", action="store_true", help="Confirm deletion of untracked files")
+
+	setup_workspace = sp.add_parser("setup-workspace", help="Sets up files and folders for a new modpack")
+	setup_workspace.add_argument("--yes", action="store_true", help="Confirm workspace setup")
 
 	return p
 
@@ -755,6 +806,8 @@ def main() -> int:
 			sys.exit(quick_build(packinfo, dry_run=args.dry_run))
 		if args.command in ("cleanup", "c", "cu"):
 			return cleanup(yes=args.yes, dry_run=args.dry_run)
+		if args.command in ("setup-workspace"):
+			return setup_workspace(yes=args.yes, dry_run=args.dry_run)
 		print(f"Unknown command: {args.command}", file=sys.stderr)
 		return 2
 	except (FileNotFoundError, RuntimeError, ValueError) as exc:
