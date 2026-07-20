@@ -1,1 +1,3 @@
-- Removed ImmediatelyFast due to various bugs.
+- All mods updated to latest versions
+- Added AudioThrottle and Krypton
+- Unpinned Sodium and RSO
