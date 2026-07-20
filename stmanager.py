@@ -217,7 +217,8 @@ def render_pack_toml(packinfo: dict[str, Any], loader: str, target_dir: Path) ->
 		.replace("<!VERSION!>", str(packinfo.get("version", "")))
 		.replace("<!MODLOADER!>", loader)
 		.replace("<!LOADERVERSION!>", str(packinfo.get("targets", {}).get(loader, "")))
-		.replace("<!MCVERSION!>", str(packinfo.get("targets", {}).get("mc", ""))),
+		.replace("<!MCVERSION!>", str(packinfo.get("targets", {}).get("mc", "")))
+		.replace("<!ACCEPTEDVERSIONS!>", str(packinfo.get("targets", {}).get("mc-acceptable-versions", ""))),
 		encoding="utf-8",
 	)
 

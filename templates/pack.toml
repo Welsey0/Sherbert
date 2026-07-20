@@ -8,4 +8,4 @@ pack-format = "packwiz:1.1.0"
 minecraft = "<!MCVERSION!>"
 
 [options]
-acceptable-game-versions = ["26.1"]
+acceptable-game-versions = ["<!ACCEPTABLEVERSIONS!>"]
