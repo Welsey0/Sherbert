@@ -6,7 +6,7 @@ slug = "sherbert"
 [targets]
 mc = "26.2"
 mc-acceptable-versions = '"26.1"'
-neo = "none"
+neo = "26.2.0.59"
 fabric = "0.19.3"
 
 [content]
@@ -130,7 +130,6 @@ fabric = "0.19.3"
 
 [forcedconfigs]
     files = [
-        "config/modpack_defaults/config/animated-mojang-logo.json",
         "config/modpack_defaults/config/isxander-main-menu-credits.json",
         "config/modpack_defaults/config/modmenu.json",
         "config/modpack_defaults/config/rrls.toml"

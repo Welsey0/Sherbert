@@ -25,14 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PACK_NAME: Sherbert
-    outputs:
-      upload_matrix: ${{ steps.discover.outputs.upload_matrix }}
-      has_uploads: ${{ steps.discover.outputs.has_uploads }}
-      version: ${{ steps.get_version.outputs.value }}
-      mc_version: ${{ steps.get_minecraft_version.outputs.value }}
-      changelog: ${{ steps.get_changelog.outputs.changelog_content }}
-      release_name: ${{ steps.construct_name.outputs.release_name }}
-      channel: ${{ steps.determine_channel.outputs.channel }}
 
     steps:
       - name: Checkout repository
@@ -162,6 +154,8 @@ jobs:
               sys.exit(1)
 
           # 3) Guard against duplicate Modrinth version numbers used by this workflow.
+          # This release model publishes multiple .mrpack files as one Modrinth version,
+          # so the version_number stays tied to the release version itself rather than each loader.
           if modrinth_pid:
             try:
               with open("packinfo.toml", "rb") as f:
@@ -183,13 +177,7 @@ jobs:
               )
               sys.exit(1)
 
-            targets = cfg.get("targets", {})
-            loaders = [
-              key
-              for key, value in targets.items()
-              if key != "mc" and str(value).lower() != "none"
-            ]
-            expected_numbers = {f"{version}-{loader}" for loader in loaders}
+            expected_numbers = {str(version)}
 
             versions_url = f"https://api.modrinth.com/v2/project/{modrinth_pid}/version"
             req = urllib.request.Request(
@@ -204,7 +192,7 @@ jobs:
               sys.exit(1)
 
             existing_numbers = {
-              item.get("version_number", "")
+              str(item.get("version_number", ""))
               for item in payload
               if isinstance(item, dict)
             }
@@ -251,29 +239,10 @@ jobs:
         shell: bash
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
-          import tomllib, glob, json, re
-
-          with open("packinfo.toml", "rb") as f:
-              cfg = tomllib.load(f)
-
-          targets = cfg.get("targets", {})
-          loaders = [k for k, v in targets.items() if k != "mc" and str(v).lower() != "none"]
+          import glob
 
           files = sorted(glob.glob("*.mrpack"))
-          matrix = []
-
-          for loader in loaders:
-              pat = re.compile(rf"(^|[-_.]){re.escape(loader)}([-.]|$)", re.IGNORECASE)
-              matched = [f for f in files if pat.search(f)]
-              for file in matched:
-                  matrix.append({"loader": loader, "file": file})
-
-          # Fallback for single-loader/single-file naming that doesn't include loader token.
-          if not matrix and len(loaders) == 1 and len(files) == 1:
-              matrix = [{"loader": loaders[0], "file": files[0]}]
-
-          print(f"upload_matrix={json.dumps(matrix)}")
-          print(f"has_uploads={'true' if matrix else 'false'}")
+          print(f"has_uploads={'true' if files else 'false'}")
           print(f"artifact_count={len(files)}")
           PY
 
@@ -319,35 +288,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  upload_modrinth:
-    name: Upload to Modrinth
-    needs: publish
-    if: needs.publish.outputs.has_uploads == 'true'
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        item: ${{ fromJSON(needs.publish.outputs.upload_matrix) }}
-
-    steps:
-      - name: Download mrpack(s) from release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release download ${{ needs.publish.outputs.version }} \
-            --pattern "*.mrpack" \
-            --repo ${{ github.repository }}
-
-      - name: Upload artifact to Modrinth
+      - name: Upload all artifacts to Modrinth
+        if: steps.discover.outputs.has_uploads == 'true'
         uses: Kir-Antipov/mc-publish@v3
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-id: ${{ secrets.MODRINTH_PID }}
-          files: ${{ matrix.item.file }}
-          name: ${{ needs.publish.outputs.release_name }}
-          version: ${{ needs.publish.outputs.version }}
-          changelog: ${{ needs.publish.outputs.changelog }}
-          game-versions: ${{ needs.publish.outputs.mc_version }}
-          version-type: ${{ needs.publish.outputs.channel }}
-          loaders: ${{ matrix.item.loader }}
+          files: ./*.mrpack
+          name: ${{ steps.construct_name.outputs.release_name }}
+          version: ${{ steps.get_version.outputs.value }}
+          changelog: ${{ steps.get_changelog.outputs.changelog_content }}
+          game-versions: ${{ steps.get_minecraft_version.outputs.value }}
+          version-type: ${{ steps.determine_channel.outputs.channel }}
           modrinth-featured: true
