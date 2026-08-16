@@ -1,4 +1,4 @@
-"""ST Manager
+"""STManager
 Command line tool for managing ST Family modpacks.
 """
 
@@ -9,11 +9,14 @@ import importlib
 import datetime as dt
 import json
 import os
+import platform
 import shutil
 import stat
 import subprocess
 import sys
 import time
+import requests
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -37,6 +40,24 @@ TEMPLATE_SRC_PATH = ROOT / "templates" / "src"
 TEMPLATE_CHANGELOG_PATH = ROOT / "templates" / "changelog.md"
 TEMPLATE_PACKINFO_PATH = ROOT / "templates" / "packinfo.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
+TOOL_NAME = "STManager"
+DEVELOPER_URL = "https://github.com/Welsey0"
+
+python_version = platform.python_version()
+requests_version = getattr(requests, "__version__", "unknown")
+def get_git_commit():
+    try:
+        # Runs 'git rev-parse --short HEAD' to grab the 7-character commit ID
+        commit_hash = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], 
+            stderr=subprocess.DEVNULL
+        ).decode("ascii").strip()
+        return f"git-{commit_hash}"
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # Fallback string if git isn't installed or project isn't a git repo
+        return "development"
+
+VERSION = get_git_commit()
 
 
 @dataclass
@@ -727,16 +748,6 @@ def setup_workspace(*, yes: bool, dry_run: bool) -> int:
 					print(f"Could not copy: {e}", file=sys.stderr)
 	return 0
 
-
-	# remove a src folder if present
-	# copy src template into working
-	
-	# remove packinfo.toml if present
-	# copy packinfo from templates to working
-	# advise on setting up stuff in packinfo.toml
-
-	# replace changelog.md with preset
-
 def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     print("Starting quick build...")
     print("--> [1/5] Bootstrapping loader folders...")
@@ -764,8 +775,9 @@ def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     return 0
 
 def parser() -> argparse.ArgumentParser:
-	p = argparse.ArgumentParser(description="ST Manager")
+	p = argparse.ArgumentParser(description=TOOL_NAME)
 	p.add_argument("--dry-run", action="store_true", help="Print actions without running packwiz or writing changes")
+	p.add_argument("--version", action="version", version=f"{TOOL_NAME} version {VERSION} by {DEVELOPER_URL}, running on Python {python_version}", help="Displays information about this program including version number.")
 	sp = p.add_subparsers(dest="command", required=True)
 
 	setup = sp.add_parser("setup-folders", help="Create src-<loader> folders from packinfo ground truth")
