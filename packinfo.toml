@@ -109,7 +109,7 @@ fabric = "0.19.3"
         [[content.pinned_remote]]
             id = "sodium"
             version = "2Yom1N68"
-            allow_different_mc = true
+            allow_different_mc = false
             note = "Iris only supports full Sodium versions, not alphas."
 
         [[content.nonremote]]
