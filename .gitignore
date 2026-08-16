@@ -3,3 +3,5 @@
 src-*
 unsuccessful.md
 validation-report.json
+modhashes.toml
+modstoupdate.md

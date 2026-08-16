@@ -14,12 +14,14 @@ import shutil
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 import requests
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 try:
@@ -40,8 +42,11 @@ TEMPLATE_SRC_PATH = ROOT / "templates" / "src"
 TEMPLATE_CHANGELOG_PATH = ROOT / "templates" / "changelog.md"
 TEMPLATE_PACKINFO_PATH = ROOT / "templates" / "packinfo.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
+MOD_HASHES_PATH = ROOT / "modhashes.toml"
+MODS_TO_UPDATE_PATH = ROOT / "modstoupdate.md"
 TOOL_NAME = "STManager"
 DEVELOPER_URL = "https://github.com/Welsey0"
+MODRINTH_API = "https://api.modrinth.com/v2"
 
 python_version = platform.python_version()
 requests_version = getattr(requests, "__version__", "unknown")
@@ -58,6 +63,7 @@ def get_git_commit():
         return "development"
 
 VERSION = get_git_commit()
+REQUEST_HEADERS = f"{TOOL_NAME}/{VERSION} (+{DEVELOPER_URL}) Python/{python_version} requests/{requests_version}"
 
 
 @dataclass
@@ -774,6 +780,283 @@ def quick_build(packinfo: dict[str, Any], *, dry_run: bool) -> int:
     print("✅ Quick build completed successfully!")
     return 0
 
+def check_mod_updates(*, dry_run: bool) -> int:
+    packinfo = load_packinfo()
+    loaders = active_loaders(packinfo)
+    mc_version = str(packinfo.get("targets", {}).get("mc", "")).strip()
+    slug = str(packinfo.get("slug", "")).strip()
+
+    if not loaders:
+        print("No active loaders found in packinfo targets.", file=sys.stderr)
+        return 1
+    if not slug:
+        print("Missing 'slug' in packinfo.", file=sys.stderr)
+        return 1
+
+    headers = {"User-Agent": REQUEST_HEADERS}
+
+    try:
+        response = requests.get(
+            f"{MODRINTH_API}/project/{slug}/version",
+            headers=headers,
+            timeout=30,
+        )
+        response.raise_for_status()
+        versions = response.json()
+        if not isinstance(versions, list) or not versions:
+            print(f"No versions found for project '{slug}'.", file=sys.stderr)
+            return 1
+    except requests.RequestException as exc:
+        print(f"Failed to fetch Modrinth versions: {exc}", file=sys.stderr)
+        return 1
+
+    def choose_compatible_release(loader: str) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+        for version in versions:
+            if not isinstance(version, dict):
+                continue
+            if loader not in version.get("loaders", []):
+                continue
+
+            game_versions = version.get("game_versions", [])
+            if mc_version and game_versions and mc_version not in game_versions:
+                continue
+
+            for file_entry in version.get("files", []):
+                if not isinstance(file_entry, dict):
+                    continue
+                filename = str(file_entry.get("filename", "")).strip().lower()
+                url = file_entry.get("url")
+                if filename.endswith(".mrpack") and isinstance(url, str) and url:
+                    return version, file_entry
+        return None, None
+
+    resolved: list[dict[str, str]] = []
+    for loader in loaders:
+        version, file_entry = choose_compatible_release(loader)
+        if version is None or file_entry is None:
+            resolved.append(
+                {
+                    "loader": loader,
+                    "status": "missing",
+                    "version_id": "",
+                    "version_number": "",
+                    "mrpack_filename": "",
+                    "mrpack_url": "",
+                }
+            )
+            continue
+
+        resolved.append(
+            {
+                "loader": loader,
+                "status": "ok",
+                "version_id": str(version.get("id", "")).strip(),
+                "version_number": str(version.get("version_number", "")).strip(),
+                "mrpack_filename": str(file_entry.get("filename", "")).strip(),
+                "mrpack_url": str(file_entry.get("url", "")).strip(),
+            }
+        )
+
+    if dry_run:
+        print(f"[dry-run] checking '{slug}' for loaders: {', '.join(loaders)}")
+        print(f"[dry-run] mc filter: {mc_version or 'any'}")
+        for item in resolved:
+            if item["status"] == "ok":
+                print(f"[dry-run] {item['loader']}: extract hashes from {item['mrpack_filename']}")
+            else:
+                print(f"[dry-run] {item['loader']}: no compatible .mrpack found")
+        print(f"[dry-run] write {MOD_HASHES_PATH.name} and {MODS_TO_UPDATE_PATH.name}")
+        return 0
+
+    def chunked(items: list[str], size: int = 200) -> list[list[str]]:
+        return [items[i:i + size] for i in range(0, len(items), size)]
+
+    failures = 0
+    mod_rows: list[dict[str, str]] = []
+    updates: list[dict[str, str]] = []
+
+    for item in resolved:
+        loader = item["loader"]
+        if item["status"] != "ok":
+            print(f"[{loader}] No compatible .mrpack found.", file=sys.stderr)
+            failures += 1
+            continue
+
+        try:
+            print(f"[{loader}] Using {item['mrpack_filename']} ({item['version_number'] or item['version_id']})")
+
+            with tempfile.TemporaryDirectory(prefix=f"stmanager-{loader}-") as tmp_dir:
+                local_name = Path(urlparse(item["mrpack_url"]).path).name or f"{loader}.mrpack"
+                mrpack_path = Path(tmp_dir) / local_name
+
+                with requests.get(item["mrpack_url"], headers=headers, timeout=90, stream=True) as response:
+                    response.raise_for_status()
+                    with mrpack_path.open("wb") as outfile:
+                        for chunk in response.iter_content(chunk_size=1024 * 128):
+                            if chunk:
+                                outfile.write(chunk)
+
+                with zipfile.ZipFile(mrpack_path, "r") as archive:
+                    with archive.open("modrinth.index.json") as handle:
+                        index_data = json.load(handle)
+
+            rows: list[dict[str, str]] = []
+            hashes_for_update: list[str] = []
+
+            for entry in index_data.get("files", []):
+                if not isinstance(entry, dict):
+                    continue
+
+                path = str(entry.get("path", "")).strip()
+                if not path.startswith("mods/"):
+                    continue
+
+                hashes = entry.get("hashes", {})
+                if not isinstance(hashes, dict):
+                    continue
+
+                sha1 = str(hashes.get("sha1", "")).strip()
+                sha512 = str(hashes.get("sha512", "")).strip()
+                if not sha1:
+                    continue
+
+                rows.append(
+                    {
+                        "loader": loader,
+                        "modpack_version_id": item["version_id"],
+                        "modpack_version_number": item["version_number"],
+                        "path": path,
+                        "sha1": sha1,
+                        "sha512": sha512,
+                        "latest_version_id": "",
+                        "latest_version_number": "",
+                        "latest_sha1": "",
+                        "up_to_date": "false # Unknown",
+                    }
+                )
+                hashes_for_update.append(sha1)
+
+            latest_by_hash: dict[str, Any] = {}
+            for hash_group in chunked(hashes_for_update, 200):
+                payload = {
+                    "algorithm": "sha1",
+                    "hashes": hash_group,
+                    "loaders": [loader],
+                    "game_versions": [mc_version] if mc_version else [],
+                }
+                update_response = requests.post(
+                    f"{MODRINTH_API}/version_files/update",
+                    json=payload,
+                    headers=headers,
+                    timeout=60,
+                )
+                update_response.raise_for_status()
+                update_data = update_response.json()
+                if isinstance(update_data, dict):
+                    latest_by_hash.update(update_data)
+
+            for row in rows:
+                latest_version = latest_by_hash.get(row["sha1"])
+                if not isinstance(latest_version, dict):
+                    row["up_to_date"] = "false # Unknown"
+                    continue
+
+                row["latest_version_id"] = str(latest_version.get("id", "")).strip()
+                row["latest_version_number"] = str(latest_version.get("version_number", "")).strip()
+
+                latest_sha1 = ""
+                for file_entry in latest_version.get("files", []):
+                    if not isinstance(file_entry, dict):
+                        continue
+                    file_hashes = file_entry.get("hashes", {})
+                    if not isinstance(file_hashes, dict):
+                        continue
+                    candidate = str(file_hashes.get("sha1", "")).strip()
+                    if candidate:
+                        latest_sha1 = candidate
+                        break
+
+                row["latest_sha1"] = latest_sha1
+                if latest_sha1:
+                    row["up_to_date"] = "true" if latest_sha1 == row["sha1"] else "false"
+                else:
+                    row["up_to_date"] = "false # Unknown"
+
+                if row["up_to_date"] == "false":
+                    updates.append(
+                        {
+                            "loader": row["loader"],
+                            "path": row["path"],
+                            "modpack_version": row["modpack_version_number"] or row["modpack_version_id"],
+                            "latest_version": row["latest_version_number"] or row["latest_version_id"],
+                        }
+                    )
+
+            mod_rows.extend(rows)
+
+        except requests.RequestException as exc:
+            print(f"[{loader}] Download/API error: {exc}", file=sys.stderr)
+            failures += 1
+        except (zipfile.BadZipFile, KeyError, json.JSONDecodeError, OSError) as exc:
+            print(f"[{loader}] Failed to process .mrpack: {exc}", file=sys.stderr)
+            failures += 1
+
+    lines: list[str] = [
+        f'generated_at = "{dt.datetime.now().isoformat(timespec="seconds")}"',
+        f'project_slug = "{slug}"',
+        f'mc_version = "{mc_version}"',
+        "",
+    ]
+
+    for item in resolved:
+        lines.append("[[modpacks]]")
+        lines.append(f'loader = "{item["loader"]}"')
+        lines.append(f'status = "{item["status"]}"')
+        lines.append(f'version_id = "{item["version_id"]}"')
+        lines.append(f'version_number = "{item["version_number"]}"')
+        lines.append(f'mrpack_filename = "{item["mrpack_filename"]}"')
+        lines.append("")
+
+    for row in mod_rows:
+        lines.append("[[mods]]")
+        lines.append(f'loader = "{row["loader"]}"')
+        lines.append(f'modpack_version_id = "{row["modpack_version_id"]}"')
+        lines.append(f'modpack_version_number = "{row["modpack_version_number"]}"')
+        lines.append(f'path = "{row["path"]}"')
+        lines.append(f'sha1 = "{row["sha1"]}"')
+        if row["sha512"]:
+            lines.append(f'sha512 = "{row["sha512"]}"')
+        lines.append(f'latest_version_id = "{row["latest_version_id"]}"')
+        lines.append(f'latest_version_number = "{row["latest_version_number"]}"')
+        lines.append(f'latest_sha1 = "{row["latest_sha1"]}"')
+        lines.append(f'up_to_date = {row["up_to_date"]}')
+        lines.append("")
+
+    MOD_HASHES_PATH.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+
+    md_lines = ["# Mods To Update", ""]
+    if not updates:
+        md_lines.append("No hash mismatches found for latest compatible versions.")
+    else:
+        md_lines.append("| Loader | Path | Current Modpack Version | Latest Compatible Version |")
+        md_lines.append("|---|---|---|---|")
+        for update in updates:
+            md_lines.append(
+                f'| {update["loader"]} | {update["path"]} | {update["modpack_version"]} | {update["latest_version"]} |'
+            )
+
+    MODS_TO_UPDATE_PATH.write_text("\n".join(md_lines).rstrip() + "\n", encoding="utf-8")
+
+    resolved_count = sum(1 for item in resolved if item["status"] == "ok")
+    print(
+        f"check-mod-updates summary: loaders={len(loaders)}, resolved={resolved_count}, "
+        f"mods={len(mod_rows)}, mismatches={len(updates)}, failures={failures}"
+    )
+    print(f"Wrote {MOD_HASHES_PATH.name}")
+    print(f"Wrote {MODS_TO_UPDATE_PATH.name}")
+
+    return 0 if failures == 0 else 1
+
 def parser() -> argparse.ArgumentParser:
 	p = argparse.ArgumentParser(description=TOOL_NAME)
 	p.add_argument("--dry-run", action="store_true", help="Print actions without running packwiz or writing changes")
@@ -812,6 +1095,9 @@ def parser() -> argparse.ArgumentParser:
 	setup_workspace.add_argument("--yes", action="store_true", help="Confirm workspace setup")
 	setup_workspace.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
 
+	check_mod_updates = sp.add_parser("check-mod-updates", help="Grabs the mod versions used in the latest release to see if there are any updates")
+	check_mod_updates.add_argument("--dry-run", action="store_true", default=argparse.SUPPRESS, help="Print actions without writing changes")
+
 	return p
 
 
@@ -835,6 +1121,8 @@ def main() -> int:
 			sys.exit(quick_build(packinfo, dry_run=args.dry_run))
 		if args.command in ("cleanup", "c", "cu"):
 			return cleanup(yes=args.yes, dry_run=args.dry_run)
+		if args.command in ("check-mod-updates"):
+			return check_mod_updates(dry_run=args.dry_run)
 		if args.command in ("setup-workspace"):
 			return setup_workspace(yes=args.yes, dry_run=args.dry_run)
 		print(f"Unknown command: {args.command}", file=sys.stderr)

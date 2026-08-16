@@ -1,6 +1,7 @@
 name = "Sherbert"
 author = "Welsey_"
 version = "5.2.1"
+slug = "sherbert"
 
 [targets]
 mc = "26.2"
