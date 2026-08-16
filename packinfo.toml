@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.2.1"
+version = "5.3.0"
 slug = "sherbert"
 
 [targets]
@@ -13,7 +13,6 @@ fabric = "0.19.3"
     [all]
         remotes = [
             "alternate-current",
-            "animated-mojang-logo",
             "animaticarefabricated",
             "aseprite-fonts",
             "audiothrottle",
@@ -43,7 +42,7 @@ fabric = "0.19.3"
             "entityculling",
             "fabric-language-kotlin",
             "fast-ip-ping",
-            #"fastquit",
+            "fastquit",
             "ferrite-core",
             "fism",
             "forge-config-api-port",
@@ -91,8 +90,7 @@ fabric = "0.19.3"
             "sodium-shadowy-path-blocks",
             "sodium-extra",
             "spark",
-            #"stackdeobf",
-            #"taskmanager",
+            "taskmanager",
             #"threadtweak",
             "tooltip-scroll",
             "translations-for-sodium",
@@ -107,6 +105,12 @@ fabric = "0.19.3"
             id = "mutilsc"
             reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
             file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
+
+        [[content.pinned_remote]]
+            id = "sodium"
+            version = "2Yom1N68"
+            allow_different_mc = true
+            note = "Iris only supports full Sodium versions, not alphas."
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"

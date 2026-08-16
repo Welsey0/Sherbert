@@ -1,1 +1,4 @@
-- Removed krypton due to a critical issue that prevents joining worlds
+- Updated all mods to latest versions (8/16/2026)
+- Added TaskManager, readded FastQuit
+- Removed Animated Mojang Logo
+- Pinned Sodium to 0.9.1 (Iris only supports full releases, not alphas)
