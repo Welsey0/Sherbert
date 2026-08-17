@@ -4,7 +4,9 @@
 
 <a href="https://fabricmc.net"><img alt="Available for Fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg"></a><a href="https://download.fo"><img alt="Built on Fabulously Optimized" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/built-with/fabulously-optimized_vector.svg"></a><a href="https://github.com/Welsey0/Sherbert"><img alt="Available on GitHub" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/github_vector.svg"></a>
 
-An opinionated daily driver built for performance and quality of life. Serves as the base for [ST Family modpacks](https://modrinth.com/collection/tBDkCBOo).
+An opinionated daily driver built for performance and quality of life. Serves as the base for [STK modpacks](https://modrinth.com/collection/tBDkCBOo).
+
+Home of the Sandstone ToolKit (STK), a toolset for developing and managing modpacks!
 
 ## Why Sherbert?
 - **Quick Setup**
@@ -18,7 +20,7 @@ An opinionated daily driver built for performance and quality of life. Serves as
 - **Performance**
   - Sherbert has a heavy focus on performing well in almost any environment without compromising on graphics or gameplay.
 - **Open Source & Extensible**
-  - All of Sherbert's code and configs are open-source. Add any mods you like and use the included guidelines (in the docs folder on github) to use ST Family tooling for your own packs.
+  - All of Sherbert's code and configs are open-source. Add any mods you like and use the included guidelines (in the docs folder on github) to use STK for your own packs.
 
 **Release** versions are feature-complete and polished.\
 **Beta** versions may be missing minor mods or functionality.\
