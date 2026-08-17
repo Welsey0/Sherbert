@@ -1,5 +1,5 @@
-"""STManager
-Command line tool for managing ST Family modpacks.
+"""STK (Sandstone ToolKit)
+Command line tool for managing packs built with STK.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ TEMPLATE_PACKINFO_PATH = ROOT / "templates" / "packinfo.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
 MOD_HASHES_PATH = ROOT / "modhashes.toml"
 MODS_TO_UPDATE_PATH = ROOT / "modstoupdate.md"
-TOOL_NAME = "STManager"
+TOOL_NAME = "Sandstone ToolKit"
 DEVELOPER_URL = "https://github.com/Welsey0"
 MODRINTH_API = "https://api.modrinth.com/v2"
 
@@ -584,7 +584,7 @@ def validate(*, strict: bool, report_file: str | None) -> int:
 	for loader in loaders:
 		loader_dir = loader_map[loader]
 		if not loader_dir.exists():
-			issues.append(Issue("error", "LOADER_DIR_MISSING", f"Missing loader folder: {loader_dir.name}", "Run: python stmanager.py setup-folders --yes"))
+			issues.append(Issue("error", "LOADER_DIR_MISSING", f"Missing loader folder: {loader_dir.name}", "Run: python stk.py setup-folders --yes"))
 			continue
 
 		for required in ("mods", "resourcepacks", "shaderpacks", "config"):
@@ -885,7 +885,7 @@ def check_mod_updates(*, dry_run: bool) -> int:
         try:
             print(f"[{loader}] Using {item['mrpack_filename']} ({item['version_number'] or item['version_id']})")
 
-            with tempfile.TemporaryDirectory(prefix=f"stmanager-{loader}-") as tmp_dir:
+            with tempfile.TemporaryDirectory(prefix=f"stk-{loader}-") as tmp_dir:
                 local_name = Path(urlparse(item["mrpack_url"]).path).name or f"{loader}.mrpack"
                 mrpack_path = Path(tmp_dir) / local_name
 

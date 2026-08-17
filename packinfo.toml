@@ -6,8 +6,8 @@ slug = "sherbert"
 [targets]
 mc = "26.2"
 mc-acceptable-versions = '"26.1"'
-neo = "26.2.0.59"
-fabric = "0.19.3"
+neoforge = "26.2.0.59"
+#fabric = "0.19.3"
 
 [content]
     [all]
@@ -19,7 +19,6 @@ fabric = "0.19.3"
             "badoptimizations",
             #"betteraddserver",
             "better-clouds",
-            "better-mount-hud",
             "bettergrassify",
             "cape-provider",
             "chat-heads",
@@ -55,6 +54,7 @@ fabric = "0.19.3"
             #"krypton",
             "lambdynamiclights",
             "language-reload",
+            "leave-my-bars-alone",
             "lithium",
             "main-menu-credits",
             "mellow",
@@ -101,17 +101,6 @@ fabric = "0.19.3"
             "zoomify"
         ]
 
-        [[content.remote_exception]]
-            id = "mutilsc"
-            reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
-            file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
-
-        [[content.pinned_remote]]
-            id = "sodium"
-            version = "2Yom1N68"
-            allow_different_mc = false
-            note = "Iris only supports full Sodium versions, not alphas."
-
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
             note = "Provides colors and other UI stuff"
@@ -121,7 +110,16 @@ fabric = "0.19.3"
             "fabric-api"
         ]
 
-    [neo]
+        [[content.pinned_remote]]
+            id = "sodium"
+            version = "2Yom1N68"
+            allow_different_mc = false
+            note = "Iris only supports full Sodium versions, not alphas."
+
+        [[content.remote_exception]]
+            id = "mutilsc"
+            reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
+            file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
 
 [variablevalues]
     version = [
