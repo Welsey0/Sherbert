@@ -359,7 +359,7 @@ jobs:
           modrinth-id: ${{ secrets.MODRINTH_PID }}
           files: ./*.mrpack
           loaders: ${{ steps.discover.outputs.modrinth_loaders }}
-          name: ${{ steps.construct_name.outputs.release_name }}
+          name: ${{ steps.get_version.outputs.value }}
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
           game-versions: ${{ steps.get_minecraft_version.outputs.value }}
