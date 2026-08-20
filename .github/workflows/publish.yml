@@ -240,10 +240,73 @@ jobs:
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import glob
+          import os
+          import sys
+
+          aliases = {
+            "neo": "neoforge",
+          }
+          supported = {
+            "fabric",
+            "forge",
+            "neoforge",
+            "quilt",
+          }
+
+          def dedupe_ordered(items):
+            out = []
+            for item in items:
+              if item not in out:
+                out.append(item)
+            return out
+
+          def loaders_from_packinfo():
+            with open("packinfo.toml", "rb") as f:
+              import tomllib
+              cfg = tomllib.load(f)
+
+            results = []
+            for key, value in cfg.get("targets", {}).items():
+              if key in {"mc", "mc-acceptable-versions"}:
+                continue
+              if str(value).strip().lower() == "none":
+                continue
+              normalized = aliases.get(str(key).strip().lower(), str(key).strip().lower())
+              if normalized in supported:
+                results.append(normalized)
+            return dedupe_ordered(results)
+
+          def loaders_from_artifacts(paths):
+            results = []
+            for path in paths:
+              stem = os.path.splitext(os.path.basename(path))[0].lower()
+              # stk.py names artifacts as <name>-<loader>.mrpack
+              loader_hint = stem.rsplit("-", 1)[-1] if "-" in stem else ""
+              normalized = aliases.get(loader_hint, loader_hint)
+              if normalized in supported:
+                results.append(normalized)
+            return dedupe_ordered(results)
 
           files = sorted(glob.glob("*.mrpack"))
           print(f"has_uploads={'true' if files else 'false'}")
           print(f"artifact_count={len(files)}")
+
+          if not files:
+            print("modrinth_loaders=")
+            sys.exit(0)
+
+          loaders = loaders_from_artifacts(files)
+          if not loaders:
+            loaders = loaders_from_packinfo()
+
+          if not loaders:
+            print(
+              "ERROR: could not determine Modrinth loaders from artifacts or packinfo.toml [targets].",
+              file=sys.stderr,
+            )
+            sys.exit(1)
+
+          print(f"modrinth_loaders={','.join(loaders)}")
           PY
 
       - name: Fail if no artifacts were built
@@ -295,6 +358,7 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-id: ${{ secrets.MODRINTH_PID }}
           files: ./*.mrpack
+          loaders: ${{ steps.discover.outputs.modrinth_loaders }}
           name: ${{ steps.construct_name.outputs.release_name }}
           version: ${{ steps.get_version.outputs.value }}
           changelog: ${{ steps.get_changelog.outputs.changelog_content }}
