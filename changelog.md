@@ -1,4 +1,3 @@
-- Updated all mods to latest versions (8/16/2026)
-- Added TaskManager, readded FastQuit
-- Removed Animated Mojang Logo
-- Pinned Sodium to 0.9.1 (Iris only supports full releases, not alphas)
+- Updated all mods to latest versions (8/20/2026)
+- Removed 10 mods: badoptimizations, better-clouds, chat-impressive-animation, chunks-fade-in, entityculling, fism, hold-that-chunk-v2, mixintrace-reloaded, noisiumforked, serverpingerfixer, mixintrace-reloaded
+- Added 11 mods: asynclogger, asyncparticles, gnetum, immediatelyfast, jasione, modmenu-filter, packed-packs, polytone, progresspeek, respackopts, screenshot-overhaul
