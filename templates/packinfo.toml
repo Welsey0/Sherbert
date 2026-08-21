@@ -1,12 +1,12 @@
 name = "" # Name of modpack
 author = "" # Author's name
 version = "" # Modpack version
-slug = "sherbert" # Modrinth modpack ID or slug
+slug = "" # Modrinth modpack ID or slug
 
 [targets] # Versions that the modpack is targeting. For mod loaders, I always recommend the latest one.
 mc = "" # Minecraft version
 mc-acceptable-versions = '' # Allow mods supporting other Minecraft versions to be downloaded
-neo = "" # Neoforge Loader version
+neoforge = "" # Neoforge Loader version
 fabric = "" # Fabric Loader version
 
 [content] # Define what is in the pack here.
@@ -31,7 +31,7 @@ fabric = "" # Fabric Loader version
 
     [fabric] # Only included in Fabric loader
 
-    [neo] # Only included in Neoforge loader.
+    [neoforge] # Only included in Neoforge loader.
 
 [variablevalues] # Values to find and update in certain config files during build process.
     version = [ # Replaces the text <!VERSION!> with the modpack version specified in this file
