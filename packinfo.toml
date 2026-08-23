@@ -14,7 +14,7 @@ fabric = "0.19.3"
             "alternate-current",
             "animaticarefabricated",
             "aseprite-fonts",
-            "asynclogger",
+            #"asynclogger",
             "asyncparticles",
             "audiothrottle",
             "bettergrassify",
@@ -67,11 +67,10 @@ fabric = "0.19.3"
             "paginatedadvancements",
             "placeholder-api",
             "polytone",
-            "progresspeek",
             "puzzle",
             "quick-pack",
             "reeses-sodium-options",
-            "respackopts",
+            #"respackopts",
             "resourcify",
             "rethoughted-gui",
             "rrls",
@@ -111,6 +110,12 @@ fabric = "0.19.3"
             version = "2Yom1N68"
             allow_different_mc = false
             note = "Iris only supports full Sodium versions, not alphas."
+
+        [[content.pinned_remote]]
+            id = "modernfix-mvus"
+            version = "m9PRBIVh"
+            allow_different_mc = false
+            note = "Latest version has issues."
 
         [[content.remote_exception]]
             id = "mutilsc"
