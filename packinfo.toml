@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.4.1"
+version = "5.4.2"
 slug = "sherbert"
 
 [targets]
@@ -14,7 +14,7 @@ fabric = "0.19.3"
             "alternate-current",
             "animaticarefabricated",
             "aseprite-fonts",
-            #"asynclogger",
+            "asynclogger",
             "asyncparticles",
             "audiothrottle",
             "bettergrassify",
@@ -51,6 +51,7 @@ fabric = "0.19.3"
             "leave-my-bars-alone",
             "lithium",
             "main-menu-credits",
+            "mcqoy",
             "mellow",
             "mixintrace-reborn",
             "modernfix-mvus",
@@ -65,13 +66,15 @@ fabric = "0.19.3"
             "packed-packs",
             "packet-fixer",
             "paginatedadvancements",
+            "particle-core",
             "placeholder-api",
             "polytone",
             "puzzle",
             "quick-pack",
             "reeses-sodium-options",
-            #"respackopts",
+            "renderscale",
             "resourcify",
+            "respackopts",
             "rethoughted-gui",
             "rrls",
             "scalablelux",
@@ -110,12 +113,6 @@ fabric = "0.19.3"
             version = "2Yom1N68"
             allow_different_mc = false
             note = "Iris only supports full Sodium versions, not alphas."
-
-        [[content.pinned_remote]]
-            id = "modernfix-mvus"
-            version = "m9PRBIVh"
-            allow_different_mc = false
-            note = "Latest version has issues."
 
         [[content.remote_exception]]
             id = "mutilsc"

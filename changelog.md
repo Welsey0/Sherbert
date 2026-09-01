@@ -1,2 +1,2 @@
-- Updated all mods (except sodium) to latest versions (8/22/2026)
-- Removed AsyncLogger, ProgressPeek, and Resource Pack Options to resolve some crashes encountered on Linux
+- Updated all mods (except sodium) to latest versions
+- Added AsyncLogger, McQoy, Particle Core, RenderScale, Resource Pack Options. Testing on Linux is still pending.
