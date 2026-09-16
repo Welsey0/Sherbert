@@ -1,22 +1,22 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "5.4.2"
+version = "6.0.0-alpha.1"
 slug = "sherbert"
 
 [targets]
-mc = "26.2"
-mc-acceptable-versions = '"26.1"'
-fabric = "0.19.3"
+mc = "26.3"
+mc-acceptable-versions = '"26.2", "26.1"'
+fabric = "0.19.5"
 
 [content]
     [all]
         remotes = [
             "alternate-current",
-            "animaticarefabricated",
+            #"animaticarefabricated",
             "aseprite-fonts",
             "asynclogger",
             "asyncparticles",
-            "audiothrottle",
+            #"audiothrottle",
             "bettergrassify",
             "cape-provider",
             "chat-heads",
@@ -25,10 +25,10 @@ fabric = "0.19.3"
             "complementary-reimagined",
             "configmanager",
             "continuity",
-            "controlling",
+            #"controlling",
             "crash-assistant",
-            "cubes-without-borders",
-            "debugify",
+            #"cubes-without-borders",
+            #"debugify",
             "dynamic-fps",
             "e4mc",
             "emojis",
@@ -36,67 +36,67 @@ fabric = "0.19.3"
             "entitytexturefeatures",
             "fabric-language-kotlin",
             "fast-ip-ping",
-            "fastquit",
+            #"fastquit",
             "ferrite-core",
             "forge-config-api-port",
-            "gnetum",
+            #"gnetum",
             "graceful-packets",
-            "immediatelyfast",
+            #"immediatelyfast",
             "iris",
             "irissearch",
-            "ixeris",
+            #"ixeris",
             "jasione",
             "lambdynamiclights",
-            "language-reload",
-            "leave-my-bars-alone",
+            #"language-reload",
+            #"leave-my-bars-alone",
             "lithium",
             "main-menu-credits",
-            "mcqoy",
+            #"mcqoy",
             "mellow",
             "mixintrace-reborn",
-            "modernfix-mvus",
-            "modmenu",
-            "modmenu-filter",
+            #"modernfix-mvus",
+            #"modmenu",
+            #"modmenu-filter",
             "morechathistory",
             "moreculling",
             #"mutilsc",
-            "no-chat-reports",
+            #"no-chat-reports",
             "obe",
-            "optigui",
+            #"optigui",
             "packed-packs",
             "packet-fixer",
-            "paginatedadvancements",
+            #"paginatedadvancements",
             "particle-core",
             "placeholder-api",
-            "polytone",
-            "puzzle",
-            "quick-pack",
+            #"polytone",
+            #"puzzle",
+            #"quick-pack",
             "reeses-sodium-options",
-            "renderscale",
+            #"renderscale",
             "resourcify",
             "respackopts",
             "rethoughted-gui",
-            "rrls",
+            #"rrls",
             "scalablelux",
-            "screenshot-overhaul",
-            "scribble",
-            "searchables",
+            #"screenshot-overhaul",
+            #"scribble",
+            #"searchables",
             "shut-up-realms",
-            "simple-hud-enhanced",
-            "skyboxify",
+            #"simple-hud-enhanced",
+            #"skyboxify",
             "smooth-scroll",
             "sodium",
             "sodium-extra",
-            "sodium-shadowy-path-blocks",
+            #"sodium-shadowy-path-blocks",
             "spark",
-            "taskmanager",
-            "tooltip-scroll",
+            #"taskmanager",
+            #"tooltip-scroll",
             "translations-for-sodium",
-            "viafabricplus",
+            #"viafabricplus",
             "vmp-fabric",
-            "yacl",
+            #"yacl",
             "zfastnoise",
-            "zoomify",
+            #"zoomify",
         ]
 
         [[content.nonremote]]
@@ -108,16 +108,10 @@ fabric = "0.19.3"
             "fabric-api"
         ]
 
-        [[content.pinned_remote]]
-            id = "sodium"
-            version = "2Yom1N68"
-            allow_different_mc = false
-            note = "Iris only supports full Sodium versions, not alphas."
-
-        [[content.remote_exception]]
-            id = "mutilsc"
-            reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
-            file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
+        # [[content.remote_exception]]
+        #     id = "mutilsc"
+        #     reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
+        #     file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
 
 [variablevalues]
     version = [

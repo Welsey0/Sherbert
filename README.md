@@ -6,7 +6,7 @@
 
 An opinionated daily driver built for performance and quality of life. Also serves as the home of the Shulker Toolkit project, seeking to make advanced modpack management easier to create and maintain.
 
-Home of the Shulker Toolkit (STK), a toolset for developing and managing modpacks!
+> 6.0.0 for Minecraft 26.3 now in development! Please be aware that 6.x.x versions of Sherbert will not have all the mods that 5.x.x versions did until they are updated to 26.3, which can take one to two months, or longer.
 
 ## Why Sherbert?
 - **Quick Setup**
