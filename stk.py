@@ -1,4 +1,4 @@
-"""STK (Sandstone ToolKit)
+"""STK (Shulker Toolkit)
 Command line tool for managing packs built with STK.
 """
 
@@ -45,7 +45,7 @@ TEMPLATE_PACKINFO_PATH = ROOT / "templates" / "packinfo.toml"
 UNSUCCESSFUL_PATH = ROOT / "unsuccessful.md"
 MOD_HASHES_PATH = ROOT / "modhashes.toml"
 MODS_TO_UPDATE_PATH = ROOT / "modstoupdate.md"
-TOOL_NAME = "Sandstone ToolKit"
+TOOL_NAME = "Shulker Toolkit"
 DEVELOPER_URL = "https://github.com/Welsey0"
 MODRINTH_API = "https://api.modrinth.com/v2"
 

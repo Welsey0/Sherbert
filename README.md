@@ -6,7 +6,7 @@
 
 An opinionated daily driver built for performance and quality of life. Serves as the base for [STK modpacks](https://modrinth.com/collection/tBDkCBOo).
 
-Home of the Sandstone ToolKit (STK), a toolset for developing and managing modpacks!
+Home of the Shulker Toolkit (STK), a toolset for developing and managing modpacks!
 
 ## Why Sherbert?
 - **Quick Setup**
