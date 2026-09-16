@@ -10,6 +10,7 @@ import datetime as dt
 import json
 import os
 import platform
+import shlex
 import shutil
 import stat
 import subprocess
@@ -165,7 +166,7 @@ def run_cmd(command: list[str], cwd: Path, *, dry_run: bool) -> RunResult:
 		print(message)
 		return RunResult(command=command, cwd=cwd, returncode=0, stdout=message, stderr="")
 
-	completed = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
+	completed = subprocess.run(command, cwd=cwd, text=True, encoding="utf-8", errors="replace", capture_output=True,)
 	if completed.stdout:
 		print(completed.stdout.strip())
 	if completed.stderr:
@@ -175,6 +176,21 @@ def run_cmd(command: list[str], cwd: Path, *, dry_run: bool) -> RunResult:
 
 def run_packwiz(args: list[str], cwd: Path, *, dry_run: bool) -> RunResult:
 	return run_cmd([require_packwiz(dry_run), *args], cwd, dry_run=dry_run)
+
+
+def pre_build_packwiz_args(packinfo: dict[str, Any]) -> list[str]:
+	raw = str(packinfo.get("pre-build-command", "")).strip()
+	if not raw:
+		return []
+
+	args = shlex.split(raw, posix=os.name != "nt")
+	if not args:
+		return []
+	if args[0].lower() == "packwiz":
+		args = args[1:]
+	if not args:
+		raise ValueError("pre-build-command must include packwiz arguments, for example: 'mr remove <mod-id>'.")
+	return args
 
 
 def ensure_parent(path: Path) -> None:
@@ -648,6 +664,7 @@ def build(*, dry_run: bool) -> int:
 	require_packwiz(dry_run)
 	packinfo = load_packinfo()
 	loaders = loader_dirs(packinfo)
+	pre_build_args = pre_build_packwiz_args(packinfo)
 	failures = 0
 
 	for loader, loader_dir in loaders.items():
@@ -655,6 +672,13 @@ def build(*, dry_run: bool) -> int:
 			print(f"Warning: missing folder {loader_dir}", file=sys.stderr)
 			failures += 1
 			continue
+
+		if pre_build_args:
+			print(f"[{loader}] running pre-build packwiz command: packwiz {' '.join(pre_build_args)}")
+			pre_build = run_packwiz(pre_build_args, loader_dir, dry_run=dry_run)
+			if not pre_build.ok:
+				failures += 1
+				continue
 
 		before = {path.name for path in loader_dir.glob("*.mrpack")}
 		refresh = run_packwiz(["refresh"], loader_dir, dry_run=dry_run)

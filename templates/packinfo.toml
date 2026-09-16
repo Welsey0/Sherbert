@@ -9,6 +9,8 @@ mc-acceptable-versions = '' # Allow mods supporting other Minecraft versions to 
 neoforge = "" # Neoforge Loader version
 fabric = "" # Fabric Loader version
 
+pre-build-command = "" # You can optionally run a packwiz command before the pack is built, for example to remove a library mod that causes issues but was automatically installed.
+
 [content] # Define what is in the pack here.
     [all] # Included in all loaders
         remotes = [ # Put Modrinth slugs (https://modrinth.com/mod/<slug>) below to include them
