@@ -1,0 +1,26 @@
+{
+  "devMode": false,
+  "showActionBar": false,
+  "hideIncompatible": false,
+  "sort": "VANILLA",
+  "resourcepacks": {
+    "applyOnClose": true,
+    "replaceOriginal": true,
+    "hideIncompatibleWarnings": false,
+    "additionalFolders": [],
+    "foldersModuleByDefault": false,
+    "rememberLastViewedProfile": false,
+    "lastViewedProfile": "Sherbert Default",
+    "profileOrder": [
+      "Sherbert Default"
+    ]
+  },
+  "datapacks": {
+    "replaceOriginal": true,
+    "hideIncompatibleWarnings": false,
+    "additionalFolders": [],
+    "foldersModuleByDefault": false,
+    "rememberLastViewedProfile": false,
+    "profileOrder": []
+  }
+}

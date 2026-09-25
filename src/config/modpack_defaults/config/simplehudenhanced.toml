@@ -29,7 +29,7 @@ toggleChunkCoordinates = false
 toggleSubChunkCoordinates = false
 
 [statusElements.fps]
-toggleFPS = true
+toggleFPS = false
 toggleColourFPS = true
 
 [statusElements.playerSpeed]

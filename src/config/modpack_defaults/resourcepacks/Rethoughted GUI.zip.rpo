@@ -1,0 +1,35 @@
+{
+    titleSettings: {
+        title: "vanilla",
+        subtitle: "hide"
+    },
+    guiSettings: {
+        textColor: "gray",
+        slotHighlight: "default",
+        highlightItemsInSlot: "off",
+        itemTooltipFrameGradient: "rethought",
+        advancementsMenuBackground: "vanilla"
+    },
+    hudSettings: {
+        xpBarStyle: "default",
+        heartsStyle: "default",
+        illSkullHearts: "off",
+        foodBarStyle: "default",
+        armorBarStyle: "default",
+        legacyAirBar: "off",
+        crosshairStyle: "smallCross",
+        attackIndicatorStyle: "line"
+    },
+    miscSettings: {
+        pumpkinBlurMirroringFix: "on",
+        pumpkinBlurVisibility: "better",
+        customUnicodeSymbols: "on"
+    },
+    compatibilitySettings: {
+        cursorsExtendedCustomCursor: "on",
+        programmerArtCompatibility: "off",
+        improvedBrewingGuideCompatibility: "on",
+        detailBrushCompatibility: "off",
+        brushAndJuiceCompatibility: "off"
+    }
+}

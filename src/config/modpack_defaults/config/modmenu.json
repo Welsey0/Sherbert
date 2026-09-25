@@ -8,7 +8,7 @@
   "count_hidden_mods": true,
   "mod_count_location": "title_screen",
   "hide_mod_links": false,
-  "show_libraries": false,
+  "show_libraries": "with_config",
   "hide_mod_license": false,
   "hide_badges": false,
   "hide_mod_credits": false,
@@ -27,9 +27,7 @@
   "disable_drag_and_drop": false,
   "hidden_mods": [],
   "hidden_configs": [
-    "mutilsc",
-    "animated-mojang-logo",
-    "rrls"
+  	"mutilsc"
   ],
   "disable_update_checker": []
 }

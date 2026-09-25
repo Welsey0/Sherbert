@@ -1,0 +1,19 @@
+{
+  "locked": true,
+  "name": "Sherbert Default",
+  "overrides": {},
+  "packIds": [
+    "continuity:glass_pane_culling_fix",
+    "continuity:default",
+    "file/aseprite_font_v0.3.1.zip",
+    "file/SodiumTranslations.zip",
+    "file/Sherbert_Colors.zip",
+    "file/Rethoughted GUI.zip",
+    "file/LowOnFire v26.2§8.zip",
+    "file/Low Shield.zip",
+    "file/Icons Fix.zip",
+    "file/Icons v.1.14.zip",
+    "file/Chat Reporting Helper.zip",
+    "vanilla"
+  ]
+}
