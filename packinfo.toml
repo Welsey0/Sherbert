@@ -1,112 +1,107 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "6.0.0-alpha.1"
+version = "6.0.0-alpha.2"
 slug = "sherbert"
 
 [targets]
 mc = "26.3"
-mc-acceptable-versions = '"26.2", "26.1"'
+mc-acceptable-versions = ''
 fabric = "0.19.5"
 
 [content]
     [all]
         remotes = [
-            "alternate-current",
-            #"animaticarefabricated",
-            "aseprite-fonts",
+            "animaticarefabricated",
+            #"aseprite-fonts",
             "asynclogger",
-            "asyncparticles",
             #"audiothrottle",
             "bettergrassify",
             "cape-provider",
+            "carpet",
             "chat-heads",
             "chat-reporting-helper",
-            "cloth-config",
-            "complementary-reimagined",
             "configmanager",
             "continuity",
-            #"controlling",
+            "controlling",
             "crash-assistant",
             #"cubes-without-borders",
             #"debugify",
             "dynamic-fps",
-            "e4mc",
-            "emojis",
+            #"e4mc",
+            #"emojis",
             "entity-model-features",
             "entitytexturefeatures",
-            "fabric-language-kotlin",
+            "fabric-api",
             "fast-ip-ping",
-            #"fastquit",
+            "fastquit",
             "ferrite-core",
-            "forge-config-api-port",
-            #"gnetum",
-            "graceful-packets",
-            #"immediatelyfast",
+            "gnetum",
+            #"graceful-packets",
+            "immediatelyfast",
             "iris",
-            "irissearch",
-            #"ixeris",
+            "ixeris",
             "jasione",
             "lambdynamiclights",
             #"language-reload",
             #"leave-my-bars-alone",
+            "literally-nothing",
             "lithium",
             "main-menu-credits",
             #"mcqoy",
             "mellow",
-            "mixintrace-reborn",
-            #"modernfix-mvus",
-            #"modmenu",
-            #"modmenu-filter",
+            #"mixintrace-reborn",
+            "modernfix-mvus",
+            "modmenu",
             "morechathistory",
             "moreculling",
             #"mutilsc",
             #"no-chat-reports",
             "obe",
-            #"optigui",
+            "optigui",
             "packed-packs",
             "packet-fixer",
             #"paginatedadvancements",
-            "particle-core",
+            #"particle-core",
             "placeholder-api",
             #"polytone",
             #"puzzle",
-            #"quick-pack",
+            "quick-pack",
             "reeses-sodium-options",
-            #"renderscale",
+            "renice-shot",
             "resourcify",
             "respackopts",
             "rethoughted-gui",
-            #"rrls",
+            "rrls",
             "scalablelux",
-            #"screenshot-overhaul",
-            #"scribble",
-            #"searchables",
+            "scribble",
             "shut-up-realms",
-            #"simple-hud-enhanced",
-            #"skyboxify",
+            "simple-hud-enhanced",
+            "skyboxify",
             "smooth-scroll",
             "sodium",
             "sodium-extra",
-            #"sodium-shadowy-path-blocks",
+            "sodium-shadowy-path-blocks",
             "spark",
+            #"steadfast-shaders",
             #"taskmanager",
             #"tooltip-scroll",
             "translations-for-sodium",
-            #"viafabricplus",
+            "viafabricplus",
             "vmp-fabric",
-            #"yacl",
+            "yacl",
             "zfastnoise",
-            #"zoomify",
+            "zoomify",
         ]
 
         [[content.nonremote]]
             file = "resourcepacks/Sherbert_Colors.zip"
             note = "Provides colors and other UI stuff"
 
-    [fabric]
-        remotes = [
-            "fabric-api"
-        ]
+        [[content.pinned_remote]]
+            id = "sodium"
+            version = "bAZQdGpg"
+            allow_different_mc = false
+            note = "Sodium addons and Iris both expect release versions, not betas/alphas."
 
         # [[content.remote_exception]]
         #     id = "mutilsc"
