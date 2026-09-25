@@ -1,31 +1,30 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "6.0.0-alpha.2"
+version = "6.0.0-alpha.3"
 slug = "sherbert"
 
 [targets]
 mc = "26.3"
-mc-acceptable-versions = ''
+mc-acceptable-versions = '"26.3-snapshot-1"'
 fabric = "0.19.5"
 
 [content]
     [all]
         remotes = [
+            # Mods
             "animaticarefabricated",
-            #"aseprite-fonts",
             "asynclogger",
             #"audiothrottle",
             "bettergrassify",
             "cape-provider",
             "carpet",
             "chat-heads",
-            "chat-reporting-helper",
             "configmanager",
             "continuity",
             "controlling",
             "crash-assistant",
             #"cubes-without-borders",
-            #"debugify",
+            "debugify",
             "dynamic-fps",
             #"e4mc",
             #"emojis",
@@ -44,11 +43,9 @@ fabric = "0.19.5"
             "lambdynamiclights",
             #"language-reload",
             #"leave-my-bars-alone",
-            "literally-nothing",
             "lithium",
             "main-menu-credits",
             #"mcqoy",
-            "mellow",
             #"mixintrace-reborn",
             "modernfix-mvus",
             "modmenu",
@@ -70,7 +67,6 @@ fabric = "0.19.5"
             "renice-shot",
             "resourcify",
             "respackopts",
-            "rethoughted-gui",
             "rrls",
             "scalablelux",
             "scribble",
@@ -82,7 +78,6 @@ fabric = "0.19.5"
             "sodium-extra",
             "sodium-shadowy-path-blocks",
             "spark",
-            #"steadfast-shaders",
             #"taskmanager",
             #"tooltip-scroll",
             "translations-for-sodium",
@@ -91,6 +86,17 @@ fabric = "0.19.5"
             "yacl",
             "zfastnoise",
             "zoomify",
+            # Resource Packs
+            "chat-reporting-helper",
+            "font-aseprite",
+            "icons",
+            "icons-fix",
+            "low-fire-pack",
+            "low-shield-pack",
+            "rethoughted-gui",
+            # Shaders
+            "mellow",
+            #"steadfast-shaders",
         ]
 
         [[content.nonremote]]
