@@ -1,4 +1,3 @@
-- Target modlist has been refreshed
-- 18 more compatible mods added
-- Sherbert no longer uses mods that happen to have accidental compatibility with newer versions
-- There are some known issues (Simple HUD Enhanced caused game crash when using ViaFabricPlus) but its much more stable
+- Added four new resource packs (Icons & Lower Fire/Shield)
+- Readded Debugify
+- Refreshed all mod configs and options.txt

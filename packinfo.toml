@@ -123,7 +123,6 @@ fabric = "0.19.5"
     files = [
         "config/modpack_defaults/config/isxander-main-menu-credits.json",
         "config/modpack_defaults/config/modmenu.json",
-        "config/modpack_defaults/config/rrls.toml"
     ]
 
     folders = [
