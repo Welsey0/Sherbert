@@ -1,6 +1,6 @@
 name = "Sherbert"
 author = "Welsey_"
-version = "6.0.0-alpha.3"
+version = "6.0.0-alpha.4"
 slug = "sherbert"
 
 [targets]
@@ -26,7 +26,7 @@ fabric = "0.19.5"
             #"cubes-without-borders",
             "debugify",
             "dynamic-fps",
-            #"e4mc",
+            "e4mc",
             #"emojis",
             "entity-model-features",
             "entitytexturefeatures",
@@ -42,7 +42,7 @@ fabric = "0.19.5"
             "jasione",
             "lambdynamiclights",
             #"language-reload",
-            #"leave-my-bars-alone",
+            "leave-my-bars-alone",
             "lithium",
             "main-menu-credits",
             #"mcqoy",
@@ -52,7 +52,7 @@ fabric = "0.19.5"
             "morechathistory",
             "moreculling",
             #"mutilsc",
-            #"no-chat-reports",
+            "no-chat-reports",
             "obe",
             "optigui",
             "packed-packs",
@@ -61,7 +61,7 @@ fabric = "0.19.5"
             #"particle-core",
             "placeholder-api",
             #"polytone",
-            #"puzzle",
+            "puzzle",
             "quick-pack",
             "reeses-sodium-options",
             "renice-shot",
@@ -79,7 +79,7 @@ fabric = "0.19.5"
             "sodium-shadowy-path-blocks",
             "spark",
             #"taskmanager",
-            #"tooltip-scroll",
+            "tooltip-scroll",
             "translations-for-sodium",
             "viafabricplus",
             "vmp-fabric",

@@ -1,3 +1,1 @@
-- Added four new resource packs (Icons & Lower Fire/Shield)
-- Readded Debugify
-- Refreshed all mod configs and options.txt
+- Readded five mods
