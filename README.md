@@ -29,8 +29,8 @@ An opinionated daily driver built for performance and quality of life. Also serv
 **Alpha** versions are missing major mods or functionality and usually have major issues.
 
 ## Notes
-Sherbert is designed to be used daily, but this does not mean that it will work perfectly in all situations at all times. When using Sherbert, you should understand that:
-- Sherbert is designed with server mod rules in mind, but may not follow all of them. It is your responsibility to verify whether Sherbert is compliant with any specific server's rules.
-- By installing this modpack you agree that the modpack author, the mod developers and Mojang provide no warranties for using this modpack, every action you do with it is your own.
-- Sherbert is primarily tested on Windows 11 with a laptop running a AMD AI 5 340 and 16GB of RAM. Sherbert therefore may have more issues on untested platforms. If you encounter any issues, please let us know on GitHub.
-- Sherbert is inspired by [Fabulously Optimized](https://download.fo), and often takes pointers from their great work. Thank you, FO team!
+Sherbert is designed to be used daily, but this does not mean that it will work perfectly in all situations at all times. When using Sherbert, you should understand the following:
+- **Server Rules**: Sherbert is designed with server mod rules in mind, but may not follow all of them. It is your responsibility to verify whether Sherbert is compliant with any specific server's rules.
+- **Warranty**: By installing this modpack you agree that the modpack author, the mod developers and Mojang provide no warranties for using this modpack, every action you do with it is your own.
+- **Performance Targets and Supported Platforms**: Sherbert is primarily tested on Windows 11 with a laptop running a AMD AI 5 340 and 4GB of RAM allocated. We sometimes test on a desktop Linux machine and an M1 MBP as well, but our minimum viable spec is a laptop with an Intel i5-1035G1 and 2GB of RAM allocated. Sherbert cannot guarantee that all platforms will work perfectly for any given version. If you encounter bad performance on less powerful hardware, try turning settings down. Sherbert comes with almost maxxed out settings by default. If you encounter any issues, please let us know on GitHub.
+- **Inspiration/Credits**: Sherbert is inspired by [Fabulously Optimized](https://download.fo), and often takes pointers from their great work. Thank you, FO team!
