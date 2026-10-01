@@ -6,12 +6,12 @@
 	platform: "MODRINTH",
 	modpackName: "Sherbert",
 	modpackId: "sherbert",
-	modpackHome: "https://github.com/me/My-Modpack",
+	modpackHome: "https://github.com/Welsey0/Sherbert",
 	localVersion: "<!VERSION!>",
 	checkMcVersion: false,
 	loader: "fabric",
 	versionAPI: "https://raw.githubusercontent.com/me/My-Modpack/main/Packwiz/pack.toml",
-	changelogLink: "https://raw.githubusercontent.com/me/My-Modpack/main/CHANGELOG.md",
+	changelogLink: "https://raw.githubusercontent.com/Welsey0/Sherbert/main/changelog.md",
 	versionType: [
 		"release",
 		"beta"
@@ -38,5 +38,5 @@
 	// Ram Alert
 	ramMenuAlert: true,
 	ramChatAlert: true,
-	minRam: 4096
+	minRam: 2048
 }

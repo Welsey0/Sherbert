@@ -66,7 +66,7 @@ damageTiltStrength:1.0
 highContrast:false
 highContrastBlockOutline:false
 narratorHotkey:true
-resourcePacks:["vanilla","file/Chat Reporting Helper.zip","file/Icons v.1.14.zip","file/Icons Fix.zip","file/Low Shield.zip","file/LowOnFire v26.2§8.zip","file/Rethoughted GUI.zip","file/Sherbert_Colors.zip","file/SodiumTranslations.zip","file/aseprite_font_v0.3.1.zip","continuity:default","continuity:glass_pane_culling_fix"]
+resourcePacks:["vanilla","file/Chat Reporting Helper.zip","file/Icons v.1.14.zip","file/Icons Fix.zip","file/Low Shield.zip","file/Low Fire.zip","file/Rethoughted GUI.zip","file/Sherbert_Colors.zip","file/SodiumTranslations.zip","file/aseprite_font_v0.3.1.zip","continuity:default","continuity:glass_pane_culling_fix"]
 incompatibleResourcePacks:["file/Sherbert_Colors.zip","file/aseprite_font_v0.3.1.zip"]
 lastServer:
 lang:en_us

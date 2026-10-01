@@ -186,7 +186,7 @@
 #Also you can see diff by running '/crash_assistant modlist diff' command.
 [modpack_modlist]
 	#Enable feature.
-	enabled = true
+	enabled = false
 	#nicknames of players, who considered as modpack creator.
 	#Only this players can overwrite modlist.json
 	#If this feature is enabled and this array is empty, will be appended with nickname of current player.
@@ -303,7 +303,7 @@
 	#Supports any IntelliJ Theme file with '.theme.json' extension.
 	#If you prefer standard Swing look and feel, use 'Swing'.
 	#Look out our guide about theme support: https://github.com/KostromDan/Crash-Assistant/blob/pages/guides/Theme%20Support/Getting%20Started.md
-	theme_file_name = "FlatDarkLaf"
+	theme_file_name = "FlatMacDarkLaf"
 	#Will hide Upload All Button from GUI.
 	disable_upload_all_button = false
 	#Append comment text with notice about sending screenshot of this gui tells nothing to modpack creators.
@@ -313,11 +313,11 @@
 	#You can make Upload All Button bigger/smaller to request user attention.
 	#Default Swing font size is 12, Default for this button in crash assistant is 16.
 	#Not recommended to set it more than 16, as it will affect the increase of GUI size because all text won't fit.
-	upload_all_button_font_size = 16
+	upload_all_button_font_size = 14
 	#Same as upload_all_button_font_size, but for Request Help button.
-	request_help_button_font_size = 16
+	request_help_button_font_size = 14
 	#Same as upload_all_button_font_size, but for the Simple Mode toggle button.
-	simple_mode_button_font_size = 16
+	simple_mode_button_font_size = 14
 	#You can change Upload All Button color to request user attention.
 	#format is "R_G_B", range is 0-255, for example "255_0_0" is red color. Use "default" to use default swing color.
 	#Default for this button is "0_178_0" (dark green color).
@@ -328,7 +328,7 @@
 	#Same as upload_all_button_foreground_color, but for the Simple Mode toggle button.
 	simple_mode_button_foreground_color = "0_0_178"
 	#Same as upload_all_button_font_size, but for Auto-Fix button (in integrated GPU warning).
-	auto_fix_button_font_size = 16
+	auto_fix_button_font_size = 14
 	#Same as upload_all_button_foreground_color, but for Auto-Fix button (in integrated GPU warning).
 	#Default for this button is "0_178_0" (dark green color).
 	auto_fix_button_foreground_color = "0_178_0"
@@ -361,13 +361,13 @@
 	#Path to a modpack logo to display in the top of the GUI.
 	#Path is relative to the Minecraft instance folder. Leave empty to disable.
 	#WARNING: use only '/' path separator. '\' will corrupt config!
-	modpack_logo_path = "config/modpack_defaults/mutils/icons/icon_256x256.png"
+	modpack_logo_path = "config/modpack_defaults/config/mutils/icons/icon_256x256.png"
 	#If true, the logo will be larger, Replacing a some of `don't send screenshot` notice.
 	#If false, it will be smaller and logo will be end right where the `don't send screenshot` notice starts.
 	#You should try both, but most likely:
 	#- If you have some long text in the discord/github name, you will love the small one.
 	#- If the text is short, you will love the large one.
-	modpack_logo_large_mode = false
+	modpack_logo_large_mode = true
 	#Limit modpack logo height. Default is -1, which means it's calculated automatically.
 	#By default, this should not be needed. But if you have heavily customized GUI or using
 	#a rectangle logo instead of square, you may want to decrease its size, so this option could be needed in such case. 
