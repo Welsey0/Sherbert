@@ -1,3 +1,5 @@
-- Added four new resource packs (Icons & Lower Fire/Shield)
-- Readded Debugify
-- Refreshed all mod configs and options.txt
+- Readded 6 mods
+- Temporarily removed Remove Reloading Screen
+- Fixed options.txt resource pack defaults
+- Improved Crash Asssistant config
+- Lowered minimum RAM allocation warning to 2GB (still recommend 4 though!)
