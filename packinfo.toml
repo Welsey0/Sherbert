@@ -51,7 +51,7 @@ fabric = "0.19.5"
             "modmenu",
             "morechathistory",
             "moreculling",
-            #"mutilsc",
+            "mutilsc",
             #"no-chat-reports",
             "obe",
             "optigui",
@@ -109,10 +109,10 @@ fabric = "0.19.5"
             allow_different_mc = false
             note = "Sodium addons and Iris both expect release versions, not betas/alphas."
 
-        # [[content.remote_exception]]
-        #     id = "mutilsc"
-        #     reason = "ModpackUtils Continued dosen't have a Modrinth page right now."
-        #     file = "mods/mutilsc-1.2.0+fabric.26.2.jar"
+        [[content.remote_exception]]
+            id = "mutilsc"
+            reason = "ModpackUtils Continued is under review on Modrinth at time of writing."
+            file = "mods/ModpackUtils Continued-1.2.0+fabric.26.3.jar"
 
 [variablevalues]
     version = [
